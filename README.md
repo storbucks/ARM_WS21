@@ -11,4 +11,6 @@ Dazu immer wenn ihr am code arbeitet bitte folgende 2 schritte:
 1. "Commit" klicken und annotieren, was ihr gändert habt
 2. "Push" klicken um den code im repositry zu aktualisieren
 
+Details dann im zoom
+
 Sänks u guys
