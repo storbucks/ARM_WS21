@@ -1,0 +1,19 @@
+import pandas as pd
+import numpy as np
+
+# Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
+traindata = pd.read_csv("Training_Dataset.csv", sep=";")
+
+# Run some checks if you want to:
+# print(traindata.head())
+# print(traindata.tail())
+# print(traindata.isnull().sum().sort_values(ascending=False))
+
+# Display information about the dataset at a glance:
+print(traindata.info())  # Output: 40 cols, 669 rows, dtypes: float, int, object(here: strings)
+catvar = [i for i in list(traindata.columns) if traindata[i].dtype=='O']  # category variables
+numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64','int64']]  # numerical variables
+
+# Check for missing values:
+# print(traindata.isnull().sum())
+
