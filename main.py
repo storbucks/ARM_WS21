@@ -7,7 +7,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import statsmodels.stats.anova as anova
 import scipy as sci
-# hey
+# hey was geht
 from sklearn import metrics
 
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
