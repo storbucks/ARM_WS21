@@ -16,4 +16,4 @@ numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64'
 
 # Check for missing values:
 # print(traindata.isnull().sum())
-
+print("Hi bbs")
