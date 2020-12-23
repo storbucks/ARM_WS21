@@ -27,6 +27,7 @@ numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64'
 print(traindata.isnull().sum())
 
 # test
+# yeehaa
 
 # Test OLS regression made by me
 testreg = smf.ols(formula="sales ~ gross_profit", data=traindata)
