@@ -7,7 +7,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import statsmodels.stats.anova as anova
 import scipy as sci
-# hey was geht
+
 from sklearn import metrics
 
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
@@ -33,3 +33,22 @@ print(traindata.isnull().sum())
 testreg = smf.ols(formula="sales ~ gross_profit", data=traindata)
 res = testreg.fit()
 print(res.summary2())
+
+#%%
+# Check some key figures: gross_performance, gross_profit
+# print(traindata["gross_performance"].describe())  # no negative performance gross
+# print(traindata["gross_profit"].describe())  # no losses gross
+# print(traindata["fin_result"].describe())  # losses prevalent
+
+# Add whether loser or winner in terms of fin result
+loser_col = []
+for value in traindata["fin_result"]:
+    if value < 0:
+        loser_col.append("loser")
+    else:
+        loser_col.append("winner")
+
+traindata["losers"] = loser_col
+
+loser = traindata.groupby(by="losers")  # create group of losers and winners
+print(loser.get_group("winner").mean())
