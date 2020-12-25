@@ -34,11 +34,11 @@ testreg = smf.ols(formula="sales ~ gross_profit", data=traindata)
 res = testreg.fit()
 print(res.summary2())
 
-#%%
+#%% <- ist ein code separator, wenn es bei euch hängt einfach weg machen
 # Check some key figures: gross_performance, gross_profit
-# print(traindata["gross_performance"].describe())  # no negative performance gross
-# print(traindata["gross_profit"].describe())  # no losses gross
-# print(traindata["fin_result"].describe())  # losses prevalent
+print(traindata["gross_performance"].describe())  # no negative performance gross
+print(traindata["gross_profit"].describe())  # no losses gross
+print(traindata["fin_result"].describe())  # losses prevalent
 
 # Add whether loser or winner in terms of fin result
 loser_col = []
