@@ -42,14 +42,22 @@ numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64'
 boolvar = [i for i in list(traindata.columns) if traindata[i].dtype==bool]  # boolean variables
 
 #%%
-# # Some random tests
-# # Check for missing values:
-# print(traindata.isnull().sum())
-#
-# # Test OLS regression made by me
-# testreg = smf.ols(formula="sales ~ gross_profit", data=traindata)
-# res = testreg.fit()
-# print(res.summary2())
+# Some data analztics
+# Check for missing values:
+print(traindata.isnull().sum())
+
+
+# Examine categorial variables
+for i in catvar[1:]:  # w/o id
+    print('============================================')
+    print(f'Variable: {i} \n')
+    x1 = traindata[i].value_counts()
+    x2 = x1 / np.sum(x1) * 100
+    x = pd.concat([x1,x2], axis=1)
+    x.columns = ['Count', 'in %']
+    print(x)
+    print()
+
 
 #%%
 # # Check some key figures: gross_performance, gross_profit
