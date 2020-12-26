@@ -14,3 +14,7 @@ Dazu immer wenn ihr am code arbeitet bitte folgende 2 schritte:
 Details dann im zoom
 
 Sänks u guys
+
+# Remarks / Notes
+- year_inc has outliers
+

@@ -42,10 +42,19 @@ numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64'
 boolvar = [i for i in list(traindata.columns) if traindata[i].dtype==bool]  # boolean variables
 
 #%%
+# Group by and check financial result --> explanatory power in legal form, etc. ?
+print(traindata.groupby("type_pl").fin_result.mean())
+print(traindata.groupby("legal_form").fin_result.mean())
+print(traindata.groupby("default").fin_result.mean())
+
+# Callable grouping for default and non-default comparison
+default_groups = traindata.groupby("default")
+print(default_groups.sales.mean())  # example, call as default_groups.column.function
+
+#%%
 # Some data analztics
 # Check for missing values:
 print(traindata.isnull().sum())
-
 
 # Examine categorial variables
 for i in catvar[1:]:  # w/o id
@@ -83,6 +92,22 @@ ax[2].set_title("Cash Flow")
 plt.show()
 
 #%%
-# Group by legal form and check financial result --> explanatory power in legal form?
-print(traindata.groupby("type_pl").fin_result.mean())
-print(traindata.groupby("legal_form").fin_result.mean())
+# Some nonsense ols regression which i couldn't even interpret
+traindata["losers_dum"] = traindata.losers.astype(int)
+
+regr1 = smf.ols("default ~ year_inc", data=traindata)
+res = regr1.fit()
+print(res.summary2())
+
+fig, ax = plt.subplots(1, figsize=(5,5))
+
+xs = np.arange(traindata.year_inc.min(), traindata.year_inc.max(), 1)
+
+ys = res.params[0] + res.params[1] * xs
+
+ax = plt.scatter(traindata.year_inc, traindata.default, color='darkblue')
+ax = plt.plot(xs,ys, color='black')
+
+plt.xlabel('year_inc')
+plt.ylabel('PD / Default')
+plt.show()
