@@ -81,3 +81,8 @@ sns.heatmap(cf_vars.corr(method="pearson"), ax=ax[2], annot=False, vmax=1, vmin=
 ax[2].set_title("Cash Flow")
 
 plt.show()
+
+#%%
+# Group by legal form and check financial result --> explanatory power in legal form?
+print(traindata.groupby("type_pl").fin_result.mean())
+print(traindata.groupby("legal_form").fin_result.mean())
