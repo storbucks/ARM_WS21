@@ -1,0 +1,842 @@
+﻿Schlüssel WZ 2008,Beschreibung
+01110,"Anbau von Getreide (ohne Reis), Hülsenfrüchten und Ölsaaten"
+01120,Anbau von Reis
+01131,Anbau von Gemüse und Melonen
+01132,Anbau von Kartoffeln sowie sonstigen Wurzeln und Knollen
+01140,Anbau von Zuckerrohr
+01150,Anbau von Tabak
+01160,Anbau von Faserpflanzen
+01191,Anbau von Zierpflanzen zum Schnitt
+01192,Erzeugung von Blumensamen
+01199,Anbau von sonstigen einjährigen Pflanzen a. n. g.
+01210,Anbau von Wein- und Tafeltrauben
+01220,Anbau von tropischen und subtropischen Früchten
+01230,Anbau von Zitrusfrüchten
+01240,Anbau von Kern- und Steinobst
+01251,Anbau von Erdbeeren
+01259,Anbau von sonstigem Obst (ohne Erdbeeren) und Nüssen
+01260,Anbau von ölhaltigen Früchten
+01270,Anbau von Pflanzen zur Herstellung von Getränken
+01280,"Anbau von Gewürzpflanzen, Pflanzen für aromatische, narkotische und pharmazeutische Zwecke"
+01290,Anbau sonstiger mehrjähriger Pflanzen
+01301,"Anbau von Zimmerpflanzen, Beet- und Balkonpflanzen"
+01302,Betrieb von Baumschulen
+01410,Haltung von Milchkühen
+01420,Haltung von anderen Rindern
+01430,Haltung von Pferden und Eseln
+01440,Haltung von Kamelen
+01450,Haltung von Schafen und Ziegen
+01460,Haltung von Schweinen
+01471,Haltung von Legehennen zur Konsumeiererzeugung
+01472,Betrieb von Brütereien
+01479,Sonstige Haltung von Nutzgeflügel
+01490,Sonstige Tierhaltung
+01500,Gemischte Landwirtschaft
+01610,Erbringung von landwirtschaftlichen Dienstleistungen für den Pflanzenbau
+01620,Erbringung von landwirtschaftlichen Dienstleistungen für die Tierhaltung
+01630,Nach der Ernte anfallende Tätigkeiten in der pflanzlichen Erzeugung
+01640,Saatgutaufbereitung
+01700,"Jagd, Fallenstellerei und damit verbundene Tätigkeiten"
+02100,Forstwirtschaft
+02200,Holzeinschlag
+02300,Sammeln von wild wachsenden Produkten (ohne Holz)
+02400,Erbringung von Dienstleistungen für Forstwirtschaft und Holzeinschlag
+03110,Meeresfischerei
+03120,Süßwasserfischerei
+03210,Meeresaquakultur
+03220,Süßwasseraquakultur
+05100,Steinkohlenbergbau
+05200,Braunkohlenbergbau
+06100,Gewinnung von Erdöl
+06200,Gewinnung von Erdgas
+07100,Eisenerzbergbau
+07210,Bergbau auf Uran- und Thoriumerze
+07290,Sonstiger NE-Metallerzbergbau
+08110,"Gewinnung von Naturwerksteinen und Natursteinen, Kalk- und Gipsstein, Kreide und Schiefer"
+08120,"Gewinnung von Kies, Sand, Ton und Kaolin"
+08910,Bergbau auf chemische und Düngemittelminerale
+08920,Torfgewinnung
+08930,Gewinnung von Salz
+08990,Gewinnung von Steinen und Erden a. n. g.
+09100,Erbringung von Dienstleistungen für die Gewinnung von Erdöl und Erdgas
+09900,Erbringung von Dienstleistungen für den sonstigen Bergbau und die Gewinnung von Steinen und Erden
+10110,Schlachten (ohne Schlachten von Geflügel)
+10120,Schlachten von Geflügel
+10130,Fleischverarbeitung
+10200,Fischverarbeitung
+10310,Kartoffelverarbeitung
+10320,Herstellung von Frucht- und Gemüsesäften
+10390,Sonstige Verarbeitung von Obst und Gemüse
+10410,Herstellung von Ölen und Fetten (ohne Margarine u. ä. Nahrungsfette)
+10420,Herstellung von Margarine u. ä. Nahrungsfetten
+10510,Milchverarbeitung (ohne Herstellung von Speiseeis)
+10520,Herstellung von Speiseeis
+10610,Mahl- und Schälmühlen
+10620,Herstellung von Stärke und Stärkeerzeugnissen
+10710,Herstellung von Backwaren (ohne Dauerbackwaren)
+10720,Herstellung von Dauerbackwaren
+10730,Herstellung von Teigwaren
+10810,Herstellung von Zucker
+10820,Herstellung von Süßwaren (ohne Dauerbackwaren)
+10830,"Verarbeitung von Kaffee und Tee, Herstellung von Kaffee-Ersatz"
+10840,Herstellung von Würzmitteln und Soßen
+10850,Herstellung von Fertiggerichten
+10860,Herstellung von homogenisierten und diätetischen Nahrungsmitteln
+10890,Herstellung von sonstigen Nahrungsmitteln a. n. g.
+10910,Herstellung von Futtermitteln für Nutztiere
+10920,Herstellung von Futtermitteln für sonstige Tiere
+11010,Herstellung von Spirituosen
+11020,Herstellung von Traubenwein
+11030,Herstellung von Apfelwein und anderen Fruchtweinen
+11040,Herstellung von Wermutwein und sonstigen aromatisierten Weinen
+11050,Herstellung von Bier
+11060,Herstellung von Malz
+11070,Herstellung von Erfrischungsgetränken; Gewinnung natürlicher Mineralwässer
+12000,Tabakverarbeitung
+13100,Spinnstoffaufbereitung und Spinnerei
+13200,Weberei
+13300,Veredlung von Textilien und Bekleidung
+13910,Herstellung von gewirktem und gestricktem Stoff
+13920,Herstellung von konfektionierten Textilwaren (ohne Bekleidung)
+13930,Herstellung von Teppichen
+13940,Herstellung von Seilerwaren
+13950,Herstellung von Vliesstoff und Erzeugnissen daraus (ohne Bekleidung)
+13960,Herstellung von technischen Textilien
+13990,Herstellung von sonstigen Textilwaren a. n. g.
+14110,Herstellung von Lederbekleidung
+14120,Herstellung von Arbeits- und Berufsbekleidung
+14131,Herstellung von gewebter Oberbekleidung für Herren und Knaben
+14132,Herstellung von gewebter Oberbekleidung für Damen und Mädchen
+14133,Herstellung von gewirkter und gestrickter Oberbekleidung
+14141,Herstellung von gewebter Wäsche (ohne Miederwaren)
+14142,Herstellung von gewirkter und gestrickter Wäsche (ohne Miederwaren)
+14143,Herstellung von Miederwaren
+14190,Herstellung von sonstiger Bekleidung und Bekleidungszubehör a. n. g.
+14200,Herstellung von Pelzwaren
+14310,Herstellung von Strumpfwaren
+14390,Herstellung von sonstiger Bekleidung aus gewirktem und gestricktem Stoff
+15110,Herstellung von Leder und Lederfaserstoff; Zurichtung und Färben von Fellen
+15120,Lederverarbeitung (ohne Herstellung von Lederbekleidung)
+15200,Herstellung von Schuhen
+16100,"Säge-, Hobel- und Holzimprägnierwerke"
+16210,"Herstellung von Furnier-, Sperrholz-, Holzfaser- und Holzspanplatten"
+16220,Herstellung von Parketttafeln
+16230,"Herstellung von sonstigen Konstruktionsteilen, Fertigbauteilen, Ausbauelementen und Fertigteilbauten aus Holz"
+16240,"Herstellung von Verpackungsmitteln, Lagerbehältern und Ladungsträgern aus Holz"
+16290,"Herstellung von Holzwaren a. n. g., Kork-, Flecht- und Korbwaren (ohne Möbel)"
+17110,Herstellung von Holz- und Zellstoff
+17120,"Herstellung von Papier, Karton und Pappe"
+17210,"Herstellung von Wellpapier und -pappe sowie von Verpackungsmitteln aus Papier, Karton und Pappe"
+17220,"Herstellung von Haushalts-, Hygiene- und Toilettenartikeln aus Zellstoff, Papier und Pappe"
+17230,"Herstellung von Schreibwaren und Bürobedarf aus Papier, Karton und Pappe"
+17240,Herstellung von Tapeten
+17290,"Herstellung von sonstigen Waren aus Papier, Karton und Pappe"
+18110,Drucken von Zeitungen
+18120,Drucken a. n. g.
+18130,Druck- und Medienvorstufe
+18140,Binden von Druckerzeugnissen und damit verbundene Dienstleistungen
+18200,"Vervielfältigung von bespielten Ton-, Bild- und Datenträgern"
+19100,Kokerei
+19200,Mineralölverarbeitung
+20110,Herstellung von Industriegasen
+20120,Herstellung von Farbstoffen und Pigmenten
+20130,Herstellung von sonstigen anorganischen Grundstoffen und Chemikalien
+20140,Herstellung von sonstigen organischen Grundstoffen und Chemikalien
+20150,Herstellung von Düngemitteln und Stickstoffverbindungen
+20160,Herstellung von Kunststoffen in Primärformen
+20170,Herstellung von synthetischem Kautschuk in Primärformen
+20200,"Herstellung von Schädlingsbekämpfungs-, Pflanzenschutz- und Desinfektionsmitteln"
+20300,"Herstellung von Anstrichmitteln, Druckfarben und Kitten"
+20410,"Herstellung von Seifen, Wasch-, Reinigungs- und Poliermitteln"
+20420,Herstellung von Körperpflegemitteln und Duftstoffen
+20510,Herstellung von pyrotechnischen Erzeugnissen
+20520,Herstellung von Klebstoffen
+20530,Herstellung von etherischen Ölen
+20590,Herstellung von sonstigen chemischen Erzeugnissen a. n. g.
+20600,Herstellung von Chemiefasern
+21100,Herstellung von pharmazeutischen Grundstoffen
+21200,Herstellung von pharmazeutischen Spezialitäten und sonstigen pharmazeutischen Erzeugnissen
+22110,Herstellung und Runderneuerung von Bereifungen
+22190,Herstellung von sonstigen Gummiwaren
+22210,"Herstellung von Platten, Folien, Schläuchen und Profilen aus Kunststoffen"
+22220,Herstellung von Verpackungsmitteln aus Kunststoffen
+22230,Herstellung von Baubedarfsartikeln aus Kunststoffen
+22290,Herstellung von sonstigen Kunststoffwaren
+23110,Herstellung von Flachglas
+23120,Veredlung und Bearbeitung von Flachglas
+23130,Herstellung von Hohlglas
+23140,Herstellung von Glasfasern und Waren daraus
+23190,"Herstellung, Veredlung und Bearbeitung von sonstigem Glas einschließlich technischen Glaswaren"
+23200,Herstellung von feuerfesten keramischen Werkstoffen und Waren
+23310,Herstellung von keramischen Wand- und Bodenfliesen und -platten
+23320,Herstellung von Ziegeln und sonstiger Baukeramik
+23410,Herstellung von keramischen Haushaltswaren und Ziergegenständen
+23420,Herstellung von Sanitärkeramik
+23430,Herstellung von Isolatoren und Isolierteilen aus Keramik
+23440,Herstellung von keramischen Erzeugnissen für sonstige technische Zwecke
+23490,Herstellung von sonstigen keramischen Erzeugnissen
+23510,Herstellung von Zement
+23520,Herstellung von Kalk und gebranntem Gips
+23610,"Herstellung von Erzeugnissen aus Beton, Zement und Kalksandstein für den Bau"
+23620,Herstellung von Gipserzeugnissen für den Bau
+23630,Herstellung von Frischbeton (Transportbeton)
+23640,Herstellung von Mörtel und anderem Beton (Trockenbeton)
+23650,Herstellung von Faserzementwaren
+23690,"Herstellung von sonstigen Erzeugnissen aus Beton, Zement und Gips a. n. g."
+23700,Be- und Verarbeitung von Naturwerksteinen und Natursteinen a. n. g.
+23910,Herstellung von Schleifkörpern und Schleifmitteln auf Unterlage
+23990,Herstellung von sonstigen Erzeugnissen aus nichtmetallischen Mineralien a. n. g.
+24100,"Erzeugung von Roheisen, Stahl und Ferrolegierungen"
+24201,Herstellung von Stahlrohren (ohne Präzisionsstahlrohre)
+24202,Herstellung von Präzisionsstahlrohren
+24203,"Herstellung von Rohrform-, Rohrverschluss- und Rohrverbindungsstücken aus Stahl"
+24310,Herstellung von Blankstahl
+24320,Herstellung von Kaltband mit einer Breite von weniger als 600 mm
+24330,Herstellung von Kaltprofilen
+24340,Herstellung von kaltgezogenem Draht
+24410,Erzeugung und erste Bearbeitung von Edelmetallen
+24420,Erzeugung und erste Bearbeitung von Aluminium
+24430,"Erzeugung und erste Bearbeitung von Blei, Zink und Zinn"
+24440,Erzeugung und erste Bearbeitung von Kupfer
+24450,Erzeugung und erste Bearbeitung von sonstigen NE-Metallen
+24460,Aufbereitung von Kernbrennstoffen
+24510,Eisengießereien
+24520,Stahlgießereien
+24530,Leichtmetallgießereien
+24540,Buntmetallgießereien
+25110,Herstellung von Metallkonstruktionen
+25120,Herstellung von Ausbauelementen aus Metall
+25210,Herstellung von Heizkörpern und -kesseln für Zentralheizungen
+25290,"Herstellung von Sammelbehältern, Tanks u. ä. Behältern aus Metall"
+25300,Herstellung von Dampfkesseln (ohne Zentralheizungskessel)
+25400,Herstellung von Waffen und Munition
+25501,Herstellung von Freiformschmiedestücken
+25502,Herstellung von Gesenkschmiedeteilen
+25503,Herstellung von Kaltfließpressteilen
+25504,"Herstellung von Press-, Zieh- und Stanzteilen"
+25505,Herstellung von pulvermetallurgischen Erzeugnissen
+25610,Oberflächenveredlung und Wärmebehandlung
+25620,Mechanik a. n. g.
+25710,Herstellung von Schneidwaren und Bestecken aus unedlen Metallen
+25720,Herstellung von Schlössern und Beschlägen aus unedlen Metallen
+25731,Herstellung von Handwerkzeugen
+25732,Herstellung von Sägen und von Maschinenwerkzeugen für die Holzbearbeitung
+25733,Herstellung von auswechselbaren Werkzeugen für die Metallbearbeitung a. n. g.
+25734,Herstellung von Geräten für die Landwirtschaft
+25735,Herstellung von sonstigen Werkzeugen
+25910,"Herstellung von Fässern, Trommeln, Dosen, Eimern u. ä. Behältern aus Metall"
+25920,"Herstellung von Verpackungen und Verschlüssen aus Eisen, Stahl und NE-Metall"
+25930,"Herstellung von Drahtwaren, Ketten und Federn"
+25940,Herstellung von Schrauben und Nieten
+25991,Herstellung von nicht elektrischen Haushaltsartikeln aus Metall
+25992,Herstellung von Panzerschränken und Tresoranlagen
+25993,Herstellung von Metallwaren a. n. g.
+26111,Herstellung von Solarzellen und Solarmodulen
+26119,Herstellung von sonstigen elektronischen Bauelementen
+26120,Herstellung von bestückten Leiterplatten
+26200,Herstellung von Datenverarbeitungsgeräten und peripheren Geräten
+26300,Herstellung von Geräten und Einrichtungen der Telekommunikationstechnik
+26400,Herstellung von Geräten der Unterhaltungselektronik
+26511,"Herstellung von elektrischen Mess-, Kontroll-, Navigations- u. ä. Instrumenten und Vorrichtungen"
+26512,"Herstellung von nicht elektrischen Mess-, Kontroll-, Navigations- u. ä. Instrumenten und Vorrichtungen"
+26513,Herstellung von Prüfmaschinen
+26520,Herstellung von Uhren
+26600,Herstellung von Bestrahlungs- und Elektrotherapiegeräten und elektromedizinischen Geräten
+26700,Herstellung von optischen und fotografischen Instrumenten und Geräten
+26800,Herstellung von magnetischen und optischen Datenträgern
+27110,"Herstellung von Elektromotoren, Generatoren und Transformatoren"
+27120,Herstellung von Elektrizitätsverteilungs- und -schalteinrichtungen
+27200,Herstellung von Batterien und Akkumulatoren
+27310,Herstellung von Glasfaserkabeln
+27320,Herstellung von sonstigen elektronischen und elektrischen Drähten und Kabeln
+27330,Herstellung von elektrischem Installationsmaterial
+27400,Herstellung von elektrischen Lampen und Leuchten
+27510,Herstellung von elektrischen Haushaltsgeräten
+27520,Herstellung von nichtelektrischen Haushaltsgeräten
+27900,Herstellung von sonstigen elektrischen Ausrüstungen und Geräten a. n. g.
+28110,Herstellung von Verbrennungsmotoren und Turbinen (ohne Motoren für Luft- und Straßenfahrzeuge)
+28120,Herstellung von hydraulischen und pneumatischen Komponenten und Systemen
+28130,Herstellung von Pumpen und Kompressoren a. n. g.
+28140,Herstellung von Armaturen a. n. g.
+28150,"Herstellung von Lagern, Getrieben, Zahnrädern und Antriebselementen"
+28211,Herstellung von Solarwärmekollektoren
+28219,Herstellung von sonstigen Öfen und Brennern
+28220,Herstellung von Hebezeugen und Fördermitteln
+28230,Herstellung von Büromaschinen (ohne Datenverarbeitungsgeräte und periphere Geräte)
+28240,Herstellung von handgeführten Werkzeugen mit Motorantrieb
+28250,"Herstellung von kälte- und lufttechnischen Erzeugnissen, nicht für den Haushalt"
+28290,Herstellung von sonstigen nicht wirtschaftszweigspezifischen Maschinen a. n. g.
+28300,Herstellung von land- und forstwirtschaftlichen Maschinen
+28410,Herstellung von Werkzeugmaschinen für die Metallbearbeitung
+28491,"Herstellung von Werkzeugmaschinen zur Bearbeitung von Steinen, Beton und sonstigen mineralischen Stoffen"
+28492,Herstellung von Werkzeugmaschinen zur Bearbeitung von sonstigen harten Stoffen
+28493,Herstellung von Maschinenspannzeugen und sonstigem Zubehör für Werkzeugmaschinen
+28499,Herstellung von sonstigen Werkzeugmaschinen a. n. g.
+28910,"Herstellung von Maschinen für die Metallerzeugung, von Walzwerkseinrichtungen und Gießmaschinen"
+28921,Herstellung von Bergwerksmaschinen
+28922,Herstellung von Bau- und Baustoffmaschinen
+28930,Herstellung von Maschinen für die Nahrungs- und Genussmittelerzeugung und die Tabakverarbeitung
+28940,Herstellung von Maschinen für die Textil- und Bekleidungsherstellung und die Lederverarbeitung
+28950,Herstellung von Maschinen für die Papiererzeugung und -verarbeitung
+28960,Herstellung von Maschinen für die Verarbeitung von Kunststoffen und Kautschuk
+28990,Herstellung von Maschinen für sonstige bestimmte Wirtschaftszweige a. n. g.
+29101,Herstellung von Personenkraftwagen und Personenkraftwagenmotoren
+29102,Herstellung von Nutzkraftwagen und Nutzkraftwagenmotoren
+29200,"Herstellung von Karosserien, Aufbauten und Anhängern"
+29310,Herstellung elektrischer und elektronischer Ausrüstungsgegenstände für Kraftwagen
+29320,Herstellung von sonstigen Teilen und sonstigem Zubehör für Kraftwagen
+30110,Schiffbau (ohne Boots- und Yachtbau)
+30120,Boots- und Yachtbau
+30201,Herstellung von Lokomotiven und anderen Schienenfahrzeugen
+30202,Herstellung von Eisenbahninfrastruktur
+30300,Luft- und Raumfahrzeugbau
+30400,Herstellung von militärischen Kampffahrzeugen
+30910,Herstellung von Krafträdern
+30920,Herstellung von Fahrrädern sowie von Behindertenfahrzeugen
+30990,Herstellung von sonstigen Fahrzeugen a. n. g.
+31011,Herstellung von Büromöbeln
+31012,Herstellung von Ladenmöbeln und sonstigen Objektmöbeln
+31020,Herstellung von Küchenmöbeln
+31030,Herstellung von Matratzen
+31091,Herstellung von Polstermöbeln
+31099,Herstellung von sonstigen Möbeln a. n. g.
+32110,Herstellung von Münzen
+32120,"Herstellung von Schmuck, Gold- und Silberschmiedewaren (ohne Fantasieschmuck)"
+32130,Herstellung von Fantasieschmuck
+32200,Herstellung von Musikinstrumenten
+32300,Herstellung von Sportgeräten
+32400,Herstellung von Spielwaren
+32501,Herstellung von medizintechnischen Apparaten und Materialien a. n. g.
+32502,Herstellung von orthopädischen Erzeugnissen
+32503,Zahntechnische Laboratorien
+32910,Herstellung von Besen und Bürsten
+32990,Herstellung von sonstigen Erzeugnissen a. n. g.
+33110,Reparatur von Metallerzeugnissen
+33120,Reparatur von Maschinen
+33130,Reparatur von elektronischen und optischen Geräten
+33140,Reparatur von elektrischen Ausrüstungen
+33150,"Reparatur und Instandhaltung von Schiffen, Booten und Yachten"
+33160,Reparatur und Instandhaltung von Luft- und Raumfahrzeugen
+33170,Reparatur und Instandhaltung von Fahrzeugen a. n. g.
+33190,Reparatur von sonstigen Ausrüstungen
+33200,Installation von Maschinen und Ausrüstungen a. n. g.
+35111,Elektrizitätserzeugung ohne Verteilung
+35112,Elektrizitätserzeugung mit Fremdbezug zur Verteilung
+35113,Elektrizitätserzeugung ohne Fremdbezug zur Verteilung
+35120,Elektrizitätsübertragung
+35130,Elektrizitätsverteilung
+35140,Elektrizitätshandel
+35211,Gaserzeugung ohne Verteilung
+35212,Gaserzeugung mit Fremdbezug zur Verteilung
+35213,Gaserzeugung ohne Fremdbezug zur Verteilung
+35220,Gasverteilung durch Rohrleitungen
+35230,Gashandel durch Rohrleitungen
+35300,Wärme- und Kälteversorgung
+36001,Wassergewinnung mit Fremdbezug zur Verteilung
+36002,Wassergewinnung ohne Fremdbezug zur Verteilung
+36003,Wasserverteilung ohne Gewinnung
+37001,Betrieb der Sammelkanalisation
+37002,Betrieb von Kläranlagen
+38110,Sammlung nicht gefährlicher Abfälle
+38120,Sammlung gefährlicher Abfälle
+38210,Behandlung und Beseitigung nicht gefährlicher Abfälle
+38220,Behandlung und Beseitigung gefährlicher Abfälle
+38310,Zerlegen von Schiffs- und Fahrzeugwracks und anderen Altwaren
+38320,Rückgewinnung sortierter Werkstoffe
+39000,Beseitigung von Umweltverschmutzungen und sonstige Entsorgung
+41101,Erschließung von unbebauten Grundstücken
+41102,Bauträger für Nichtwohngebäude
+41103,Bauträger für Wohngebäude
+41201,Bau von Gebäuden (ohne Fertigteilbau)
+41202,Errichtung von Fertigteilbauten
+42110,Bau von Straßen
+42120,Bau von Bahnverkehrsstrecken
+42130,Brücken- und Tunnelbau
+42210,"Rohrleitungstiefbau, Brunnenbau und Kläranlagenbau"
+42220,Kabelnetzleitungstiefbau
+42910,Wasserbau
+42990,Sonstiger Tiefbau a. n. g.
+43110,Abbrucharbeiten
+43120,Vorbereitende Baustellenarbeiten
+43130,Test- und Suchbohrung
+43210,Elektroinstallation
+43220,"Gas-, Wasser-, Heizungs- sowie Lüftungs- und Klimainstallation"
+43291,"Dämmung gegen Kälte, Wärme, Schall und Erschütterung"
+43299,Sonstige Bauinstallation a. n. g.
+43310,"Anbringen von Stuckaturen, Gipserei und Verputzerei"
+43320,Bautischlerei und -schlosserei
+43330,"Fußboden-, Fliesen- und Plattenlegerei, Tapeziererei"
+43341,Maler- und Lackierergewerbe
+43342,Glasergewerbe
+43390,Sonstiger Ausbau a. n. g.
+43911,Dachdeckerei und Bauspenglerei
+43912,Zimmerei und Ingenieurholzbau
+43991,Gerüstbau
+43992,"Schornstein-, Feuerungs- und Industrieofenbau"
+43999,Baugewerbe a. n. g.
+45110,"Handel mit Kraftwagen mit einem Gesamtgewicht von 3,5 t oder weniger"
+45190,"Handel mit Kraftwagen mit einem Gesamtgewicht von mehr als 3,5 t"
+45201,Lackieren von Kraftwagen
+45202,Autowaschanlagen
+45203,"Instandhaltung und Reparatur von Kraftwagen mit einem Gesamtgewicht von 3,5 t oder weniger (ohne Lackierung und Autowäsche)"
+45204,"Instandhaltung und Reparatur von Kraftwagen mit einem Gesamtgewicht von mehr als 3,5 t (ohne Lackierung und Autowäsche)"
+45310,Großhandel mit Kraftwagenteilen und -zubehör
+45320,Einzelhandel mit Kraftwagenteilen und -zubehör
+45400,"Handel mit Krafträdern, Kraftradteilen und -zubehör; Instandhaltung und Reparatur von Krafträdern"
+46110,"Handelsvermittlung von landwirtschaftlichen Grundstoffen, lebenden Tieren, textilen Rohstoffen und Halbwaren"
+46120,"Handelsvermittlung von Brennstoffen, Erzen, Metallen und technischen Chemikalien"
+46131,"Handelsvermittlung von Rohholz, Holzhalbwaren und Bauelementen aus Holz"
+46132,Handelsvermittlung von Baustoffen und Anstrichmitteln
+46141,Handelsvermittlung von Maschinen (ohne landwirtschaftliche Maschinen und Büromaschinen) und technischem Bedarf a. n. g.
+46142,Handelsvermittlung von Wasser- und Luftfahrzeugen
+46143,Handelsvermittlung von Geräten der Unterhaltungselektronik
+46144,Handelsvermittlung von Werkzeugen
+46145,"Handelsvermittlung von Büromaschinen, Datenverarbeitungsgeräten, peripheren Geräten und Software"
+46146,Handelsvermittlung von landwirtschaftlichen Maschinen und Geräten
+46147,"Handelsvermittlung von Installationsbedarf für Gas, Wasser, Heizung und Klimatechnik"
+46149,Handelsvermittlung von elektrotechnischen und elektronischen Erzeugnissen a. n. g.
+46151,"Handelsvermittlung von Möbeln, Einrichtungsgegenständen und Antiquitäten"
+46152,"Handelsvermittlung von keramischen Erzeugnissen, Glaswaren, Holzwaren a. n. g., sowie Flecht- und Korbwaren"
+46153,Handelsvermittlung von elektrischen Haushaltsgeräten
+46154,"Handelsvermittlung von Eisen-, Metall- und Kunststoffwaren a. n. g."
+46155,Handelsvermittlung von Putz- und Reinigungsmitteln
+46161,Handelsvermittlung von Meterware für Bekleidung und Wäsche
+46162,Handelsvermittlung von Heim- und Haustextilien und Bodenbelägen
+46163,Handelsvermittlung von Bekleidung
+46164,Handelsvermittlung von Bekleidungszubehör
+46165,"Handelsvermittlung von Schuhen, Lederwaren und Reisegepäck"
+46171,Handelsvermittlung von Zucker und Süßwaren
+46172,"Handelsvermittlung von Wein, Sekt und Spirituosen"
+46179,"Handelsvermittlung von sonstigen Nahrungsmitteln, Getränken und Tabakwaren"
+46181,"Handelsvermittlung von feinmechanischen, Foto- und optischen Erzeugnissen"
+46182,"Handelsvermittlung von Uhren, Edelmetallwaren und Schmuck"
+46183,Handelsvermittlung von Spielwaren und Musikinstrumenten
+46184,"Handelsvermittlung von pharmazeutischen Erzeugnissen, medizinischen und orthopädischen Artikeln und Laborbedarf, Ärztebedarf, Dentalbedarf, zahnärztlichen Instrumenten, Krankenhaus- und Altenpflegebedarf"
+46185,Handelsvermittlung von kosmetischen Erzeugnissen und Körperpflegemitteln
+46186,"Handelsvermittlung von Karton, Papier und Pappe, Schreibwaren, Bürobedarf, Geschenk- und Werbeartikeln, Verpackungsmitteln und Tapeten"
+46187,"Handelsvermittlung von Büchern, Zeitschriften, Zeitungen, Musikalien und sonstigen Druckerzeugnissen"
+46189,Handelsvermittlung von sonstigen Waren a. n. g.
+46190,Handelsvermittlung von Waren ohne ausgeprägten Schwerpunkt
+46210,"Großhandel mit Getreide, Rohtabak, Saatgut und Futtermitteln"
+46220,Großhandel mit Blumen und Pflanzen
+46230,Großhandel mit lebenden Tieren
+46240,"Großhandel mit Häuten, Fellen und Leder"
+46310,"Großhandel mit Obst, Gemüse und Kartoffeln"
+46320,Großhandel mit Fleisch und Fleischwaren
+46330,"Großhandel mit Milch, Milcherzeugnissen, Eiern, Speiseölen und Nahrungsfetten"
+46340,Großhandel mit Getränken
+46350,Großhandel mit Tabakwaren
+46360,"Großhandel mit Zucker, Süßwaren und Backwaren"
+46370,"Großhandel mit Kaffee, Tee, Kakao und Gewürzen"
+46381,Großhandel mit Fisch und Fischerzeugnissen
+46382,Großhandel mit Mehl und Getreideprodukten
+46389,Großhandel mit Nahrungs- und Genussmitteln a. n. g.
+46391,"Großhandel mit tiefgefrorenen Nahrungsmitteln, ohne ausgeprägten Schwerpunkt"
+46399,"Großhandel mit sonstigen Nahrungs- und Genussmitteln, Getränken und Tabakwaren, ohne ausgeprägten Schwerpunkt"
+46410,Großhandel mit Textilien
+46421,Großhandel mit Bekleidung
+46422,Großhandel mit Schuhen
+46431,Großhandel mit Foto- und optischen Erzeugnissen
+46432,Großhandel mit elektrischen Haushaltsgeräten
+46433,Großhandel mit Geräten der Unterhaltungselektronik
+46441,Großhandel mit keramischen Erzeugnissen und Glaswaren
+46442,"Großhandel mit Wasch-, Putz- und Reinigungsmitteln"
+46450,Großhandel mit kosmetischen Erzeugnissen und Körperpflegemitteln
+46461,Großhandel mit pharmazeutischen Erzeugnissen
+46462,"Großhandel mit medizinischen und orthopädischen Artikeln, Dental- und Laborbedarf"
+46470,"Großhandel mit Möbeln, Teppichen, Lampen und Leuchten"
+46480,Großhandel mit Uhren und Schmuck
+46491,Großhandel mit Spielwaren und Musikinstrumenten
+46492,"Großhandel mit Fahrrädern, Fahrradteilen und -zubehör, Sport- und Campingartikeln (ohne Campingmöbel)"
+46493,"Großhandel mit Lederwaren, Reisegepäck, Geschenk- und Werbeartikeln"
+46494,"Großhandel mit Karton, Papier, Pappe, Schreibwaren, Bürobedarf, Büchern, Zeitschriften und Zeitungen"
+46495,"Großhandel mit nicht elektrischen Haushaltsgeräten, Haushaltswaren aus Metall sowie sonstigen Gebrauchs- und Verbrauchsgütern a. n. g."
+46510,"Großhandel mit Datenverarbeitungsgeräten, peripheren Geräten und Software"
+46520,Großhandel mit elektronischen Bauteilen und Telekommunikationsgeräten
+46610,Großhandel mit landwirtschaftlichen Maschinen und Geräten
+46620,Großhandel mit Werkzeugmaschinen
+46630,"Großhandel mit Bergwerks-, Bau- und Baustoffmaschinen"
+46640,"Großhandel mit Textil-, Näh- und Strickmaschinen"
+46650,Großhandel mit Büromöbeln
+46660,Großhandel mit sonstigen Büromaschinen und -einrichtungen
+46691,Großhandel mit Flurförderzeugen und Fahrzeugen a. n. g.
+46692,Großhandel mit sonstigen Maschinen
+46693,Großhandel mit sonstigen Ausrüstungen und Zubehör für Maschinen sowie mit technischem Bedarf
+46711,Großhandel mit festen Brennstoffen
+46712,Großhandel mit Mineralölerzeugnissen
+46721,"Großhandel mit Eisenerzen, Eisen, Stahl, Eisen- und Stahlhalbzeug"
+46722,"Großhandel mit NE-Erzen, NE-Metallen und NE-Metallhalbzeug"
+46730,"Großhandel mit Holz, Baustoffen, Anstrichmitteln und Sanitärkeramik"
+46731,"Großhandel mit Holz, Baustoffen, Anstrichmitteln und Sanitärkeramik, ohne ausgeprägten Schwerpunkt"
+46732,Großhandel mit Roh- und Schnittholz
+46733,Großhandel mit sonstigen Holzhalbwaren sowie Bauelementen aus Holz
+46734,Großhandel mit Baustoffen und Bauelementen aus mineralischen Stoffen
+46735,Großhandel mit Flachglas
+46736,Großhandel mit Anstrichmitteln
+46737,Großhandel mit Sanitärkeramik
+46738,Großhandel mit Tapeten und Bodenbelägen (ohne Teppiche)
+46741,Großhandel mit Werkzeugen und Kleineisenwaren
+46742,"Großhandel mit Installationsbedarf für Gas, Wasser und Heizung"
+46743,Großhandel mit Metall- und Kunststoffwaren für Bauzwecke
+46750,Großhandel mit chemischen Erzeugnissen
+46760,Großhandel mit sonstigen Halbwaren
+46770,Großhandel mit Altmaterialien und Reststoffen
+46901,"Großhandel mit Rohstoffen, Halb- und Fertigwaren, ohne ausgeprägten Schwerpunkt"
+46902,"Großhandel mit Rohstoffen und Halbwaren, ohne ausgeprägten Schwerpunkt"
+46903,"Großhandel mit Fertigwaren, ohne ausgeprägten Schwerpunkt"
+47111,"Einzelhandel mit Nahrungs- und Genussmitteln, Getränken und Tabakwaren, ohne ausgeprägten Schwerpunkt"
+47112,"Sonstiger Einzelhandel mit Waren verschiedener Art, Hauptrichtung Nahrungs- und Genussmittel, Getränke und Tabakwaren"
+47191,Einzelhandel mit Waren verschiedener Art (ohne Nahrungsmittel)
+47192,"Einzelhandel mit Waren verschiedener Art, Hauptrichtung Nicht-Nahrungsmittel"
+47210,"Einzelhandel mit Obst, Gemüse und Kartoffeln"
+47220,Einzelhandel mit Fleisch und Fleischwaren
+47230,"Einzelhandel mit Fisch, Meeresfrüchten und Fischerzeugnissen"
+47240,Einzelhandel mit Back- und Süßwaren
+47250,Einzelhandel mit Getränken
+47260,Einzelhandel mit Tabakwaren
+47290,Sonstiger Einzelhandel mit Nahrungs- und Genussmitteln
+47301,Einzelhandel in fremdem Namen mit Motorenkraftstoffen (Agenturtankstellen)
+47302,Einzelhandel in eigenem Namen mit Motorenkraftstoffen (Freie Tankstellen)
+47410,"Einzelhandel mit Datenverarbeitungsgeräten, peripheren Geräten und Software"
+47420,Einzelhandel mit Telekommunikationsgeräten
+47430,Einzelhandel mit Geräten der Unterhaltungselektronik
+47510,Einzelhandel mit Textilien
+47521,Einzelhandel mit Metall- und Kunststoffwaren a. n. g.
+47523,"Einzelhandel mit Anstrichmitteln, Bau- und Heimwerkerbedarf"
+47530,"Einzelhandel mit Vorhängen, Teppichen, Fußbodenbelägen und Tapeten"
+47540,Einzelhandel mit elektrischen Haushaltsgeräten
+47591,Einzelhandel mit Wohnmöbeln
+47592,Einzelhandel mit keramischen Erzeugnissen und Glaswaren
+47593,Einzelhandel mit Musikinstrumenten und Musikalien
+47599,Einzelhandel mit Haushaltsgegenständen a. n. g.
+47610,Einzelhandel mit Büchern
+47621,Einzelhandel mit Zeitschriften und  Zeitungen
+47622,"Einzelhandel mit Schreib- und Papierwaren, Schul- und Büroartikeln"
+47630,Einzelhandel mit bespielten Ton- und Bildträgern
+47641,"Einzelhandel mit Fahrrädern, Fahrradteilen und -zubehör"
+47642,Einzelhandel mit Sport- und Campingartikeln (ohne Campingmöbel)
+47650,Einzelhandel mit Spielwaren
+47710,Einzelhandel mit Bekleidung
+47721,Einzelhandel mit Schuhen
+47722,Einzelhandel mit Lederwaren und Reisegepäck
+47730,Apotheken
+47740,Einzelhandel mit medizinischen und orthopädischen Artikeln
+47750,Einzelhandel mit kosmetischen Erzeugnissen und Körperpflegemitteln
+47761,"Einzelhandel mit Blumen, Pflanzen, Sämereien und Düngemitteln"
+47762,Einzelhandel mit zoologischem Bedarf und lebenden Tieren
+47770,Einzelhandel mit Uhren und Schmuck
+47781,Augenoptiker
+47782,Einzelhandel mit Foto- und optischen Erzeugnissen (ohne Augenoptiker)
+47783,"Einzelhandel mit Kunstgegenständen, Bildern, kunstgewerblichen Erzeugnissen, Briefmarken, Münzen und Geschenkartikeln"
+47789,Sonstiger Einzelhandel a. n. g. (in Verkaufsräumen)
+47791,Einzelhandel mit Antiquitäten und antiken Teppichen
+47792,Antiquariate
+47799,Einzelhandel mit sonstigen Gebrauchtwaren
+47810,"Einzelhandel mit Nahrungs- und Genussmitteln, Getränken und Tabakwaren an Verkaufsständen und auf Märkten"
+47820,"Einzelhandel mit Textilien, Bekleidung und Schuhen an Verkaufsständen und auf Märkten"
+47890,Einzelhandel mit sonstigen Gütern an Verkaufsständen und auf Märkten
+47911,"Versand- und Internet-Einzelhandel mit Textilien, Bekleidung, Schuhen und Lederwaren"
+47919,Sonstiger Versand- und Internet-Einzelhandel
+47991,Einzelhandel vom Lager mit Brennstoffen
+47999,Sonstiger Einzelhandel a. n. g. (nicht in Verkaufsräumen)
+49100,Personenbeförderung im Eisenbahnfernverkehr
+49200,Güterbeförderung im Eisenbahnverkehr
+49310,Personenbeförderung im Nahverkehr zu Lande (ohne Taxis)
+49320,Betrieb von Taxis
+49391,Personenbeförderung im Omnibus-Linienfernverkehr
+49392,Personenbeförderung im Omnibus-Gelegenheitsverkehr
+49399,Personenbeförderung im Landverkehr a. n. g.
+49410,Güterbeförderung im Straßenverkehr
+49420,Umzugstransporte
+49500,Transport in Rohrfernleitungen
+50100,Personenbeförderung in der See- und Küstenschifffahrt
+50200,Güterbeförderung in der See- und Küstenschifffahrt
+50300,Personenbeförderung in der Binnenschifffahrt
+50400,Güterbeförderung in der Binnenschifffahrt
+51100,Personenbeförderung in der Luftfahrt
+51210,Güterbeförderung in der Luftfahrt
+51220,Raumtransport
+52100,Lagerei
+52211,Betrieb von Parkhäusern und Parkplätzen
+52212,Betrieb von Verkehrswegen für Straßenfahrzeuge
+52213,Betrieb von Verkehrswegen für Schienenfahrzeuge
+52214,Betrieb von Bahnhöfen für den Personenverkehr einschließlich Omnibusbahnhöfe
+52215,Betrieb von Güterabfertigungseinrichtungen für Schienen- und Straßenfahrzeuge (ohne Frachtumschlag)
+52219,Erbringung von sonstigen Dienstleistungen für den Landverkehr a. n. g.
+52221,Betrieb von Wasserstraßen
+52222,Betrieb von Häfen
+52223,Lotsinnen und Lotsen in der Schifffahrt
+52229,Erbringung von sonstigen Dienstleistungen für die Schifffahrt a. n. g.
+52231,Betrieb von Flughäfen und Landeplätzen für Luftfahrzeuge
+52239,Erbringung von sonstigen Dienstleistungen für die Luftfahrt a. n. g.
+52240,Frachtumschlag
+52291,Spedition
+52292,Schiffsmaklerbüros und -agenturen
+52299,Erbringung von Dienstleistungen für den Verkehr a. n. g.
+53100,Postdienste von Universaldienstleistungsanbietern
+53200,"Sonstige Post-, Kurier- und Expressdienste"
+55101,Hotels (ohne Hotels garnis)
+55102,Hotels garnis
+55103,Gasthöfe
+55104,Pensionen
+55201,Erholungs- und Ferienheime
+55202,Ferienzentren
+55203,Ferienhäuser und Ferienwohnungen
+55204,Jugendherbergen und Hütten
+55300,Campingplätze
+55901,Privatquartiere
+55909,Sonstige Beherbergungsstätten a. n. g.
+56101,Restaurants mit herkömmlicher Bedienung
+56102,Restaurants mit Selbstbedienung
+56103,Imbissstuben u. Ä.
+56104,Cafés
+56105,Eissalons
+56210,Event-Caterer
+56290,Erbringung sonstiger Verpflegungsdienstleistungen
+56301,Schankwirtschaften
+56302,Diskotheken und Tanzlokale
+56303,Bars
+56304,Vergnügungslokale
+56309,Sonstige getränkegeprägte Gastronomie
+58110,Verlegen von Büchern
+58120,Verlegen von Adressbüchern und Verzeichnissen
+58130,Verlegen von Zeitungen
+58140,Verlegen von Zeitschriften
+58190,Sonstiges Verlagswesen (ohne Software)
+58210,Verlegen von Computerspielen
+58290,Verlegen von sonstiger Software
+59110,"Herstellung von Filmen, Videofilmen und Fernsehprogrammen"
+59120,Nachbearbeitung und sonstige Filmtechnik
+59130,Filmverleih und -vertrieb (ohne Videotheken)
+59140,Kinos
+59201,Tonstudios und Herstellung von Hörfunkbeiträgen
+59202,Verlegen von bespielten Tonträgern
+59203,Verlegen von Musikalien
+60100,Hörfunkveranstalter
+60200,Fernsehveranstalter
+61100,Leitungsgebundene Telekommunikation
+61200,Drahtlose Telekommunikation
+61300,Satellitentelekommunikation
+61901,Internetserviceprovider
+61909,Sonstige Telekommunikation a. n. g.
+62011,Entwicklung und Programmierung von Internetpräsentationen
+62019,Sonstige Softwareentwicklung
+62020,Erbringung von Beratungsleistungen auf dem Gebiet der Informationstechnologie
+62030,Betrieb von Datenverarbeitungseinrichtungen für Dritte
+62090,Erbringung von sonstigen Dienstleistungen der Informationstechnologie
+63110,"Datenverarbeitung, Hosting und damit verbundene Tätigkeiten"
+63120,Webportale
+63910,Korrespondenz- und Nachrichtenbüros
+63990,Erbringung von sonstigen Informationsdienstleistungen a. n. g.
+64110,Zentralbanken
+64191,Kreditbanken einschließlich Zweigstellen ausländischer Banken
+64192,Kreditinstitute des Sparkassensektors
+64193,Kreditinstitute des Genossenschaftssektors
+64194,Realkreditinstitute
+64195,Kreditinstitute mit Sonderaufgaben
+64196,Bausparkassen
+64200,Beteiligungsgesellschaften
+64300,Treuhand- und sonstige Fonds und ähnliche Finanzinstitutionen
+64910,Institutionen für Finanzierungsleasing
+64921,Spezialkreditinstitute (ohne Pfandkreditgeschäfte)
+64922,Leihhäuser
+64991,Investmentaktiengesellschaften und Fonds von Kapitalanlagegesellschaften (ohne Geldmarktfonds)
+64999,Sonstige Finanzierungsinstitutionen a. n. g.
+65110,Lebensversicherungen
+65121,Krankenversicherungen
+65122,Schaden- und Unfallversicherungen
+65200,Rückversicherungen
+65300,Pensionskassen und Pensionsfonds
+66110,Effekten- und Warenbörsen
+66120,Effekten- und Warenhandel
+66190,Sonstige mit Finanzdienstleistungen verbundene Tätigkeiten
+66210,Risiko- und Schadensbewertung
+66220,Tätigkeit von Versicherungsmaklerinnen und -maklern
+66290,Sonstige mit Versicherungsdienstleistungen und Pensionskassen verbundene Tätigkeiten
+66300,Fondsmanagement
+68101,"Kauf und Verkauf von eigenen Wohngrundstücken, Wohngebäuden und Wohnungen"
+68102,Kauf und Verkauf von eigenen Gewerbegrundstücken und Nichtwohngebäuden
+68201,"Vermietung, Verpachtung von eigenen oder geleasten Wohngrundstücken, Wohngebäuden und Wohnungen"
+68202,"Vermietung, Verpachtung von eigenen oder geleasten Gewerbegrundstücken und Nichtwohngebäuden"
+68311,"Vermittlung von Wohngrundstücken, Wohngebäuden und Wohnungen für Dritte"
+68312,Vermittlung von Gewerbegrundstücken und Nichtwohngebäuden für Dritte
+68320,"Verwaltung von Grundstücken, Gebäuden und Wohnungen für Dritte"
+68321,"Verwaltung von Wohngrundstücken, Wohngebäuden und Wohnungen für Dritte"
+68322,Verwaltung von Gewerbegrundstücken und Nichtwohngebäuden für Dritte
+69101,Rechtsanwaltskanzleien mit Notariat
+69102,Rechtsanwaltskanzleien ohne Notariat
+69103,Notariate
+69104,Patentanwaltskanzleien
+69109,Erbringung sonstiger juristischer Dienstleistungen a. n. g.
+69201,"Praxen von Wirtschaftsprüferinnen und -prüfern, Wirtschaftsprüfungsgesellschaften"
+69202,"Praxen von vereidigten Buchprüferinnen und -prüfern, Buchprüfungsgesellschaften"
+69203,"Praxen von Steuerbevollmächtigten, Steuerberaterinnen und -beratern, Steuerberatungsgesellschaften"
+69204,Buchführung (ohne Datenverarbeitungsdienste)
+70101,Managementtätigkeiten von Holdinggesellschaften
+70109,Sonstige Verwaltung und Führung von Unternehmen und Betrieben
+70210,Public-Relations-Beratung
+70220,Unternehmensberatung
+71111,Architekturbüros für Hochbau
+71112,Büros für Innenarchitektur
+71113,"Architekturbüros für Orts-, Regional- und Landesplanung"
+71114,Architekturbüros für Garten- und Landschaftsgestaltung
+71121,Ingenieurbüros für bautechnische Gesamtplanung
+71122,Ingenieurbüros für technische Fachplanung und Ingenieurdesign
+71123,Vermessungsbüros
+71129,Sonstige Ingenieurbüros
+71200,"Technische, physikalische und chemische Untersuchung"
+72110,Forschung und Entwicklung im Bereich Biotechnologie
+72190,"Sonstige Forschung und Entwicklung im Bereich Natur-, Ingenieur-, Agrarwissenschaften und Medizin"
+72200,"Forschung und Entwicklung im Bereich Rechts-, Wirtschafts- und Sozialwissenschaften sowie im Bereich Sprach-, Kultur- und Kunstwissenschaften"
+73110,Werbeagenturen
+73120,Vermarktung und Vermittlung von Werbezeiten und Werbeflächen
+73200,Markt- und Meinungsforschung
+74101,"Industrie-, Produkt- und Mode-Design"
+74102,Grafik- und Kommunikationsdesign
+74103,Interior Design und Raumgestaltung
+74201,Fotografie
+74202,Fotolabors
+74301,Übersetzen
+74302,Dolmetschen
+74900,"Sonstige freiberufliche, wissenschaftliche und technische Tätigkeiten a. n. g."
+75001,Tierarztpraxen
+75009,Sonstiges Veterinärwesen
+77110,"Vermietung von Kraftwagen mit einem Gesamtgewicht von 3,5 t oder weniger"
+77120,"Vermietung von Kraftwagen mit einem Gesamtgewicht von mehr als 3,5 t"
+77210,Vermietung von Sport- und Freizeitgeräten
+77220,Videotheken
+77290,Vermietung von sonstigen Gebrauchsgütern
+77310,Vermietung von landwirtschaftlichen Maschinen und Geräten
+77320,Vermietung von Baumaschinen und -geräten
+77330,"Vermietung von Büromaschinen, Datenverarbeitungsgeräten und -einrichtungen"
+77340,Vermietung von Wasserfahrzeugen
+77350,Vermietung von Luftfahrzeugen
+77390,"Vermietung von sonstigen Maschinen, Geräten und beweglichen Sachen a. n. g."
+77400,Leasing von nichtfinanziellen immateriellen Vermögensgegenständen (ohne Copyrights)
+78100,Vermittlung von Arbeitskräften
+78200,Befristete Überlassung von Arbeitskräften
+78300,Sonstige Überlassung von Arbeitskräften
+79110,Reisebüros
+79120,Reiseveranstalter
+79900,Erbringung sonstiger Reservierungsdienstleistungen
+80100,Private Wach- und Sicherheitsdienste
+80200,Sicherheitsdienste mithilfe von Überwachungs- und Alarmsystemen
+80300,Detekteien
+81100,Hausmeisterdienste
+81210,Allgemeine Gebäudereinigung
+81221,Schornsteinreinigung
+81229,Sonstige spezielle Reinigung von Gebäuden und Maschinen
+81291,Reinigung von Verkehrsmitteln
+81292,Desinfektion und Schädlingsbekämpfung
+81299,Sonstige Reinigung a. n. g.
+81301,Garten- und Landschaftsbau
+81309,Erbringung von sonstigen gärtnerischen Dienstleistungen
+82110,Allgemeine Sekretariats- und Schreibdienste
+82190,Copy-Shops; Dokumentenvorbereitung und Erbringung sonstiger spezieller Sekretariatsdienste
+82200,Call Center
+82300,"Messe-, Ausstellungs- und Kongressveranstalter"
+82911,Inkassobüros
+82912,Auskunfteien
+82920,Abfüllen und Verpacken
+82991,Versteigerungsgewerbe
+82999,Erbringung von anderen wirtschaftlichen Dienstleistungen für Unternehmen und Privatpersonen a. n. g.
+84110,Allgemeine öffentliche Verwaltung
+84120,"Öffentliche Verwaltung auf den Gebieten Gesundheitswesen, Bildung, Kultur und Sozialwesen"
+84130,"Wirtschaftsförderung, -ordnung und -aufsicht"
+84210,Auswärtige Angelegenheiten
+84220,Verteidigung
+84230,Rechtspflege
+84240,Öffentliche Sicherheit und Ordnung
+84250,Feuerwehren
+84300,Sozialversicherung
+85101,Kindergärten
+85102,"Vorklassen, Schulkindergärten"
+85200,Grundschulen
+85311,Allgemein bildende weiterführende Schulen Sekundarbereich I
+85312,Allgemein bildende weiterführende Schulen Sekundarbereich II
+85320,Berufsbildende weiterführende Schulen
+85410,"Post-sekundärer, nicht tertiärer Unterricht"
+85421,Universitäten
+85422,Allgemeine Fachhochschulen
+85423,Verwaltungsfachhochschulen
+85424,"Berufsakademien, Fachakademien, Schulen des Gesundheitswesens"
+85510,Sport- und Freizeitunterricht
+85520,Kulturunterricht
+85530,Fahr- und Flugschulen
+85591,Allgemeine und politische Erwachsenenbildung
+85592,Berufliche Erwachsenenbildung
+85599,Unterricht a. n. g.
+85600,Erbringung von Dienstleistungen für den Unterricht
+86101,"Krankenhäuser (ohne Hochschulkliniken, Vorsorge- und Rehabilitationskliniken)"
+86102,Hochschulkliniken
+86103,Vorsorge- und Rehabilitationskliniken
+86210,Arztpraxen für Allgemeinmedizin
+86220,Facharztpraxen
+86230,Zahnarztpraxen
+86901,Praxen von psychologischen Psychotherapeutinnen und -therapeuten
+86902,"Massagepraxen, Krankengymnastikpraxen, Praxen von medizinischen Bademeisterinnen und Bademeistern, Hebammen und Entbindungspflegern sowie von verwandten Berufen"
+86903,Heilpraktikerpraxen
+86909,Sonstige selbstständige Tätigkeiten im Gesundheitswesen
+87100,Pflegeheime
+87200,"Stationäre Einrichtungen zur psychosozialen Betreuung, Suchtbekämpfung u. Ä."
+87300,Altenheime; Alten- und Behindertenwohnheime
+87900,Sonstige Heime (ohne Erholungs- und Ferienheime)
+88101,Ambulante soziale Dienste
+88102,Sonstige soziale Betreuung älterer Menschen und Behinderter
+88910,Tagesbetreuung von Kindern
+88990,Sonstiges Sozialwesen a. n. g.
+90011,Theaterensembles
+90012,"Ballettgruppen, Orchester, Kapellen und Chöre"
+90013,"Selbstständige Artistinnen und Artisten, Zirkusgruppen"
+90014,"Selbstständige Bühnen-, Film-, Hörfunk- und Fernsehkünstlerinnen und -künstler sowie sonstige darstellende Kunst"
+90020,Erbringung von Dienstleistungen für die darstellende Kunst
+90031,"Selbstständige Komponistinnen, Komponisten, Musikbearbeiterinnen und Musikbearbeiter"
+90032,Selbstständige Schriftstellerinnen und Schriftsteller
+90033,Selbstständige bildende Künstlerinnen und Künstler
+90034,Selbstständige Restauratorinnen und Restauratoren
+90035,"Selbstständige Journalistinnen und Journalisten, Pressefotografinnen und Pressefotografen"
+90041,Theater- und Konzertveranstalter
+90042,"Opern- und Schauspielhäuser, Konzerthallen und ähnliche Einrichtungen"
+90043,Varietés und Kleinkunstbühnen
+91010,Bibliotheken und Archive
+91020,Museen
+91030,Betrieb von historischen Stätten und Gebäuden und ähnlichen Attraktionen
+91040,Botanische und zoologische Gärten sowie Naturparks
+92001,Spielhallen und Betrieb von Spielautomaten
+92002,Spielbanken und Spielklubs
+92003,"Wett-, Toto- und Lotteriewesen"
+93110,Betrieb von Sportanlagen
+93120,Sportvereine
+93130,Fitnesszentren
+93190,Erbringung von sonstigen Dienstleistungen des Sports
+93210,Vergnügungs- und Themenparks
+93290,Erbringung von Dienstleistungen der Unterhaltung und der Erholung a. n. g.
+94110,Wirtschafts- und Arbeitgeberverbände
+94120,Berufsorganisationen
+94200,Arbeitnehmervereinigungen
+94910,Kirchliche und sonstige religiöse Vereinigungen
+94920,Politische Parteien und Vereinigungen
+94991,"Organisationen der Bildung, Wissenschaft und Forschung"
+94992,Organisationen der Kultur
+94993,Verbraucherorganisationen
+94994,Jugendorganisationen
+94999,Interessenvertretungen und Vereinigungen a. n. g.
+95110,Reparatur von Datenverarbeitungsgeräten und peripheren Geräten
+95120,Reparatur von Telekommunikationsgeräten
+95210,Reparatur von Geräten der Unterhaltungselektronik
+95220,Reparatur von elektrischen Haushaltsgeräten und Gartengeräten
+95230,Reparatur von Schuhen und Lederwaren
+95240,Reparatur von Möbeln und Einrichtungsgegenständen
+95250,Reparatur von Uhren und Schmuck
+95290,Reparatur von sonstigen Gebrauchsgütern
+96010,Wäscherei und chemische Reinigung
+96021,Frisörsalons
+96022,Kosmetiksalons
+96031,Bestattungsinstitute
+96032,Friedhöfe und Krematorien
+96040,"Saunas, Solarien, Bäder u. Ä."
+96090,Erbringung von sonstigen Dienstleistungen a. n. g.
+97000,Private Haushalte mit Hauspersonal
+98100,Herstellung von Waren durch private Haushalte für den Eigenbedarf ohne ausgeprägten Schwerpunkt
+98200,Erbringungen von Dienstleistungen durch private Haushalte für den Eigenbedarf ohne ausgeprägten Schwerpunkt
+99000,Exterritoriale Organisationen und Körperschaften
