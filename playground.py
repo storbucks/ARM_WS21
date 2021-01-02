@@ -114,7 +114,7 @@ plt.show()
 
 #%% Financial Ratios (Eva)
 # Descriptive analysis
-print(traindata[numvar+[boolvar]].corr())
+# print(traindata[numvar+[boolvar]].corr())
 
 # hier müssen wir dann in die eckigen Klammern die vars einfügen, für die wir die correlation visualisieren möchten
 # corrvar = [hier einfügen] wenn es keine Liste ist, sondern eine Bezeichnung [[Bez] + ..]
