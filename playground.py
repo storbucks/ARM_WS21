@@ -111,7 +111,3 @@ ax = plt.plot(xs,ys, color='black')
 plt.xlabel('year_inc')
 plt.ylabel('PD / Default')
 plt.show()
-
-# hallo oli
-
-# Hallo
