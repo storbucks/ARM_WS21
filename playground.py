@@ -203,6 +203,7 @@ plt.ylabel('Default_Dum');
 
 plt.show()
 
+#%%
 # looking at missing values
 # missing values based on variable
 na = pd.DataFrame({'Valid': traindata.notnull().sum(),
@@ -210,4 +211,3 @@ na = pd.DataFrame({'Valid': traindata.notnull().sum(),
                     'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
                    ).sort_values('NAs of total', ascending=False)
 print(na)
-
