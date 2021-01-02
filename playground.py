@@ -12,7 +12,7 @@ from sklearn import metrics
 
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
 traindata = pd.read_csv("Training_Dataset.csv", sep=";")
-#%%
+# %%
 # Run some checks if you want to:
 print(traindata.head())
 print(traindata.tail())
@@ -20,7 +20,7 @@ print(traindata.isnull().sum().sort_values(ascending=False))
 
 # Display information about the dataset at a glance:
 print(traindata.info())  # Output: 40 cols, 669 rows, dtypes: float, int, object(here: strings), added: bool (2)
-#%%
+# %%
 # Build some groups in dataset based on codebook
 pl_vars = traindata.loc[:, "sales":"annual_profit"]
 bs_vars = traindata.loc[:, "total_assets":"trade_receivables_lt"]
@@ -37,11 +37,11 @@ for value in traindata["fin_result"]:
 traindata["losers"] = loser_col
 
 # Build some groups to use as indices when accessing traindata
-catvar = [i for i in list(traindata.columns) if traindata[i].dtype=='O']  # category variables
-numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64','int64']]  # numerical variables
-boolvar = [i for i in list(traindata.columns) if traindata[i].dtype==bool]  # boolean variables
+catvar = [i for i in list(traindata.columns) if traindata[i].dtype == 'O']  # category variables
+numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64', 'int64']]  # numerical variables
+boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # boolean variables
 
-#%%
+# %%
 # Group by and check financial result --> explanatory power in legal form, etc. ?
 print(traindata.groupby("type_pl").fin_result.mean())
 print(traindata.groupby("legal_form").fin_result.mean())
@@ -51,10 +51,10 @@ print(traindata.groupby("default").fin_result.mean())
 default_groups = traindata.groupby("default")
 print(default_groups.sales.mean())  # example, call as default_groups.column.function
 
-#%%
+# %%
 # Some data analztics
 # Check for missing values:
-print(traindata.isnull().sum())
+#print(traindata.isnull().sum())
 
 # Examine categorial variables
 for i in catvar[1:]:  # w/o id
@@ -62,13 +62,12 @@ for i in catvar[1:]:  # w/o id
     print(f'Variable: {i} \n')
     x1 = traindata[i].value_counts()
     x2 = x1 / np.sum(x1) * 100
-    x = pd.concat([x1,x2], axis=1)
+    x = pd.concat([x1, x2], axis=1)
     x.columns = ['Count', 'in %']
     print(x)
     print()
 
-
-#%%
+# %%
 # # Check some key figures: gross_performance, gross_profit
 # print(traindata["gross_performance"].describe())  # no negative performance gross
 # print(traindata["gross_profit"].describe())  # no losses gross
@@ -77,7 +76,7 @@ for i in catvar[1:]:  # w/o id
 # loser = traindata.groupby(by="losers")  # create group of losers and winners
 # print(loser.get_group(False).mean())
 
-#%%
+# %%
 # Check for correlations with heatmap
 fig, ax = plt.subplots(1, 3, figsize=(18, 6))
 # fig.suptitle("Correlation matrices", size=16)
@@ -91,7 +90,7 @@ ax[2].set_title("Cash Flow")
 
 plt.show()
 
-#%%
+# %%
 # Some nonsense ols regression which i couldn't even interpret
 traindata["losers_dum"] = traindata.losers.astype(int)
 
@@ -99,14 +98,14 @@ regr1 = smf.ols("default ~ year_inc", data=traindata)
 res = regr1.fit()
 print(res.summary2())
 
-fig, ax = plt.subplots(1, figsize=(5,5))
+fig, ax = plt.subplots(1, figsize=(5, 5))
 
 xs = np.arange(traindata.year_inc.min(), traindata.year_inc.max(), 1)
 
 ys = res.params[0] + res.params[1] * xs
 
 ax = plt.scatter(traindata.year_inc, traindata.default, color='darkblue')
-ax = plt.plot(xs,ys, color='black')
+ax = plt.plot(xs, ys, color='black')
 
 plt.xlabel('year_inc')
 plt.ylabel('PD / Default')
@@ -203,3 +202,12 @@ plt.xlabel('debt_ratio')
 plt.ylabel('Default_Dum');
 
 plt.show()
+
+# looking at missing values
+# missing values based on variable
+na = pd.DataFrame({'Valid': traindata.notnull().sum(),
+                    'NAs': traindata.isnull().sum(),
+                    'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
+                   ).sort_values('NAs of total', ascending=False)
+print(na)
+
