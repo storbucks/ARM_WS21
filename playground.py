@@ -128,80 +128,123 @@ plt.show()
 
 # Liquidity ratios
 current_ratio = traindata.current_assets.copy()/traindata.total_liabilities_st.copy() #  A healthy Current Ratio is between 1.5 and 3
-cash_ratio = traindata.cash.copy()/traindata.total_liabilities_st.copy()
-oper_cash_flow_ratio = traindata.cf_operating.copy() / traindata.total_liabilities_st.copy()
-asset_structure = (traindata.trade_receivables_st.copy() + traindata.trade_receivables_lt.copy()) / traindata.current_assets.copy()
+#cash_ratio = traindata.cash.copy()/traindata.total_liabilities_st.copy()
+#oper_cash_flow_ratio = traindata.cf_operating.copy() / traindata.total_liabilities_st.copy()
+#asset_structure = (traindata.trade_receivables_st.copy() + traindata.trade_receivables_lt.copy()) / traindata.current_assets.copy()
 
-frame = {'id': traindata.id, 'current_ratio': current_ratio, 'cash_ratio': cash_ratio, 'oper_cash_flow_ratio': oper_cash_flow_ratio}
-liquidity_ratios = pd.DataFrame(frame)
+#frame = {'id': traindata.id, 'current_ratio': current_ratio, 'cash_ratio': cash_ratio, 'oper_cash_flow_ratio': oper_cash_flow_ratio}
+#liquidity_ratios = pd.DataFrame(frame)
+#print(liquidity_ratios)
 
-print(liquidity_ratios)
 # Leverage ratios
 total_liabilities = traindata.total_liabilities_st.copy() + traindata.total_liabilities_mt.copy() + traindata.total_liabilities_lt.copy()
 debt_ratio = total_liabilities.copy() / traindata.total_assets.copy()
 debt_to_equity_ratio = total_liabilities.copy() / traindata.total_equity.copy()
 
-frame = {'id': traindata.id, 'total_liabilities': total_liabilities, 'debt_ratio': debt_ratio, 'debt_to_equity_ratio': debt_to_equity_ratio}
-leverage_ratios = pd.DataFrame(frame)
-print(leverage_ratios)
+#frame = {'id': traindata.id, 'total_liabilities': total_liabilities, 'debt_ratio': debt_ratio, 'debt_to_equity_ratio': debt_to_equity_ratio}
+#leverage_ratios = pd.DataFrame(frame)
+#print(leverage_ratios)
 
 # Efficiency ratios
-asset_turnover = traindata.sales.copy() / traindata.total_assets.copy()
+#asset_turnover = traindata.sales.copy() / traindata.total_assets.copy()
 
-frame = {'id': traindata.id, 'asset_turnover': asset_turnover}
-efficiency_ratios = pd.DataFrame(frame)
-print(efficiency_ratios)
+#frame = {'id': traindata.id, 'asset_turnover': asset_turnover}
+#efficiency_ratios = pd.DataFrame(frame)
+#print(efficiency_ratios)
 
 # Profitability ratios
-gross_margin_ratio = traindata.gross_profit.copy() / traindata.sales.copy()
-oper_margin_ratio = traindata.earn_from_op.copy() / traindata.sales.copy()
-roa = traindata.total_result.copy() / traindata.total_assets.copy() # annual_profit instead of fin_result?
-roe = traindata.fin_result.copy() / traindata.total_equity.copy()
+#gross_margin_ratio = traindata.gross_profit.copy() / traindata.sales.copy()
+#oper_margin_ratio = traindata.earn_from_op.copy() / traindata.sales.copy()
+roa = traindata.fin_result.copy() / traindata.total_assets.copy() # annual_profit instead of fin_result?
+#roe = traindata.fin_result.copy() / traindata.total_equity.copy()
 
-frame = {'id': traindata.id, 'gross_margin_ratio': gross_margin_ratio, 'oper_margin_ratio': oper_margin_ratio, 'roa': roa, 'roe': roe}
-profitability_ratios = pd.DataFrame(frame)
-print(profitability_ratios)
+#frame = {'id': traindata.id, 'gross_margin_ratio': gross_margin_ratio, 'oper_margin_ratio': oper_margin_ratio, 'roa': roa, 'roe': roe}
+#profitability_ratios = pd.DataFrame(frame)
+#print(profitability_ratios)
 
-frame = {'id': traindata.id, 'default': traindata.default, 'current_ratio': current_ratio, 'cash_ratio': cash_ratio, 'oper_cash_flow_ratio': oper_cash_flow_ratio,
-          'total_liabilities': total_liabilities, 'debt_ratio': debt_ratio, 'asset_turnover': asset_turnover, 'debt_to_equity_ratio': debt_to_equity_ratio,
-          'gross_margin_ratio': gross_margin_ratio, 'oper_margin_ratio': oper_margin_ratio, 'roa': roa, 'roe': roe}
-ratios = pd.DataFrame(frame)
-print(ratios)
+# Other ratios
+interest_coverage = traindata.earn_from_op.copy() / traindata.oth_interest_exp.copy()
 
-f, ax = plt.subplots(figsize=(15,5))
-sns.heatmap(ratios[2:].corr(method='pearson'),
+for i in range(0, len(traindata.year_inc)):
+    traindata.year_inc[i] = 2021 - traindata.year_inc[i]
+oldest_company = max(traindata.year_inc)
+
+age_level = []
+for i in range(0, len(traindata.year_inc)):
+    age_level.append(traindata.year_inc[i].copy()/oldest_company)
+
+equity_ratio = traindata.total_equity.copy() / traindata.total_assets.copy()
+
+ebit_margin = traindata.earn_from_op.copy() / traindata.sales.copy()
+
+frame = {'id': traindata.id, 'default': traindata.default, 'interest_coverage': interest_coverage, 'roa': roa, 'debt_ratio': debt_ratio,
+         'debt_to_equity_ratio': debt_to_equity_ratio, 'age_level': age_level, 'equity_ratio': equity_ratio,
+         'ebit_margin': ebit_margin, 'cf_operating': traindata.cf_operating, 'current_ratio': current_ratio   }
+indicators = pd.DataFrame(frame)
+print(indicators)
+
+f, ax = plt.subplots(figsize=(20,5))
+sns.heatmap(indicators[2:].corr(method='pearson'),
             annot=True,cmap="coolwarm",
             vmin=-1, vmax=1, ax=ax);
 
 plt.show()
 
-# linear regressions to get an impression
-ratios['Default_Dum'] = ratios.default.astype(int) # dummy variable for linear regression
+# linear regressions (dummy and indicators) to get an impression
+indicators['Default_Dum'] = indicators.default.astype(int) # dummy variable for linear regression
 
-mod = smf.ols(formula='Default_Dum ~ debt_ratio', data=ratios)  # significant !!
+mod = smf.ols(formula='Default_Dum ~ debt_ratio', data=indicators)  # significant !!
 res = mod.fit()
 print(res.summary2())
 
-mod = smf.ols(formula='debt_ratio ~ Default_Dum', data=ratios)  # significant !!
+mod = smf.ols(formula='debt_ratio ~ Default_Dum', data=indicators)  # significant !!
 res = mod.fit()
 print(res.summary2())
 
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio', data=ratios).fit(disp=False, maxiter=100)
+res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio', data=indicators).fit(disp=False, maxiter=100)
 print(res2.summary2())
 
 fig, axes = plt.subplots(figsize=(15,5))
 
-xs = np.arange(-10,ratios.debt_ratio.max()+10)
+xs = np.arange(-10,indicators.debt_ratio.max()+10)
 
 ys2 = res2.predict(exog=pd.DataFrame({'debt_ratio': xs}))
 
-axes = plt.scatter(ratios.debt_ratio, ratios.Default_Dum, color='darkblue')
+axes = plt.scatter(indicators.debt_ratio, indicators.Default_Dum, color='darkblue')
 axes = plt.plot(xs,ys2, color='black')
 
 plt.xlabel('debt_ratio')
 plt.ylabel('Default_Dum');
 
 plt.show()
+
+mod = smf.ols(formula='Default_Dum ~ interest_coverage', data=indicators)  # significant !!
+res = mod.fit()
+print(res.summary2())
+
+mod = smf.ols(formula='Default_Dum ~ roa', data=indicators)  # significant !!
+res = mod.fit()
+print(res.summary2())
+
+mod = smf.ols(formula='Default_Dum ~ age_level', data=indicators)  # significant !!
+res = mod.fit()
+print(res.summary2())
+
+mod = smf.ols(formula='Default_Dum ~ equity_ratio', data=indicators)  # significant !!
+res = mod.fit()
+print(res.summary2())
+
+mod = smf.ols(formula='Default_Dum ~ ebit_margin', data=indicators)  # significant !!
+res = mod.fit()
+print(res.summary2())
+
+mod = smf.ols(formula='Default_Dum ~ cf_operating', data=indicators)  # significant !!
+res = mod.fit()
+print(res.summary2())
+
+mod = smf.ols(formula='Default_Dum ~ current_ratio', data=indicators)  # significant !!
+res = mod.fit()
+print(res.summary2())
 
 #%%
 # looking at missing values
