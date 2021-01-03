@@ -211,3 +211,40 @@ na = pd.DataFrame({'Valid': traindata.notnull().sum(),
                     'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
                    ).sort_values('NAs of total', ascending=False)
 print(na)
+
+
+#%% Distribution analysis
+# P&L variables
+fig, axes = plt.subplots(len(pl_vars.columns), 1, figsize=(5, 5*len(pl_vars.columns)))
+
+row = 0
+for column in pl_vars.columns[0:]:
+    print(column)
+    sns.boxplot(y=pl_vars[column], ax=axes[row])
+    axes[row].set_ylabel(column)
+    row += 1
+plt.show()
+
+#%%
+# BS variables
+fig, axes = plt.subplots(len(bs_vars.columns), 1, figsize=(5, 5*len(pl_vars.columns)))
+
+row = 0
+for column in bs_vars.columns[0:]:
+    print(column)
+    sns.boxplot(y=bs_vars[column], ax=axes[row])
+    axes[row].set_ylabel(column)
+    row += 1
+plt.show()
+
+#%%
+# CF variables
+fig, axes = plt.subplots(len(cf_vars.columns), 1, figsize=(5, 5*len(cf_vars.columns)))
+
+row = 0
+for column in cf_vars.columns[0:]:
+    print(column)
+    sns.boxplot(y=cf_vars[column], ax=axes[row])
+    axes[row].set_ylabel(column)
+    row += 1
+plt.show()
