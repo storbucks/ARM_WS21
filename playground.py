@@ -159,8 +159,8 @@ dte_rat = ["total_liabilities_st", "total_liabilities_mt", "total_liabilities_lt
 # Profitability ratios
 #gross_margin_ratio = traindata.gross_profit.copy() / traindata.sales.copy()
 #oper_margin_ratio = traindata.earn_from_op.copy() / traindata.sales.copy()
-roa = traindata.fin_result.copy() / traindata.total_assets.copy() # annual_profit instead of fin_result?
-roa_rat = ["fin_result", "total_assets"]
+roa = traindata.total_result.copy() / traindata.total_assets.copy() # annual_profit instead of fin_result?
+roa_rat = ["total_result", "total_assets"]
 #roe = traindata.fin_result.copy() / traindata.total_equity.copy()
 
 #frame = {'id': traindata.id, 'gross_margin_ratio': gross_margin_ratio, 'oper_margin_ratio': oper_margin_ratio, 'roa': roa, 'roe': roe}
@@ -187,7 +187,7 @@ ebt_rat = ["earn_from_op", "sales"]
 
 frame = {'id': traindata.id, 'default': traindata.default, 'interest_coverage': interest_coverage, 'roa': roa, 'debt_ratio': debt_ratio,
          'debt_to_equity_ratio': debt_to_equity_ratio, 'age_level': age_level, 'equity_ratio': equity_ratio,
-         'ebit_margin': ebit_margin, 'cf_operating': traindata.cf_operating, 'current_ratio': current_ratio   }
+         'ebit_margin': ebit_margin, 'cf_operating': traindata.cf_operating, 'current_ratio': current_ratio}
 indicators = pd.DataFrame(frame)
 print(indicators)
 
@@ -417,3 +417,10 @@ sns.boxplot(y=traindata["cf_operating"], ax=axes[0])
 plt.show()
 
 print(traindata["cf_operating"].describe())
+
+# Logit regression with indicators (multivariate)
+
+res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + interest_coverage + roa +'
+                             'age_level + equity_ratio + ebit_margin + cf_operating'
+                             '+ current_ratio', data=indicators).fit(disp=False, maxiter=100)
+print(res2.summary2())
