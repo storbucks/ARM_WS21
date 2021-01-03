@@ -293,8 +293,6 @@ for column in cf_vars.columns[0:]:
 plt.show()
 
 #%%
-for i in indicators.columns[0:]:
-    print(indicators[i].describe())
 
 #%%
 #############################################
@@ -419,4 +417,3 @@ sns.boxplot(y=traindata["cf_operating"], ax=axes[0])
 plt.show()
 
 print(traindata["cf_operating"].describe())
-
