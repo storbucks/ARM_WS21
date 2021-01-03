@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
+import math
 import statsmodels.stats.anova as anova
 import scipy as sci
 
@@ -420,7 +421,27 @@ print(traindata["cf_operating"].describe())
 
 # Logit regression with indicators (multivariate)
 
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + interest_coverage + roa +'
-                             'age_level + equity_ratio + ebit_margin + cf_operating'
-                             '+ current_ratio', data=indicators).fit(disp=False, maxiter=100)
+res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + roa + age_level', data=indicators).fit(disp=False, maxiter=100)
 print(res2.summary2())
+
+# debt_ratio + interest_coverage + roa + age_level + equity_ratio + ebit_margin + cf_operating' + current_ratio'
+
+pd = []
+defaults = indicators.default.astype(int)
+default_dum = []
+
+for i in range(0, len(indicators['id'])):
+               x = -3.5022 + 0.9490 * indicators['debt_ratio'][i] - 1.2014 * indicators['roa'][i] + 2.6106 * indicators['age_level'][i]
+               pi = (np.exp(x)/(1 + np.exp(x)))
+               if not math.isnan(pi):
+                   pd.append(pi)
+                   default_dum.append(defaults[i])
+
+history = [default_dum, pd]
+
+#import xlsxwriter
+#with xlsxwriter.Workbook('pds.xlsx') as workbook:
+ #   worksheet = workbook.add_worksheet()
+  #  for row_num, data in enumerate(history):
+   #     worksheet.write_row(row_num, 0, data)
+
