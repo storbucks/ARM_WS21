@@ -226,10 +226,6 @@ mod = smf.ols(formula='Default_Dum ~ roa', data=indicators)  # significant !!
 res = mod.fit()
 print(res.summary2())
 
-mod = smf.ols(formula='Default_Dum ~ debt_to_equity_ratio', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
 mod = smf.ols(formula='Default_Dum ~ age_level', data=indicators)  # significant !!
 res = mod.fit()
 print(res.summary2())
