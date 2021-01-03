@@ -297,18 +297,126 @@ for i in indicators.columns[0:]:
     print(indicators[i].describe())
 
 #%%
-
 #############################################
-# Data analysis for Interest coverage ratio #
+# 01: Data analysis for Interest coverage ratio #
 #############################################
-fig, axes = plt.subplots(len(ic_rat), 2, figsize=(10, 10), constrained_layout=True)
-
+fig, axes = plt.subplots(len(ic_rat), 2, figsize=(10, 10))
+fig.suptitle("Interest Coverage Ratio")
 row = 0
 for var in ic_rat:
-    sns.distplot(traindata[var], kde=True, ax=axes[row, 0])
-    sns.boxplot(y=traindata[var], ax=axes[row, 1])
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=traindata[var], ax=axes[row, 0])
     row += 1
 plt.show()
 
 for var in ic_rat:
     print(traindata[var].describe())
+print(interest_coverage.describe())
+
+#########################
+# 02: Data analysis for ROA #
+#########################
+fig, axes = plt.subplots(len(roa_rat), 2, figsize=(10, 10))
+fig.suptitle("ROA")
+row = 0
+for var in roa_rat:
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=traindata[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in roa_rat:
+    print(traindata[var].describe())
+print(roa.describe())
+
+#############################################
+# 03: Data analysis for Debt Ratio #
+#############################################
+fig, axes = plt.subplots(len(d_rat), 2, figsize=(10, 10))
+fig.suptitle("Debt Ratio")
+row = 0
+for var in d_rat:
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=traindata[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in d_rat:
+    print(traindata[var].describe())
+print(debt_ratio.describe())
+
+#############################################
+# 04: Data analysis for Debt-to-Equity Ratio #
+#############################################
+fig, axes = plt.subplots(len(dte_rat), 2, figsize=(10, 10))
+fig.suptitle("Debt-to-Equity Ratio")
+row = 0
+for var in dte_rat:
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=traindata[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in dte_rat:
+    print(traindata[var].describe())
+print(debt_to_equity_ratio.describe())
+
+#############################################
+# 05: Data analysis for Equity Ratio #
+#############################################
+fig, axes = plt.subplots(len(e_rat), 2, figsize=(10, 10))
+fig.suptitle("Equity Ratio")
+row = 0
+for var in e_rat:
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=traindata[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in e_rat:
+    print(traindata[var].describe())
+print(equity_ratio.describe())
+
+#############################################
+# 06: Data analysis for EBIT Margin #
+#############################################
+fig, axes = plt.subplots(len(ebt_rat), 2, figsize=(10, 10))
+fig.suptitle("EBIT Margin")
+row = 0
+for var in ebt_rat:
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=traindata[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in ebt_rat:
+    print(traindata[var].describe())
+print(ebit_margin.describe())
+
+#############################################
+# 07: Data analysis for Current Ratio #
+#############################################
+fig, axes = plt.subplots(len(curr_rat), 2, figsize=(10, 10))
+fig.suptitle("Current Ratio")
+row = 0
+for var in curr_rat:
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=traindata[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in curr_rat:
+    print(traindata[var].describe())
+print(ebit_margin.describe())
+
+#############################################
+# 08: Data analysis for CF op #
+#############################################
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+fig.suptitle("Operating CF")
+sns.distplot(traindata["cf_operating"], kde=True, ax=axes[1])
+sns.boxplot(y=traindata["cf_operating"], ax=axes[0])
+plt.show()
+
+print(traindata["cf_operating"].describe())
+
