@@ -225,7 +225,6 @@ for column in pl_vars.columns[0:]:
     row += 1
 plt.show()
 
-#%%
 # BS variables
 fig, axes = plt.subplots(len(bs_vars.columns), 1, figsize=(5, 5*len(pl_vars.columns)))
 
@@ -237,7 +236,6 @@ for column in bs_vars.columns[0:]:
     row += 1
 plt.show()
 
-#%%
 # CF variables
 fig, axes = plt.subplots(len(cf_vars.columns), 1, figsize=(5, 5*len(cf_vars.columns)))
 
