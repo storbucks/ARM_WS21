@@ -293,3 +293,5 @@ for column in cf_vars.columns[0:]:
     axes[row].set_ylabel(column)
     row += 1
 plt.show()
+
+# check
