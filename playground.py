@@ -128,6 +128,7 @@ plt.show()
 
 # Liquidity ratios
 current_ratio = traindata.current_assets.copy()/traindata.total_liabilities_st.copy() #  A healthy Current Ratio is between 1.5 and 3
+curr_rat = ["current_assets", "total_liabilities_st"]
 #cash_ratio = traindata.cash.copy()/traindata.total_liabilities_st.copy()
 #oper_cash_flow_ratio = traindata.cf_operating.copy() / traindata.total_liabilities_st.copy()
 #asset_structure = (traindata.trade_receivables_st.copy() + traindata.trade_receivables_lt.copy()) / traindata.current_assets.copy()
@@ -140,6 +141,9 @@ current_ratio = traindata.current_assets.copy()/traindata.total_liabilities_st.c
 total_liabilities = traindata.total_liabilities_st.copy() + traindata.total_liabilities_mt.copy() + traindata.total_liabilities_lt.copy()
 debt_ratio = total_liabilities.copy() / traindata.total_assets.copy()
 debt_to_equity_ratio = total_liabilities.copy() / traindata.total_equity.copy()
+
+d_rat = ["total_liabilities_st", "total_liabilities_mt", "total_liabilities_lt", "total_assets"]
+dte_rat = ["total_liabilities_st", "total_liabilities_mt", "total_liabilities_lt", "total_equity"]
 
 #frame = {'id': traindata.id, 'total_liabilities': total_liabilities, 'debt_ratio': debt_ratio, 'debt_to_equity_ratio': debt_to_equity_ratio}
 #leverage_ratios = pd.DataFrame(frame)
@@ -156,6 +160,7 @@ debt_to_equity_ratio = total_liabilities.copy() / traindata.total_equity.copy()
 #gross_margin_ratio = traindata.gross_profit.copy() / traindata.sales.copy()
 #oper_margin_ratio = traindata.earn_from_op.copy() / traindata.sales.copy()
 roa = traindata.fin_result.copy() / traindata.total_assets.copy() # annual_profit instead of fin_result?
+roa_rat = ["fin_result", "total_assets"]
 #roe = traindata.fin_result.copy() / traindata.total_equity.copy()
 
 #frame = {'id': traindata.id, 'gross_margin_ratio': gross_margin_ratio, 'oper_margin_ratio': oper_margin_ratio, 'roa': roa, 'roe': roe}
@@ -164,6 +169,7 @@ roa = traindata.fin_result.copy() / traindata.total_assets.copy() # annual_profi
 
 # Other ratios
 interest_coverage = traindata.earn_from_op.copy() / traindata.oth_interest_exp.copy()
+ic_rat = ["earn_from_op", "oth_interest_exp"]
 
 for i in range(0, len(traindata.year_inc)):
     traindata.year_inc[i] = 2021 - traindata.year_inc[i]
@@ -174,8 +180,10 @@ for i in range(0, len(traindata.year_inc)):
     age_level.append(traindata.year_inc[i].copy()/oldest_company)
 
 equity_ratio = traindata.total_equity.copy() / traindata.total_assets.copy()
+e_rat = ["total_equity", "total_assets"]
 
 ebit_margin = traindata.earn_from_op.copy() / traindata.sales.copy()
+ebt_rat = ["earn_from_op", "sales"]
 
 frame = {'id': traindata.id, 'default': traindata.default, 'interest_coverage': interest_coverage, 'roa': roa, 'debt_ratio': debt_ratio,
          'debt_to_equity_ratio': debt_to_equity_ratio, 'age_level': age_level, 'equity_ratio': equity_ratio,
@@ -251,45 +259,60 @@ res = mod.fit()
 print(res.summary2())
 
 #%%
-# looking at missing values
-# missing values based on variable
-na = pd.DataFrame({'Valid': traindata.notnull().sum(),
-                    'NAs': traindata.isnull().sum(),
-                    'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
-                   ).sort_values('NAs of total', ascending=False)
-print(na)
+# # looking at missing values
+# # missing values based on variable
+# na = pd.DataFrame({'Valid': traindata.notnull().sum(),
+#                     'NAs': traindata.isnull().sum(),
+#                     'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
+#                    ).sort_values('NAs of total', ascending=False)
+# print(na)
 
 
 #%% Distribution analysis
 # P&L variables
-fig, axes = plt.subplots(len(pl_vars.columns), 1, figsize=(5, 5*len(pl_vars.columns)))
-
+fig, axes = plt.subplots(len(pl_vars.columns), 2, figsize=(10, 5*len(pl_vars.columns)))
 row = 0
 for column in pl_vars.columns[0:]:
-    print(column)
-    sns.boxplot(y=pl_vars[column], ax=axes[row])
-    axes[row].set_ylabel(column)
+    sns.distplot(pl_vars[column], kde=True, ax=axes[row, 0])
+    sns.boxplot(y=pl_vars[column], ax=axes[row, 1])
     row += 1
 plt.show()
 
 # BS variables
-fig, axes = plt.subplots(len(bs_vars.columns), 1, figsize=(5, 5*len(pl_vars.columns)))
-
+fig, axes = plt.subplots(len(bs_vars.columns), 2, figsize=(10, 5*len(bs_vars.columns)))
 row = 0
 for column in bs_vars.columns[0:]:
-    print(column)
-    sns.boxplot(y=bs_vars[column], ax=axes[row])
-    axes[row].set_ylabel(column)
+    sns.distplot(bs_vars[column], kde=True, ax=axes[row, 0])
+    sns.boxplot(y=bs_vars[column], ax=axes[row, 1])
     row += 1
 plt.show()
 
 # CF variables
-fig, axes = plt.subplots(len(cf_vars.columns), 1, figsize=(5, 5*len(cf_vars.columns)))
-
+fig, axes = plt.subplots(len(cf_vars.columns), 2, figsize=(10, 5*len(cf_vars.columns)))
 row = 0
 for column in cf_vars.columns[0:]:
-    print(column)
-    sns.boxplot(y=cf_vars[column], ax=axes[row])
-    axes[row].set_ylabel(column)
+    sns.distplot(cf_vars[column], kde=True, ax=axes[row, 0])
+    sns.boxplot(y=cf_vars[column], ax=axes[row, 1])
     row += 1
 plt.show()
+
+#%%
+for i in indicators.columns[0:]:
+    print(indicators[i].describe())
+
+#%%
+
+#############################################
+# Data analysis for Interest coverage ratio #
+#############################################
+fig, axes = plt.subplots(len(ic_rat), 2, figsize=(10, 10), constrained_layout=True)
+
+row = 0
+for var in ic_rat:
+    sns.distplot(traindata[var], kde=True, ax=axes[row, 0])
+    sns.boxplot(y=traindata[var], ax=axes[row, 1])
+    row += 1
+plt.show()
+
+for var in ic_rat:
+    print(traindata[var].describe())
