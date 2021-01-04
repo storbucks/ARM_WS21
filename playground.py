@@ -67,7 +67,7 @@ oldest_company = max(traindata.year_inc)
 
 age_level = []
 for i in range(0, len(traindata.year_inc)):
-    age_level.append(traindata.year_inc[i].copy()/oldest_company)
+    age_level.append(traindata.year_inc[i].copy()) #/oldest_company
 #%%
 ####################
 ##### TOTAL_EQUITY #####
@@ -500,20 +500,69 @@ plt.show()
 #%%
 # Logit regression with indicators (multivariate)
 
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + roa + age_level', data=indicators).fit(disp=False, maxiter=100)
-print(res2.summary2())
+#res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + roa + age_level', data=indicators).fit(disp=False, maxiter=100)
+#print(res2.summary2())
 
 # debt_ratio + interest_coverage + roa + age_level + equity_ratio + ebit_margin + cf_operating' + current_ratio'
 
+#frame = {'id': indicators.id, 'default_dum': indicators.default.astype(int), 'debt_ratio': indicators.debt_ratio, 'roa': indicators.roa, 'age_level': indicators.age_level}
+#history = pd.DataFrame(frame)
+#history["pd"] = ""
+#history["estimation"] = ""
+#nan_index = []
 
-frame = {'id': indicators.id, 'default_dum': indicators.default.astype(int), 'debt_ratio': indicators.debt_ratio, 'roa': indicators.roa, 'age_level': indicators.age_level}
+#for i in range(0, len(history['id'])):
+ #   x = res2.params[0] + res2.params[1] * history['debt_ratio'][i] + res2.params[2]* history['roa'][i] + res2.params[3] * history['age_level'][i]
+  #  pi = (np.exp(x)/(1 + np.exp(x)))
+   # if not math.isnan(pi):
+    #    history.pd[i] = pi
+    #else:
+     #   history = history.drop([i])
+      #  nan_index.append(i)
+
+
+#x = np.array(history['default_dum']).reshape((-1, 1))
+#y = np.array(history['pd'])
+#model = LinearRegression()
+#model.fit(x, y)
+#model = LinearRegression().fit(x, y)
+#intercept = float(model.intercept_)
+#slope = float(model.coef_[0])
+
+#for i in range(0, len(history['id'])):
+ #   if i not in nan_index:
+  #      if history.pd[i] >= intercept+slope: # mit intercept+slope höhere trefferquote, aber weniger D's gefunden
+   #         history.estimation[i] = 1
+    #    else:
+     #       history.estimation[i] = 0
+
+#count = 0
+#for i in range(0, len(history['id'])):
+ #   if i not in nan_index:
+  #      if history.default_dum[i] == history.estimation[i]:
+   #         count += 1
+
+#strikes = count/len(history['id'])
+#print(str(round(strikes*100,2)) + " %")
+
+#import xlsxwriter
+#with xlsxwriter.Workbook('pds.xlsx') as workbook:
+ #   worksheet = workbook.add_worksheet()
+  #  for row_num, data in enumerate(history):
+   #     worksheet.write_row(row_num, 0, data)
+
+res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
+print(res2.summary2())
+
+
+frame = {'id': indicators.id, 'default_dum': indicators.default.astype(int), 'current_ratio': indicators.current_ratio, 'roa': indicators.roa, 'debt_ratio': indicators.debt_ratio}
 history = pd.DataFrame(frame)
 history["pd"] = ""
 history["estimation"] = ""
-nan_index = []
 
+nan_index = []
 for i in range(0, len(history['id'])):
-    x = res2.params[0] + res2.params[1] * history['debt_ratio'][i] + res2.params[2]* history['roa'][i] + res2.params[3] * history['age_level'][i]
+    x = res2.params[0] + res2.params[1] * history['debt_ratio'][i] + res2.params[2]* history['current_ratio'][i] + res2.params[3] * history['roa'][i]
     pi = (np.exp(x)/(1 + np.exp(x)))
     if not math.isnan(pi):
         history.pd[i] = pi
@@ -532,23 +581,35 @@ slope = float(model.coef_[0])
 
 for i in range(0, len(history['id'])):
     if i not in nan_index:
-        if history.pd[i] >= intercept: # mit intercept+slope höhere trefferquote, aber weniger D's gefunden
+        if history.pd[i] >= intercept+slope: # mit intercept+slope höhere trefferquote, aber weniger D's gefunden
             history.estimation[i] = 1
         else:
             history.estimation[i] = 0
 
-count = 0
+count_defaults = 0
+count_default_strikes = 0
+
+count_non_defaults = 0
+count_non_default_strikes = 0
+
 for i in range(0, len(history['id'])):
     if i not in nan_index:
-        if history.default_dum[i] == history.estimation[i]:
-            count += 1
+        if history.default_dum[i] == 1:
+            count_defaults += 1
+            if history.default_dum[i] == history.estimation[i]:
+                count_default_strikes += 1
+        else:
+            count_non_defaults += 1
+            if history.default_dum[i] == history.estimation[i]:
+                count_non_default_strikes += 1
 
-strikes = count/len(history['id'])
-print(str(round(strikes*100,2)) + " %")
+default_strikes = count_default_strikes/count_defaults
+non_default_strikes = count_non_default_strikes/count_non_defaults
+
+print("Identified " + str(round(default_strikes*100, 2)) + "% of defaults and " + str(round(non_default_strikes*100,2)) + "% of non_defaults")
 
 #import xlsxwriter
 #with xlsxwriter.Workbook('pds.xlsx') as workbook:
  #   worksheet = workbook.add_worksheet()
-  #  for row_num, data in enumerate(history):
+  #  for row_num, data in enumerate(pds):
    #     worksheet.write_row(row_num, 0, data)
-
