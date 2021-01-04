@@ -338,6 +338,16 @@ traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"]) #
 traindata["sales"].fillna(pl_vars_mean["sales"])
 
 #%%
+# 7. Ratio - Cashflow Measure ??
+
+#%%
+#8. Ratio - Liquidity measures - current_assets & total_liabilities_st (Umlaufvermögen/kurz. FK)
+# Look into BS DATA
+
+# total_liabilities_st --> already done
+traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
+
+
 #print(traindata.groupby("legal_form").fin_result.mean())
 #print(traindata.groupby("default").fin_result.mean())
 
