@@ -443,9 +443,9 @@ print(traindata["cf_operating"].describe())
 # 09: Data analysis for Year Inc #
 #############################################
 fig, axes = plt.subplots(1, 2, figsize=(10, 5))
-fig.suptitle("Year Inc")
-sns.distplot(traindata["year_inc"], kde=True, ax=axes[1])
-sns.boxplot(y=traindata["year_inc"], ax=axes[0])
+fig.suptitle("Year Inc (log)")
+sns.distplot(np.log(traindata["year_inc"]), kde=True, ax=axes[1])
+sns.boxplot(y=np.log(traindata["year_inc"]), ax=axes[0])
 plt.show()
 
 print(traindata["year_inc"].describe())
