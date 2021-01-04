@@ -11,6 +11,7 @@ import scipy as sci
 
 from sklearn import metrics
 
+
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
 traindata = pd.read_csv("Training_Dataset.csv", sep=";")
 # %%
@@ -125,8 +126,8 @@ plt.show()
 # Manipulation of Years Inc #
 #############################
 # Replace 0 with mean of years
-yrs_mean = traindata["year_inc"].mean()
-traindata["year_inc"].replace(to_replace=0, value=yrs_mean, inplace=True)
+# yrs_mean = traindata["year_inc"].mean()
+# traindata["year_inc"].replace(to_replace=0, value=yrs_mean, inplace=True)
 
 for i in range(0, len(traindata.year_inc)):
     traindata.year_inc[i] = 2021 - traindata.year_inc[i]
@@ -136,7 +137,7 @@ age_level = []
 for i in range(0, len(traindata.year_inc)):
     age_level.append(traindata.year_inc[i].copy()/oldest_company)
 
-max_age = traindata.loc[(traindata.year_inc == max(traindata.year_inc))]
+# max_age = traindata.loc[(traindata.year_inc == max(traindata.year_inc))]
 #%% Financial Ratios (Eva)
 # Descriptive analysis
 # print(traindata[numvar+[boolvar]].corr())
@@ -428,14 +429,14 @@ sns.boxplot(y=traindata["cf_operating"], ax=axes[0])
 plt.show()
 
 print(traindata["cf_operating"].describe())
-
+#%%
 #############################################
 # 09: Data analysis for Year Inc #
 #############################################
 fig, axes = plt.subplots(1, 2, figsize=(10, 5))
-fig.suptitle("Year Inc (log)")
-sns.distplot(np.log(traindata["year_inc"]), kde=True, ax=axes[1])
-sns.boxplot(y=np.log(traindata["year_inc"]), ax=axes[0])
+fig.suptitle("Year Inc")
+sns.distplot(traindata["year_inc"], kde=True, ax=axes[1])
+sns.boxplot(y=traindata["year_inc"], ax=axes[0])
 plt.show()
 
 print(traindata["year_inc"].describe())
