@@ -126,8 +126,8 @@ plt.show()
 # Manipulation of Years Inc #
 #############################
 # Replace 0 with mean of years
-# yrs_mean = traindata["year_inc"].mean()
-# traindata["year_inc"].replace(to_replace=0, value=yrs_mean, inplace=True)
+yrs_mean = traindata["year_inc"].mean()
+traindata["year_inc"].replace(to_replace=0, value=yrs_mean, inplace=True)
 
 for i in range(0, len(traindata.year_inc)):
     traindata.year_inc[i] = 2021 - traindata.year_inc[i]
@@ -451,6 +451,25 @@ plt.show()
 
 print(traindata["year_inc"].describe())
 print(traindata["year_inc"].value_counts())
+#%%
+#############################################
+# 10: Data analysis for Indicators #
+#############################################
+newinds = indicators[indicators.columns.difference(["id", "debt_to_equity_ratio"])]
+indics = newinds.columns.tolist()
+
+fig, axes = plt.subplots(len(indics), 2, figsize=(10, 30))
+fig.suptitle("Indicators")
+row = 0
+for var in newinds.columns[0:]:
+    sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=indicators[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in indics:
+    print(indicators[var].describe())
+
 
 ########################################################################################################################
 #%%
