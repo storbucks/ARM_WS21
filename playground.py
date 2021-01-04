@@ -225,10 +225,10 @@ print(res.summary2())
 #print(tbl)
 
 # Is the difference statistical significant? - not working
-mdl = sm.Logit.from_formula('defn ~ IsMissing + 1',
-                            data=traindata.assign(IsMissing = lambda x: x.oth_interest_exp.isnull())
-                           ).fit(disp=False, maxiter=100)
-print(mdl.summary2())
+#mdl = sm.Logit.from_formula('defn ~ IsMissing + 1',
+                           # data=traindata.assign(IsMissing = lambda x: x.oth_interest_exp.isnull())
+                           #).fit(disp=False, maxiter=100)
+#print(mdl.summary2())
 
 #%%
 # with this code all NA's should be replaced with the respective mean! (excluding firm context variables)
