@@ -57,9 +57,6 @@ def fill_with_mean(df, cols, value_to_be_replaced):  # v_t_b_r either float, int
         col_mean = df[col].mean(skipna=True)
         df[col].replace(to_replace=value_to_be_replaced, value=col_mean, inplace=True)
 
-
-
-
 ####################
 ##### YEAR_INC #####
 ####################
@@ -68,6 +65,10 @@ print(traindata.year_inc.describe())  #for comparison, compare min/max values
 # Wins year_inc
 percentile_capping(traindata, ['year_inc'], 0.01, 0.005) # keeps values betwnn 1% and 99.5%
 print(traindata.year_inc.describe())
+
+# # Fill with mean
+# fill_with_mean(traindata, ['year_inc'], 0)
+# print(traindata.year_inc.describe())
 
 # Transform year_inc it into Age
 for i in range(0, len(traindata.year_inc)):
