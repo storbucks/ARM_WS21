@@ -48,6 +48,11 @@ print(traindata.groupby("type_pl").fin_result.mean())
 print(traindata.groupby("legal_form").fin_result.mean())
 print(traindata.groupby("default").fin_result.mean())
 
+pd.DataFrame({'Valid': traindata.notnull().sum(),
+              'NAs': traindata.isnull().sum(),
+              'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
+            ).sort_values('NAs of total', ascending=True)
+
 # Callable grouping for default and non-default comparison
 default_groups = traindata.groupby("default")
 print(default_groups.sales.mean())  # example, call as default_groups.column.function
