@@ -277,6 +277,10 @@ print(res.summary2())
 # # looking at missing values (Fredi)! 1. step Looking on variables & inserting mean if value is missing
 # --> Further adjustments should be made
 
+# with this code all NA's should be replaced with the respective mean! (excluding firm context variables)
+# x = traindata.mean()
+# traindata.fillna(x)
+
 # 1. Ratio "Interest Coverage Ratio" - P&L Variables - earn_from_op & oth_interest_exp
 pl_na_overview = pd.DataFrame({'Valid': pl_vars.notnull().sum(),
               'NAs': pl_vars.isnull().sum(),
@@ -292,6 +296,7 @@ print(pl_vars_mean)
 traindata["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
 traindata["oth_interest_exp"].fillna(pl_vars_mean["oth_interest_exp"])
 
+#%%
 # 2. Ratio "ROA" - total_result & total assets
 bs_na_overview = pd.DataFrame({'Valid': bs_vars.notnull().sum(),
               'NAs': bs_vars.isnull().sum(),
@@ -308,6 +313,14 @@ print(bs_vars_mean)
 traindata["total_assets"].fillna(bs_vars_mean["total_assets"])
 traindata["total_result"].fillna(pl_vars_mean["total_result"])
 
+#%%
+# 3. Ratio - Leverage Ratio - (total_liabilities_st + mt + lt) / total_equity
+
+#Manipulation of variables
+traindata["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"]) # not necessary
+traindata["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"]) # not necessary
+traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"]) # not necessary
+traindata["total_equity"].fillna(bs_vars_mean["total_equity "])
 
 #%% Distribution analysis
 # P&L variables
