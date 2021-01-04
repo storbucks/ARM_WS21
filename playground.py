@@ -19,6 +19,12 @@ print(traindata.head())
 print(traindata.tail())
 print(traindata.isnull().sum().sort_values(ascending=False))
 
+# Overview NA's
+pd.DataFrame({'Valid': traindata.notnull().sum(),
+              'NAs': traindata.isnull().sum(),
+              'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
+            ).sort_values('NAs of total', ascending=True)
+
 # Display information about the dataset at a glance:
 print(traindata.info())  # Output: 40 cols, 669 rows, dtypes: float, int, object(here: strings), added: bool (2)
 # %%
