@@ -46,10 +46,19 @@ boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # 
 # EXPLORATIVE DATA ANALYSIS #
 #############################
 
-# Winsorizing function (can winsorize several cols at once, but with same percentiles)
-def percentile_capping(df, cols, from_lower_end, from_higher_end):
+# Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
+def percentile_capping(df, cols, from_lower_end, from_higher_end):  # cols MUST be list
     for col in cols:
         sci.stats.mstats.winsorize(a=df[col], limits=(from_lower_end, from_higher_end), inplace=True)
+
+# Fill with mean function
+def fill_with_mean(df, cols, value_to_be_replaced):  # v_t_b_r either float, int or list, cols MUST be list
+    for col in cols:
+        col_mean = df[col].mean(skipna=True)
+        df[col].replace(to_replace=value_to_be_replaced, value=col_mean, inplace=True)
+
+
+
 
 ####################
 ##### YEAR_INC #####
