@@ -20,10 +20,11 @@ print(traindata.tail())
 print(traindata.isnull().sum().sort_values(ascending=False))
 
 # Overview NA's
-print(pd.DataFrame({'Valid': traindata.notnull().sum(),
+na = pd.DataFrame({'Valid': traindata.notnull().sum(),
               'NAs': traindata.isnull().sum(),
               'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
-            ).sort_values('NAs of total', ascending=True))
+            ).sort_values('NAs of total', ascending=True)
+print(na)
 print(traindata.describe())
 
 # Display information about the dataset at a glance:
@@ -263,7 +264,7 @@ res = mod.fit()
 print(res.summary2())
 
 #%%
-# # looking at missing values
+# # looking at missing values (Fredi)
 # # missing values based on variable
 # na = pd.DataFrame({'Valid': traindata.notnull().sum(),
 #                     'NAs': traindata.isnull().sum(),
