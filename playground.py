@@ -288,8 +288,8 @@ pl_vars_mean = pl_vars.mean()
 print(pl_vars_mean)
 
 #Manipulation of earn_from_op & oth_interest_exp
-traindata["earn_from_op"].fillna(pl_vars_mean)
-traindata["oth_interest_exp"].fillna(pl_vars_mean)
+traindata["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
+traindata["oth_interest_exp"].fillna(pl_vars_mean["oth_interest_exp"])
 
 
 
