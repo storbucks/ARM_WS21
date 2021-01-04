@@ -276,7 +276,10 @@ print(res.summary2())
 
 #%%
 # # looking at missing values (Fredi)! 1. step Looking on variables & inserting mean if value is missing
-# --> Further adjustments should be made
+# --> Further adjustments should be made # Note: Allgemein fehlen bei unseren Variablen kaum Werte!
+# However, is a high number of missing values a potential indicator for a higher probability of default?
+
+
 
 # with this code all NA's should be replaced with the respective mean! (excluding firm context variables)
 # x = traindata.mean()
@@ -292,6 +295,14 @@ print(pl_na_overview)
 # Storing Mean of PL variables
 pl_vars_mean = pl_vars.mean()
 print(pl_vars_mean)
+
+#print(traindata.groupby("legal_form").fin_result.mean())
+#print(traindata.groupby("default").fin_result.mean())
+
+# Callable grouping for default and non-default comparison
+#default_groups = traindata.groupby("default")
+#print(default_groups.sales.mean())  # example, call as default_groups.column.function
+
 
 #Manipulation of earn_from_op & oth_interest_exp
 traindata["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
@@ -346,14 +357,6 @@ traindata["sales"].fillna(pl_vars_mean["sales"])
 
 # total_liabilities_st --> already done
 traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
-
-
-#print(traindata.groupby("legal_form").fin_result.mean())
-#print(traindata.groupby("default").fin_result.mean())
-
-# Callable grouping for default and non-default comparison
-#default_groups = traindata.groupby("default")
-#print(default_groups.sales.mean())  # example, call as default_groups.column.function
 
 
 #%% Distribution analysis
