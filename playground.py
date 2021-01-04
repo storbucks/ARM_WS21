@@ -11,6 +11,8 @@ import scipy as sci
 
 from sklearn import metrics
 
+pd.set_option('display.float_format', lambda x: '%.10f' % x)
+# pd.reset_option('display.float_format')  # undo
 
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
 traindata = pd.read_csv("Training_Dataset.csv", sep=";")
@@ -38,7 +40,7 @@ boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # 
 # ax[2].set_title("Cash Flow")
 #
 # plt.show()
- #%%
+#%%
 #############################
 # EXPLORATIVE DATA ANALYSIS #
 #############################
@@ -48,17 +50,16 @@ def percentile_capping(df, cols, from_lower_end, from_higher_end):
     for col in cols:
         sci.stats.mstats.winsorize(a=df[col], limits=(from_lower_end, from_higher_end), inplace=True)
 
+####################
 ##### YEAR_INC #####
-# Replace 0 with mean of years
-# yrs_mean = traindata["year_inc"].mean()
-# traindata["year_inc"].replace(to_replace=0, value=yrs_mean, inplace=True)  # replace with mean
+####################
+print(traindata.year_inc.describe())  #for comparison, compare min/max values
 
 # Wins year_inc
-print(traindata.year_inc.describe())  #for comparison, compare min/max values
-percentile_capping(traindata, ['year_inc'], 0.01, 0.005) # keeps values betwnn 0.5% and 99.5%
+percentile_capping(traindata, ['year_inc'], 0.01, 0.005) # keeps values betwnn 1% and 99.5%
 print(traindata.year_inc.describe())
-#%%
-# Transforming it into Age
+
+# Transform year_inc it into Age
 for i in range(0, len(traindata.year_inc)):
     traindata.year_inc[i] = 2021 - traindata.year_inc[i]
 oldest_company = max(traindata.year_inc)
@@ -66,8 +67,15 @@ oldest_company = max(traindata.year_inc)
 age_level = []
 for i in range(0, len(traindata.year_inc)):
     age_level.append(traindata.year_inc[i].copy()/oldest_company)
+#%%
+####################
+##### TOTAL_EQUITY #####
+####################
+print(traindata.total_equity.describe())
+eq_min = traindata[traindata.total_equity <= 0]
 
-# max_age = traindata.loc[(traindata.year_inc == max(traindata.year_inc))]
+sns.distplot(a=traindata.total_equity)
+plt.show()
 #%% Financial Ratios (Eva)
 # Descriptive analysis
 # print(traindata[numvar+[boolvar]].corr())
