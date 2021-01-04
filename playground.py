@@ -47,7 +47,7 @@ boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # 
 #############################
 
 # Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
-def percentile_capping(df, cols, from_lower_end, from_higher_end):  # cols MUST be list
+def winsorize(df, cols, from_lower_end, from_higher_end):  # cols MUST be list
     for col in cols:
         sci.stats.mstats.winsorize(a=df[col], limits=(from_lower_end, from_higher_end), inplace=True)
 
@@ -56,14 +56,14 @@ def fill_with_mean(df, cols, value_to_be_replaced):  # v_t_b_r either float, int
     for col in cols:
         col_mean = df[col].mean(skipna=True)
         df[col].replace(to_replace=value_to_be_replaced, value=col_mean, inplace=True)
-
+#%%
 ####################
 ##### YEAR_INC #####
 ####################
 print(traindata.year_inc.describe())  #for comparison, compare min/max values
 
 # Wins year_inc
-percentile_capping(traindata, ['year_inc'], 0.01, 0.005) # keeps values betwnn 1% and 99.5%
+winsorize(traindata, ['year_inc'], 0.01, 0.005) # keeps values betwnn 1% and 99.5%
 print(traindata.year_inc.describe())
 
 # # Fill with mean
@@ -79,14 +79,15 @@ age_level = []
 for i in range(0, len(traindata.year_inc)):
     age_level.append(traindata.year_inc[i].copy()) #/oldest_company
 #%%
-####################
+########################
 ##### TOTAL_EQUITY #####
-####################
+########################
 print(traindata.total_equity.describe())
 eq_min = traindata[traindata.total_equity <= 0]
 
 sns.distplot(a=traindata.total_equity)
 plt.show()
+
 #%% Financial Ratios (Eva)
 # Descriptive analysis
 # print(traindata[numvar+[boolvar]].corr())
@@ -152,18 +153,56 @@ e_rat = ["total_equity", "total_assets"]
 ebit_margin = traindata.earn_from_op.copy() / traindata.sales.copy()
 ebt_rat = ["earn_from_op", "sales"]
 
+#%%
 frame = {'id': traindata.id, 'default': traindata.default, 'interest_coverage': interest_coverage, 'roa': roa, 'debt_ratio': debt_ratio,
          'debt_to_equity_ratio': debt_to_equity_ratio, 'age_level': age_level, 'equity_ratio': equity_ratio,
          'ebit_margin': ebit_margin, 'cf_operating': traindata.cf_operating, 'current_ratio': current_ratio}
 indicators = pd.DataFrame(frame)
 print(indicators)
-
+#%%
 f, ax = plt.subplots(figsize=(20,5))
 sns.heatmap(indicators[2:].corr(method='pearson'),
             annot=True,cmap="coolwarm",
             vmin=-1, vmax=1, ax=ax);
 
 plt.show()
+#%%
+### Winsorize IC Ratio ###
+print(indicators.interest_coverage.describe())
+winsorize(indicators, ['interest_coverage'], 0.01, 0.15)
+print(indicators.interest_coverage.describe())
+
+#%%
+### Winsoirze Current Ratio ###
+print(indicators.current_ratio.describe())
+winsorize(indicators, ['current_ratio'], 0, 0.05)  # only wins from top, 5% ??
+print(indicators.current_ratio.describe())
+
+#%%
+### Winsorize Ebit Margin ###
+print(indicators.ebit_margin.describe())
+winsorize(indicators, ["ebit_margin"], 0.01, 0.005)
+print(indicators.ebit_margin.describe())
+
+#%%
+#############################################
+# 10: Data analysis for Indicators #
+#############################################
+newinds = indicators[indicators.columns.difference(["id", "default", "debt_to_equity_ratio"])]
+indics = newinds.columns.tolist()
+
+fig, axes = plt.subplots(len(indics), 2, figsize=(10, 30))
+fig.suptitle("Indicators")
+row = 0
+for var in newinds.columns[0:]:
+    sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=indicators[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in indics:
+    print(indicators[var].describe())
+
 
 #%%
 # linear regressions (dummy and indicators) to get an impression
@@ -364,6 +403,7 @@ for var in ic_rat:
     print(traindata[var].describe())
 print(interest_coverage.describe())
 
+ #%%
 #########################
 # 02: Data analysis for ROA #
 #########################
@@ -482,24 +522,7 @@ plt.show()
 
 print(traindata["year_inc"].describe())
 print(traindata["year_inc"].value_counts())
-#%%
-#############################################
-# 10: Data analysis for Indicators #
-#############################################
-newinds = indicators[indicators.columns.difference(["id", "default", "debt_to_equity_ratio"])]
-indics = newinds.columns.tolist()
 
-fig, axes = plt.subplots(len(indics), 2, figsize=(10, 30))
-fig.suptitle("Indicators")
-row = 0
-for var in newinds.columns[0:]:
-    sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
-    sns.boxplot(y=indicators[var], ax=axes[row, 0])
-    row += 1
-plt.show()
-
-for var in indics:
-    print(indicators[var].describe())
 
 #%% Alternative, aber imo schlechter
 df_inds = indicators[indics]
