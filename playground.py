@@ -612,9 +612,11 @@ model = LinearRegression().fit(x, y)
 intercept = float(model.intercept_)
 slope = float(model.coef_[0])
 
+print("pd threshold: " + str((intercept+(intercept+slope))/2))
+
 for i in range(0, len(history['id'])):
     if i not in nan_index:
-        if history.pd[i] >= intercept+slope: # mit intercept+slope höhere trefferquote, aber weniger D's gefunden
+        if history.pd[i] >= (intercept+(intercept+slope))/2: # mit intercept+slope weniger D's als mit intercept, aber mehr non-D's richtig
             history.estimation[i] = 1
         else:
             history.estimation[i] = 0
