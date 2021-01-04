@@ -274,12 +274,8 @@ print(res.summary2())
 
 #%%
 # # looking at missing values (Fredi)
-# # missing values based on variable
-# na = pd.DataFrame({'Valid': traindata.notnull().sum(),
-#                     'NAs': traindata.isnull().sum(),
-#                     'NAs of total': traindata.isnull().sum() / traindata.shape[0]}
-#                    ).sort_values('NAs of total', ascending=False)
-# print(na)
+# 1. Ratio "Interest Coverage Ratio" - P&L Variables - earn_from_op & oth_interest_exp
+
 
 #%% Distribution analysis
 # P&L variables
