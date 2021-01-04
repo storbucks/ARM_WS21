@@ -323,6 +323,29 @@ traindata["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"]) #
 traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"]) # not necessary
 #traindata["total_equity"].fillna(bs_vars_mean["total_equity "])
 
+#%%
+# 4. Ratio - year inc (Julian?)
+
+#%%
+# 5. Ratio - Equity Ratio - total_equity & total assets
+# Already manipulated in previous ratios
+
+#%%
+# 6. Ratio - Operating margin - earn_from_op & sales
+# Earning from operations already adjusted
+
+# Adjustment Sales (P&L)
+traindata["sales"].fillna(pl_vars_mean["sales"])
+
+#%%
+#print(traindata.groupby("legal_form").fin_result.mean())
+#print(traindata.groupby("default").fin_result.mean())
+
+# Callable grouping for default and non-default comparison
+#default_groups = traindata.groupby("default")
+#print(default_groups.sales.mean())  # example, call as default_groups.column.function
+
+
 #%% Distribution analysis
 # P&L variables
 fig, axes = plt.subplots(len(pl_vars.columns), 2, figsize=(10, 5*len(pl_vars.columns)))
