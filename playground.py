@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+from sklearn.linear_model import LinearRegression
 import seaborn as sns
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
@@ -258,7 +259,40 @@ traindata["total_result"].fillna(pl_vars_mean["total_result"])
 traindata["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"]) # not necessary
 traindata["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"]) # not necessary
 traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"]) # not necessary
-traindata["total_equity"].fillna(bs_vars_mean["total_equity "])
+#traindata["total_equity"].fillna(bs_vars_mean["total_equity "])
+
+#%%
+# 4. Ratio - year inc (Julian?)
+
+#%%
+# 5. Ratio - Equity Ratio - total_equity & total assets
+# Already manipulated in previous ratios
+
+#%%
+# 6. Ratio - Operating margin - earn_from_op & sales
+# Earning from operations already adjusted
+
+# Adjustment Sales (P&L)
+traindata["sales"].fillna(pl_vars_mean["sales"])
+
+#%%
+# 7. Ratio - Cashflow Measure ??
+
+#%%
+#8. Ratio - Liquidity measures - current_assets & total_liabilities_st (Umlaufvermögen/kurz. FK)
+# Look into BS DATA
+
+# total_liabilities_st --> already done
+traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
+
+
+#print(traindata.groupby("legal_form").fin_result.mean())
+#print(traindata.groupby("default").fin_result.mean())
+
+# Callable grouping for default and non-default comparison
+#default_groups = traindata.groupby("default")
+#print(default_groups.sales.mean())  # example, call as default_groups.column.function
+
 
 #%% Distribution analysis
 # P&L variables
@@ -456,18 +490,46 @@ print(res2.summary2())
 
 # debt_ratio + interest_coverage + roa + age_level + equity_ratio + ebit_margin + cf_operating' + current_ratio'
 
-pd = []
-defaults = indicators.default.astype(int)
-default_dum = []
 
-for i in range(0, len(indicators['id'])):
-               x = -3.5022 + 0.9490 * indicators['debt_ratio'][i] - 1.2014 * indicators['roa'][i] + 2.6106 * indicators['age_level'][i]
-               pi = (np.exp(x)/(1 + np.exp(x)))
-               if not math.isnan(pi):
-                   pd.append(pi)
-                   default_dum.append(defaults[i])
+frame = {'id': indicators.id, 'default_dum': indicators.default.astype(int), 'debt_ratio': indicators.debt_ratio, 'roa': indicators.roa, 'age_level': indicators.age_level}
+history = pd.DataFrame(frame)
+history["pd"] = ""
+history["estimation"] = ""
+nan_index = []
 
-history = [default_dum, pd]
+for i in range(0, len(history['id'])):
+    x = res2.params[0] + res2.params[1] * history['debt_ratio'][i] + res2.params[2]* history['roa'][i] + res2.params[3] * history['age_level'][i]
+    pi = (np.exp(x)/(1 + np.exp(x)))
+    if not math.isnan(pi):
+        history.pd[i] = pi
+    else:
+        history = history.drop([i])
+        nan_index.append(i)
+
+
+x = np.array(history['default_dum']).reshape((-1, 1))
+y = np.array(history['pd'])
+model = LinearRegression()
+model.fit(x, y)
+model = LinearRegression().fit(x, y)
+intercept = float(model.intercept_)
+slope = float(model.coef_[0])
+
+for i in range(0, len(history['id'])):
+    if i not in nan_index:
+        if history.pd[i] >= intercept: # mit intercept+slope höhere trefferquote, aber weniger D's gefunden
+            history.estimation[i] = 1
+        else:
+            history.estimation[i] = 0
+
+count = 0
+for i in range(0, len(history['id'])):
+    if i not in nan_index:
+        if history.default_dum[i] == history.estimation[i]:
+            count += 1
+
+strikes = count/len(history['id'])
+print(str(round(strikes*100,2)) + " %")
 
 #import xlsxwriter
 #with xlsxwriter.Workbook('pds.xlsx') as workbook:
