@@ -461,7 +461,7 @@ print(traindata["year_inc"].value_counts())
 #############################################
 # 10: Data analysis for Indicators #
 #############################################
-newinds = indicators[indicators.columns.difference(["id", "debt_to_equity_ratio"])]
+newinds = indicators[indicators.columns.difference(["id", "default", "debt_to_equity_ratio"])]
 indics = newinds.columns.tolist()
 
 fig, axes = plt.subplots(len(indics), 2, figsize=(10, 30))
@@ -476,6 +476,10 @@ plt.show()
 for var in indics:
     print(indicators[var].describe())
 
+#%% Alternative, aber imo schlechter
+df_inds = indicators[indics]
+ax = sns.boxplot(data=df_inds, orient="h", palette="Set2")
+plt.show()
 
 ########################################################################################################################
 #%%
