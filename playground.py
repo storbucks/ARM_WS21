@@ -272,6 +272,11 @@ print(res.summary2())
 #                    ).sort_values('NAs of total', ascending=False)
 # print(na)
 
+# Start Interest coverage ratio
+# --> Variables of Interest "earn_from_op" & "oth_interest_exp"
+# earn_from_op - 1 value is missing.C_620
+# df.
+
 
 #%% Distribution analysis
 # P&L variables
