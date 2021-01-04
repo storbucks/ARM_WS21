@@ -112,6 +112,23 @@ plt.xlabel('year_inc')
 plt.ylabel('PD / Default')
 plt.show()
 
+ #%%
+#############################
+# Manipulation of Years Inc #
+#############################
+# Replace 0 with mean of years
+yrs_mean = traindata["year_inc"].mean()
+traindata["year_inc"].replace(to_replace=0, value=yrs_mean, inplace=True)
+
+for i in range(0, len(traindata.year_inc)):
+    traindata.year_inc[i] = 2021 - traindata.year_inc[i]
+oldest_company = max(traindata.year_inc)
+
+age_level = []
+for i in range(0, len(traindata.year_inc)):
+    age_level.append(traindata.year_inc[i].copy()/oldest_company)
+
+max_age = traindata.loc[(traindata.year_inc == max(traindata.year_inc))]
 #%% Financial Ratios (Eva)
 # Descriptive analysis
 # print(traindata[numvar+[boolvar]].corr())
@@ -142,7 +159,6 @@ curr_rat = ["current_assets", "total_liabilities_st"]
 total_liabilities = traindata.total_liabilities_st.copy() + traindata.total_liabilities_mt.copy() + traindata.total_liabilities_lt.copy()
 debt_ratio = total_liabilities.copy() / traindata.total_assets.copy()
 debt_to_equity_ratio = total_liabilities.copy() / traindata.total_equity.copy()
-
 d_rat = ["total_liabilities_st", "total_liabilities_mt", "total_liabilities_lt", "total_assets"]
 dte_rat = ["total_liabilities_st", "total_liabilities_mt", "total_liabilities_lt", "total_equity"]
 
@@ -172,14 +188,6 @@ roa_rat = ["total_result", "total_assets"]
 interest_coverage = traindata.earn_from_op.copy() / traindata.oth_interest_exp.copy()
 ic_rat = ["earn_from_op", "oth_interest_exp"]
 
-for i in range(0, len(traindata.year_inc)):
-    traindata.year_inc[i] = 2021 - traindata.year_inc[i]
-oldest_company = max(traindata.year_inc)
-
-age_level = []
-for i in range(0, len(traindata.year_inc)):
-    age_level.append(traindata.year_inc[i].copy()/oldest_company)
-
 equity_ratio = traindata.total_equity.copy() / traindata.total_assets.copy()
 e_rat = ["total_equity", "total_assets"]
 
@@ -199,6 +207,7 @@ sns.heatmap(indicators[2:].corr(method='pearson'),
 
 plt.show()
 
+#%%
 # linear regressions (dummy and indicators) to get an impression
 indicators['Default_Dum'] = indicators.default.astype(int) # dummy variable for linear regression
 
@@ -264,7 +273,6 @@ print(res.summary2())
 #                    ).sort_values('NAs of total', ascending=False)
 # print(na)
 
-
 #%% Distribution analysis
 # P&L variables
 fig, axes = plt.subplots(len(pl_vars.columns), 2, figsize=(10, 5*len(pl_vars.columns)))
@@ -292,8 +300,6 @@ for column in cf_vars.columns[0:]:
     sns.boxplot(y=cf_vars[column], ax=axes[row, 1])
     row += 1
 plt.show()
-
-#%%
 
 #%%
 #############################################
@@ -419,6 +425,20 @@ plt.show()
 
 print(traindata["cf_operating"].describe())
 
+#############################################
+# 09: Data analysis for Year Inc #
+#############################################
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+fig.suptitle("Year Inc")
+sns.distplot(traindata["year_inc"], kde=True, ax=axes[1])
+sns.boxplot(y=traindata["year_inc"], ax=axes[0])
+plt.show()
+
+print(traindata["year_inc"].describe())
+print(traindata["year_inc"].value_counts())
+
+########################################################################################################################
+#%%
 # Logit regression with indicators (multivariate)
 
 res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + roa + age_level', data=indicators).fit(disp=False, maxiter=100)
