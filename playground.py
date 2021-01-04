@@ -275,6 +275,7 @@ print(res.summary2())
 
 #%%
 # # looking at missing values (Fredi)
+
 # 1. Ratio "Interest Coverage Ratio" - P&L Variables - earn_from_op & oth_interest_exp
 pl_na_overview = pd.DataFrame({'Valid': pl_vars.notnull().sum(),
               'NAs': pl_vars.isnull().sum(),
@@ -282,9 +283,14 @@ pl_na_overview = pd.DataFrame({'Valid': pl_vars.notnull().sum(),
             ).sort_values('NAs of total', ascending=True)
 print(pl_na_overview)
 
-#Manipulation of earn_from_op
-earn_op_mean = traindata["earn_from_op"].mean()
-traindata["earn_from_op"].replace(to_replace=0, value=earn_op_mean, inplace=True)
+# Storing Mean of PL variables
+pl_vars_mean = pl_vars.mean()
+print(pl_vars_mean)
+
+#Manipulation of earn_from_op & oth_interest_exp
+traindata["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
+traindata["oth_interest_exp"].fillna(pl_vars_mean["oth_interest_exp"])
+
 
 
 
