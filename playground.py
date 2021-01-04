@@ -217,8 +217,20 @@ print(res.summary2())
 # --> Further adjustments should be made # Note: Allgemein fehlen bei unseren Variablen kaum Werte!
 # However, is a high number of missing values a potential indicator for a higher probability of default?
 
+# Focusing on yellow marked variables in Excel
+# 1. oth_interest_exp - not working
+#tbl = traindata.assign(IsMissing = lambda x: x.oth_interest_exp.isnull()).groupby('IsMissing').default.describe()
+#tbl['Def'] = tbl['count'] - tbl['freq']
+#tbl['Avg'] = tbl['Def'] / tbl['count']
+#print(tbl)
 
+# Is the difference statistical significant? - not working
+mdl = sm.Logit.from_formula('defn ~ IsMissing + 1',
+                            data=traindata.assign(IsMissing = lambda x: x.oth_interest_exp.isnull())
+                           ).fit(disp=False, maxiter=100)
+print(mdl.summary2())
 
+#%%
 # with this code all NA's should be replaced with the respective mean! (excluding firm context variables)
 # x = traindata.mean()
 # traindata.fillna(x)
