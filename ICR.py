@@ -72,11 +72,13 @@ print(mdl.summary2())
 print(mdl.get_margeff(dummy=True).summary())
 
 #%%
-#mdl = sm.OLS.from_formula('np.log(oth_interest_exp) ~ np.log(total_liabilities_lt) + 1', data=traindata).fit(disp=False, maxiter=100)
-#print(mdl.summary2())
-
-
-
+mdl = sm.OLS.from_formula('np.log(oth_interest_exp) ~ np.log(total_assets) + 1', data=traindata).fit(disp=False, maxiter=100)
+print(mdl.summary2())
 
 #%%
-# n/a's Fredi
+traindata['oth_interest_exp_hat'] = np.exp(mdl.predict(exog=traindata.total_assets)).round(0)
+traindata['oth_interest_exp_imp'] = traindata['oth_interest_exp'].fillna(traindata['oth_interest_exp_hat'])
+tmp = traindata[['oth_interest_exp', 'oth_interest_exp_hat','oth_interest_exp_imp']]
+tmp.head(10)
+
+np.log(tmp).plot(kind='scatter',x = 'oth_interest_exp', y='oth_interest_exp_hat', figsize=(15,10))
