@@ -71,13 +71,9 @@ print(traindata.year_inc.describe())
 # print(traindata.year_inc.describe())
 
 # Transform year_inc it into Age
+age = []
 for i in range(0, len(traindata.year_inc)):
-    traindata.year_inc[i] = 2021 - traindata.year_inc[i]
-oldest_company = max(traindata.year_inc)
-
-age_level = []
-for i in range(0, len(traindata.year_inc)):
-    age_level.append(traindata.year_inc[i].copy()) #/oldest_company
+    age.append(2021 - traindata.year_inc[i].copy())
 #%%
 ########################
 ##### TOTAL_EQUITY #####
@@ -154,9 +150,9 @@ ebit_margin = traindata.earn_from_op.copy() / traindata.sales.copy()
 ebt_rat = ["earn_from_op", "sales"]
 
 #%%
-frame = {'id': traindata.id, 'default': traindata.default, 'interest_coverage': interest_coverage, 'roa': roa, 'debt_ratio': debt_ratio,
-         'debt_to_equity_ratio': debt_to_equity_ratio, 'age_level': age_level, 'equity_ratio': equity_ratio,
-         'ebit_margin': ebit_margin, 'cf_operating': traindata.cf_operating, 'current_ratio': current_ratio}
+frame = {'id': traindata.id, 'default': traindata.default, 'roa': roa, 'debt_ratio': debt_ratio, 'current_ratio': current_ratio,
+         'cf_operating': traindata.cf_operating, 'debt_to_equity_ratio': debt_to_equity_ratio, 'equity_ratio': equity_ratio,
+         'interest_coverage': interest_coverage, 'ebit_margin': ebit_margin,  'age': age}
 indicators = pd.DataFrame(frame)
 print(indicators)
 #%%
@@ -208,17 +204,6 @@ for var in indics:
 # linear regressions (dummy and indicators) to get an impression
 indicators['Default_Dum'] = indicators.default.astype(int) # dummy variable for linear regression
 
-mod = smf.ols(formula='Default_Dum ~ debt_ratio', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-mod = smf.ols(formula='debt_ratio ~ Default_Dum', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio', data=indicators).fit(disp=False, maxiter=100)
-print(res2.summary2())
-
 fig, axes = plt.subplots(figsize=(15,5))
 
 xs = np.arange(-10,indicators.debt_ratio.max()+10)
@@ -232,34 +217,6 @@ plt.xlabel('debt_ratio')
 plt.ylabel('Default_Dum');
 
 plt.show()
-
-mod = smf.ols(formula='Default_Dum ~ interest_coverage', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-mod = smf.ols(formula='Default_Dum ~ roa', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-mod = smf.ols(formula='Default_Dum ~ age_level', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-mod = smf.ols(formula='Default_Dum ~ equity_ratio', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-mod = smf.ols(formula='Default_Dum ~ ebit_margin', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-mod = smf.ols(formula='Default_Dum ~ cf_operating', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
-
-mod = smf.ols(formula='Default_Dum ~ current_ratio', data=indicators)  # significant !!
-res = mod.fit()
-print(res.summary2())
 
 #%%
 # # looking at missing values (Fredi)! 1. step Looking on variables & inserting mean if value is missing
