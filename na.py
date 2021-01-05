@@ -16,7 +16,7 @@ pd.set_option('display.float_format', lambda x: '%.10f' % x)
 
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
 traindata = pd.read_csv("Training_Dataset.csv", sep=";")
-additionaldata = pd.read_csv("sectors_overview.csv.csv", sep=";")
+additionaldata = pd.read_csv("sectors_overview.csv", sep=";")
 
 # Build some groups in dataset based on codebook
 pl_vars = traindata.loc[:, "sales":"annual_profit"]
