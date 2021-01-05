@@ -85,6 +85,11 @@ traindata["sales"].fillna(pl_vars_mean["sales"])
 traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
 
 #%%
+#TO DO:
+# 1. Group By Sektors  --> Übersektor (Fredi)
+# 2. Look deeper into oth_interest_exp & total_equity
+# 3. Design If Rule for the variables (Levels)
+
 
 
 #print(traindata.groupby("legal_form").fin_result.mean())
