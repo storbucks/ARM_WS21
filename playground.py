@@ -567,3 +567,7 @@ for i in range(0, len(history['id'])):
         nan_index.append(i)
 
 
+#%%
+# Sehr interessante übersicht
+sns.pairplot(indicators[2:], hue="default", palette="Set2")
+plt.show()
