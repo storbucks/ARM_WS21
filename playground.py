@@ -181,6 +181,11 @@ winsorize(indicators, ["ebit_margin"], 0.01, 0.005)
 print(indicators.ebit_margin.describe())
 
 #%%
+print(indicators.cf_operating.describe())
+winsorize(indicators, ["cf_operating"], 0.01, 0.05)
+print(indicators.cf_operating.describe())
+
+#%%
 #############################################
 # 10: Data analysis for Indicators #
 #############################################
