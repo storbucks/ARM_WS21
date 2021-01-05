@@ -16,6 +16,7 @@ pd.set_option('display.float_format', lambda x: '%.10f' % x)
 
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
 traindata = pd.read_csv("Training_Dataset.csv", sep=";")
+additionaldata = pd.read_csv("sectors_overview.csv.csv", sep=";")
 
 # Build some groups in dataset based on codebook
 pl_vars = traindata.loc[:, "sales":"annual_profit"]
@@ -73,16 +74,16 @@ print(cf_vars_mean)
 
 #%%
 # Manipulation Backup for Ratios - also look at Excel --> NA's
-traindata["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
-traindata["oth_interest_exp"].fillna(pl_vars_mean["oth_interest_exp"])
-traindata["total_assets"].fillna(bs_vars_mean["total_assets"])
-traindata["total_result"].fillna(pl_vars_mean["total_result"])
-traindata["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"])
-traindata["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"])
-traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"])
-traindata["total_equity"].fillna(bs_vars_mean["total_equity "])
-traindata["sales"].fillna(pl_vars_mean["sales"])
-traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
+#traindata["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
+#traindata["oth_interest_exp"].fillna(pl_vars_mean["oth_interest_exp"])
+#traindata["total_assets"].fillna(bs_vars_mean["total_assets"])
+#traindata["total_result"].fillna(pl_vars_mean["total_result"])
+#traindata["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"])
+#traindata["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"])
+#traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"])
+#traindata["total_equity"].fillna(bs_vars_mean["total_equity "])
+#traindata["sales"].fillna(pl_vars_mean["sales"])
+#traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
 
 #%%
 #TO DO:
@@ -90,6 +91,7 @@ traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
 # 2. Look deeper into oth_interest_exp & total_equity
 # 3. Design If Rule for the variables (Levels)
 
+traindata.insert(4, "Übersektor", "x", allow_duplicates= True)
 
 
 #print(traindata.groupby("legal_form").fin_result.mean())
