@@ -7,6 +7,14 @@ traindata_m = pd.read_csv("Training_Dataset.csv", sep=";")
 testdata = pd.read_csv("Test_Dataset.csv", sep=";")
 
 # hier Funktionen zur Datenbereinigung einfügen
+# Dealing with na: ICR
+total_liabilities = traindata_m.total_liabilities_st.copy() + traindata_m.total_liabilities_mt.copy() + traindata_m.total_liabilities_lt.copy()
+interest_exp_rate = traindata_m.oth_interest_exp.copy() / total_liabilities
+oth_interest_exp_filler = []
+for i in range(0, len(traindata_m.oth_interest_exp)):
+    oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
+    traindata_m.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
+
 
 #############################
 # functions to analyse data #
