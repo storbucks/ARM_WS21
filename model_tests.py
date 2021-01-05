@@ -13,6 +13,7 @@ import scipy as sci
 from playground import indicators
 from playground import history
 from playground import nan_index
+from model import pd_estimations
 
 
 x = np.array(history['default_dum']).reshape((-1, 1))
@@ -127,3 +128,5 @@ print("subset_2")
 model_validation(history,224,447)
 print("subset_3")
 model_validation(history,447,669)
+
+
