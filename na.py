@@ -16,7 +16,7 @@ pd.set_option('display.float_format', lambda x: '%.10f' % x)
 
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
 traindata = pd.read_csv("Training_Dataset.csv", sep=";")
-additionaldata = pd.read_csv("sectors_overview.csv", sep=";")
+
 
 # Build some groups in dataset based on codebook
 pl_vars = traindata.loc[:, "sales":"annual_profit"]
@@ -27,6 +27,8 @@ cf_vars = traindata.loc[:, "cf_operating":"cf_financing"]
 catvar = [i for i in list(traindata.columns) if traindata[i].dtype == 'O']  # category variables
 numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64', 'int64']]  # numerical variables
 boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # boolean variables
+#%%
+additionaldata = pd.read_csv("sectors_overview_5.csv", sep=";").set_index("sector")
 #%%
 #Interest coverage ratio (Olli)
 
@@ -91,8 +93,9 @@ print(cf_vars_mean)
 # 2. Look deeper into oth_interest_exp & total_equity
 # 3. Design If Rule for the variables (Levels)
 
-traindata.insert(4, "Übersektor", "x", allow_duplicates= True)
-
+# maybe not necessarytraindata.insert(4, "Übersektor", "x", allow_duplicates= True)
+#maybe delete second column in additionaldata
+left_join = pd.merge(traindata, additionaldata, on = 'sector', how = 'left')
 
 #print(traindata.groupby("legal_form").fin_result.mean())
 #print(traindata.groupby("default").fin_result.mean())
