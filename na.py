@@ -28,7 +28,9 @@ catvar = [i for i in list(traindata.columns) if traindata[i].dtype == 'O']  # ca
 numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64', 'int64']]  # numerical variables
 boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # boolean variables
 #%%
-additionaldata = pd.read_csv("sectors_overview_5.csv", sep=";").set_index("sector")
+additionaldata = pd.read_csv("sectors_overview_6.csv", sep=";",
+                             dtype={'sector':'int64',
+                                    'sector_string':str})
 #%%
 #Interest coverage ratio (Olli)
 
