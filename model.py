@@ -13,10 +13,60 @@ sector_data = pd.read_csv("sectors_overview_6.csv", sep=";",
 traindata = pd.merge(traindata_m, sector_data, on = 'sector', how = 'left')
 traindata['sector_string'] = traindata['sector_string'].fillna('Unknown')
 
+#%%
+# Build some groups in dataset based on codebook
+pl_vars = traindata.loc[:, "sales":"annual_profit"]
+bs_vars = traindata.loc[:, "total_assets":"trade_receivables_lt"]
+cf_vars = traindata.loc[:, "cf_operating":"cf_financing"]
+special_vars = traindata.loc[:, "sales":"sector_string"]
+
+# Build some groups to use as indices when accessing traindata
+catvar = [i for i in list(traindata.columns) if traindata[i].dtype == 'O']  # category variables
+numvar = [i for i in list(traindata.columns) if traindata[i].dtype in ['float64', 'int64']]  # numerical variables
+boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # boolean variables
 
 #%%
+#Overview over NA's
+pl_na_overview = pd.DataFrame({'Valid': pl_vars.notnull().sum(),
+              'NAs': pl_vars.isnull().sum(),
+              'NAs of total': pl_vars.isnull().sum() / pl_vars.shape[0]}
+            ).sort_values('NAs of total', ascending=True)
+print(pl_na_overview)
 
+bs_na_overview = pd.DataFrame({'Valid': bs_vars.notnull().sum(),
+              'NAs': bs_vars.isnull().sum(),
+              'NAs of total': bs_vars.isnull().sum() / bs_vars.shape[0]}
+            ).sort_values('NAs of total', ascending=True)
+print(bs_na_overview)
 
+cf_na_overview = pd.DataFrame({'Valid': cf_vars.notnull().sum(),
+              'NAs': cf_vars.isnull().sum(),
+              'NAs of total': cf_vars.isnull().sum() / cf_vars.shape[0]}
+            ).sort_values('NAs of total', ascending=True)
+print(cf_na_overview)
+
+#%%
+# Getting sector specific Means and replacing NA's
+#%%
+# Storing sector specific Means of Numerical variables
+special_vars_mean = special_vars.groupby("sector_string").mean()
+pl_vars_mean = pl_vars.mean()
+bs_vars_mean = bs_vars.mean()
+cf_vars_mean = cf_vars.mean()
+
+#%%
+# Manipulation - Substituing NA's
+traindata["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
+traindata["total_assets"].fillna(bs_vars_mean["total_assets"])
+traindata["total_result"].fillna(pl_vars_mean["total_result"])
+traindata["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"])
+traindata["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"])
+traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"])
+traindata["total_equity"].fillna(special_vars_mean["total_equity"]) # another approach could be useful
+traindata["sales"].fillna(pl_vars_mean["sales"])
+traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
+
+#%%
 # hier Funktionen zur Datenbereinigung einfügen
 # Dealing with na: ICR
 total_liabilities = traindata_m.total_liabilities_st.copy() + traindata_m.total_liabilities_mt.copy() + traindata_m.total_liabilities_lt.copy()
