@@ -84,7 +84,7 @@ sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'i
 # shows coefficients that work out well (Hier könnt ihr herum experimentieren, welche Zusammensetzung gut ist; am besten kopieren und dies als Entwurf lassen)
 indicators = create_indicators_for_testing(traindata_t)
 indicators['Default_Dum'] = traindata_t.default
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
+res2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + interest_coverage + roa', data=indicators).fit(disp=False, maxiter=100)
 print("This is the result of the logit regression.")
 print(res2.summary2())
 
@@ -93,6 +93,8 @@ param0 = res2.params[0]
 param1 = res2.params[1]
 param2 = res2.params[2]
 param3 = res2.params[3]
+#param4 = res2.params[4]
+#param5 = res2.params[5]
 
 # uses regression betas for estimation
 estimations = calculate_pds(indicators, indicators['debt_ratio'], indicators['current_ratio'], indicators['roa'], param0, param1, param2, param3)

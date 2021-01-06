@@ -52,15 +52,15 @@ def data_modification(data):
     cf_vars_mean = cf_vars.mean()  # not necessary regarding the chosen ratios
 
     # Manipulation - Substituing NA's
-    data["earn_from_op"].fillna(pl_vars_mean["earn_from_op"], inplace = True)
-    data["total_assets"].fillna(bs_vars_mean["total_assets"], inplace = True)
-    data["total_result"].fillna(pl_vars_mean["total_result"], inplace = True)
-    data["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"], inplace = True)
-    data["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"], inplace = True)
-    data["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"], inplace = True)
+    data["earn_from_op"].fillna(pl_vars_mean["earn_from_op"], inplace=True)
+    data["total_assets"].fillna(bs_vars_mean["total_assets"], inplace=True)
+    data["total_result"].fillna(pl_vars_mean["total_result"], inplace=True)
+    data["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"], inplace=True)
+    data["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"], inplace=True)
+    data["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"], inplace=True)
     # data["total_equity"].fillna(special_vars_mean["total_equity"])  # another approach could be useful
-    data["sales"].fillna(pl_vars_mean["sales"], inplace = True)
-    data["current_assets"].fillna(bs_vars_mean["current_assets"], inplace = True)
+    data["sales"].fillna(pl_vars_mean["sales"], inplace=True)
+    data["current_assets"].fillna(bs_vars_mean["current_assets"], inplace=True)
 
     # Dealing with na: ICR
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
@@ -104,7 +104,7 @@ def create_indicator_frame(data):
 def winsorize_indicators(indicators):
     # Winsorize IC Ratio
     winsorize(indicators, ['interest_coverage'], 0.01, 0.15)
-    # Winsoirze Current Ratio
+    # Winsorize Current Ratio
     winsorize(indicators, ['current_ratio'], 0, 0.05)  # only wins from top, 5% ??
     # Winsorize Ebit Margin
     winsorize(indicators, ["ebit_margin"], 0.01, 0.005)

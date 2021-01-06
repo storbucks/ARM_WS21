@@ -76,6 +76,7 @@ def create_indicators(data):
 # count how often the values for y and p differ in this table, and then divide this count by the number of rows in the table
 
 indicators = create_indicators(traindata_t)
+indicators['Default'] = traindata_t.default
 # heatmap
 f, ax = plt.subplots(figsize=(20,5))
 sns.heatmap(indicators[2:].corr(method='pearson'),
