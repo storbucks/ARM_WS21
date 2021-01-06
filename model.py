@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import scipy as sci
+import scipy.stats
 
 
 # Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
@@ -121,8 +122,6 @@ def winsorize_indicators(indicators):
     winsorize(indicators, ['current_ratio'], 0, 0.05)  # only wins from top, 5% ??
     # Winsorize Ebit Margin
     winsorize(indicators, ["ebit_margin"], 0.01, 0.005)
-    # Winsorize Operating CFs
-    winsorize(indicators, ["cf_operating"], 0.01, 0.05)
     return indicators
 
 
