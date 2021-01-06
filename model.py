@@ -66,14 +66,14 @@ traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
 
 #%%
 # hier Funktionen zur Datenbereinigung einfügen
-# Dealing with na: ICR
-total_liabilities = traindata_m.total_liabilities_st.copy() + traindata_m.total_liabilities_mt.copy() + traindata_m.total_liabilities_lt.copy()
-interest_exp_rate = traindata_m.oth_interest_exp.copy() / total_liabilities
+# Dealing with na: ICR - Notiz Fredi (habe statt traindata_m --> wieder traindata genommen --> siehe oben)
+total_liabilities = traindata.total_liabilities_st.copy() + traindata.total_liabilities_mt.copy() + traindata.total_liabilities_lt.copy()
+interest_exp_rate = traindata.oth_interest_exp.copy() / total_liabilities
 oth_interest_exp_filler = []
-for i in range(0, len(traindata_m.oth_interest_exp)):
+for i in range(0, len(traindata.oth_interest_exp)):
     oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
-    traindata_m.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
-
+    traindata.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
+#%%
 
 #############################
 # functions to analyse data #
