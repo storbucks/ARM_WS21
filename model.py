@@ -49,7 +49,6 @@ def data_modification(data):
     special_vars_mean = special_vars.groupby("sector_string").mean()
     pl_vars_mean = pl_vars.mean()
     bs_vars_mean = bs_vars.mean()
-    print(bs_vars_mean['total_assets'])
     cf_vars_mean = cf_vars.mean()  # not necessary regarding the chosen ratios
 
     # Manipulation - Substituing NA's
@@ -76,7 +75,6 @@ def data_modification(data):
 
     # Wins year_inc
     winsorize(data, ['year_inc'], 0.01, 0.005)  # keeps values betwnn 1% and 99.5%
-    print(data.iloc[89,:].values)
     return data
 
 
@@ -97,9 +95,8 @@ def create_indicator_frame(data):
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
     # create data frame including all indicators
-    frame = {'id': data.id, 'interest_coverage': interest_coverage, 'roa': roa, 'debt_ratio': debt_ratio,
-             'debt_to_equity_ratio': debt_to_equity_ratio, 'equity_ratio': equity_ratio,
-             'ebit_margin': ebit_margin, 'current_ratio': current_ratio, 'age': age}
+    frame = {'id': data.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_ratio': debt_ratio,
+             'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage, 'age': age}
     indicators = pd.DataFrame(frame)
     return indicators
 

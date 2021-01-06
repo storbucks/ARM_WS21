@@ -1,130 +1,62 @@
 import pandas as pd
 import numpy as np
 
-from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 import sklearn as sk
+import seaborn as sns
+import math
 from sklearn import model_selection
 
-from playground import indicators
-from playground import history
-from playground import nan_index
+from model import data_merging
+from model import data_modification
+from model import winsorize_indicators
+from model import create_indicator_frame
 
-x = np.array(history['default_dum']).reshape((-1, 1))
-y = np.array(history['pd'])
-model = LinearRegression()
-model.fit(x, y)
-model = LinearRegression().fit(x, y)
-intercept = float(model.intercept_)
-slope = float(model.coef_[0])
+traindata_t = pd.read_csv("Training_Dataset.csv", sep=";")
+testdata = pd.read_csv("Test_Dataset.csv", sep=";")
+sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
 
-print("pd threshold: " + str((intercept+(intercept+slope))/2))
+#  calculate the values to classify companies in default and non-default
+def calculate_pds(indicators):
+    frame = {'id': indicators.id}
+    estimations = pd.DataFrame(frame)
+    estimations['estimated_pd'] = ""
+    # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
+    for i in range(0, len(indicators['id'])):
+        # hier müssen wir mit tests noch geeignete allgemeingültige betas finden und gute Indikatoren
+        x = -3 + 0.7 * indicators['debt_ratio'][i] - 0.19 * indicators['current_ratio'][i] - 1 * indicators['roa'][i]
+        pi = (np.exp(x)/(1 + np.exp(x)))
+        estimations['estimated_pd'][i] = pi
+    return estimations
 
-for i in range(0, len(history['id'])):
-    if i not in nan_index:
-        if history.pd[i] >= (intercept+(intercept+slope))/2:  # mit intercept+slope weniger D's als mit intercept, aber mehr non-D's richtig
-            history.estimation[i] = 1
+
+def create_default_booleans(estimations):
+    estimations['default_boolean'] = ""
+    default_threshold = 0.06162628810257741  # geeigneten threshold finden
+    for i in range(0, len(estimations)):
+        if estimations['estimated_pd'][i] >= default_threshold:
+            estimations['default_boolean'] = True
         else:
-            history.estimation[i] = 0
-
-count_defaults = 0
-count_default_strikes = 0
-
-count_non_defaults = 0
-count_non_default_strikes = 0
-
-for i in range(0, len(history['id'])):
-    if i not in nan_index:
-        if history.default_dum[i] == 1:
-            count_defaults += 1
-            if history.default_dum[i] == history.estimation[i]:
-                count_default_strikes += 1
-        else:
-            count_non_defaults += 1
-            if history.default_dum[i] == history.estimation[i]:
-                count_non_default_strikes += 1
-
-default_strikes = count_default_strikes/count_defaults
-non_default_strikes = count_non_default_strikes/count_non_defaults
-
-print("Identified " + str(round(default_strikes * 100, 2)) + "% of defaults and " + str(round(non_default_strikes * 100, 2)) + "% of non_defaults")
-
-#import xlsxwriter
-#with xlsxwriter.Workbook('pds.xlsx') as workbook:
- #   worksheet = workbook.add_worksheet()
-  #  for row_num, data in enumerate(pds):
-   #     worksheet.write_row(row_num, 0, data)
-
-subset_1 = indicators[:223]
-subset_2 = indicators[223:446]
-subset_3 = indicators[446:]
-
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + roa', data=subset_1).fit(disp=False, maxiter=100)
-print(res2.summary2())
-
-x = np.array(history[0:224]['default_dum']).reshape((-1, 1))
-y = np.array(history[0:224]['pd'])
-model = LinearRegression()
-model.fit(x, y)
-model = LinearRegression().fit(x, y)
-intercept_1 = float(model.intercept_)
-slope_1 = float(model.coef_[0])
-
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + roa', data=subset_2).fit(disp=False, maxiter=100)
-print(res2.summary2())
-
-x = np.array(history[224:447]['default_dum']).reshape((-1, 1))
-y = np.array(history[224:447]['pd'])
-model = LinearRegression()
-model.fit(x, y)
-model = LinearRegression().fit(x, y)
-intercept_2 = float(model.intercept_)
-slope_2 = float(model.coef_[0])
-
-res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + roa', data=subset_3).fit(disp=False, maxiter=100)
-print(res2.summary2())
-
-x = np.array(history[447:669]['default_dum']).reshape((-1, 1))
-y = np.array(history[447:669]['pd'])
-model = LinearRegression()
-model.fit(x, y)
-model = LinearRegression().fit(x, y)
-intercept_3 = float(model.intercept_)
-slope_3 = float(model.coef_[0])
-
-print("mean intercept: " + str((intercept_1+intercept_2+intercept_3)/3))
-print("mean slope: " + str((slope_1+slope_2+slope_3)/3))
+            estimations['default_boolean'] = False
+    return estimations
 
 
-def model_validation(history, start, end):
-    count_defaults = 0
-    count_default_strikes = 0
-    count_non_defaults = 0
-    count_non_default_strikes = 0
+def pd_estimations(data):
+    new_data = data_merging(data, sector_data)  # add sector variable
+    data = data_modification(new_data)  # modify data regarding missing values
+    new_indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
+    indicators = winsorize_indicators(new_indicators)
+    estimations = calculate_pds(indicators)  # calculate values with logit regression betas
+    default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted
+    return default_booleans
 
-    for i in range(start, end):
-        if i not in nan_index:
-            if history.default_dum[i] == 1:
-                count_defaults += 1
-                if history.default_dum[i] == history.estimation[i]:
-                    count_default_strikes += 1
-            else:
-                count_non_defaults += 1
-                if history.default_dum[i] == history.estimation[i]:
-                    count_non_default_strikes += 1
-
-    default_strikes = count_default_strikes/count_defaults
-    non_default_strikes = count_non_default_strikes/count_non_defaults
-    print("Identified " + str(round(default_strikes*100, 2)) + "% of defaults and " + str(round(non_default_strikes*100, 2)) + "% of non_defaults")
-
-
-print("subset_1")
-model_validation(history, 0, 224)
-print("subset_2")
-model_validation(history, 224, 447)
-print("subset_3")
-model_validation(history, 447, 669)
+def create_indicators(data):
+    new_data = data_merging(data, sector_data)  # add sector variable
+    data = data_modification(new_data)  # modify data regarding missing values
+    new_indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
+    indicators = winsorize_indicators(new_indicators)
+    return indicators
 
 ####################
 # Model valuation  #
@@ -143,7 +75,19 @@ model_validation(history, 447, 669)
 # comparing the predictions in p to the true values in y – this is called the classification error.
 # count how often the values for y and p differ in this table, and then divide this count by the number of rows in the table
 
-mdl1 = sm.Logit.from_formula('Default_Dum ~ interest_coverage + roa + debt_ratio + equity_ratio + ebit_margin + cf_operating + current_ratio + age', data=indicators).fit(disp=False, maxiter=100)
+indicators = create_indicators(traindata_t)
+# heatmap
+f, ax = plt.subplots(figsize=(20,5))
+sns.heatmap(indicators[2:].corr(method='pearson'),
+            annot=True,cmap="coolwarm",
+            vmin=-1, vmax=1, ax=ax);
+
+plt.show()
+
+indicators['Default_Dum'] = traindata_t.default
+
+# hier könnt ihr herumspielen und euch die pseudo r squared anschauen
+mdl1 = sm.Logit.from_formula('Default_Dum ~ interest_coverage + roa + debt_ratio + equity_ratio + ebit_margin + current_ratio + age', data=indicators).fit(disp=False, maxiter=100)
 mdl2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
 print(mdl1.summary2())
 print(mdl2.summary2())
@@ -168,13 +112,7 @@ print('BIC:      {}             {}'.format(mdl1.bic, mdl2.bic))  # the lower the
 #Repeated K-Fold Approach
 #same as K-Fold approach, but repeated N times
 #different random numbers are used to create different folds of size K
-
-for j in range(2, 12):
-    for i in range(0, 669):
-        if math.isnan(indicators[i,j]):
-            indicators = indicators.drop(i)
-
-X =  indicators.iloc[:,2:11].values
+X = indicators.iloc[:, 1:len(indicators)-1].values # last row: Default_Dum not included
 y = indicators.Default_Dum.values
 
 kf = sk.model_selection.KFold(n_splits=13, random_state=23, shuffle=True)
@@ -186,12 +124,16 @@ mse1 = []
 mse2 = []
 
 for train_index, test_index in kf.split(X):
+
     # Estimate Model 1
-    mdl1 = sm.OLS(y[train_index], X[train_index, 0:2]).fit()
+    mdl1 = sm.OLS(y[train_index], X[train_index, 0:2]).fit() # index 0-2: current, roa, debt; könnt andere ausprobieren
+
     # Prediction Model 1
     pred1 = mdl1.predict(X[test_index, 0:2])
+
     # Estimate Model 2
-    mdl2 = sm.OLS(y[train_index], X[train_index, :]).fit()
+    mdl2 = sm.OLS(y[train_index], X[train_index, :]).fit()  # all indicators
+
     # Prediction Model 2
     pred2 = mdl2.predict(X[test_index, :])
 
@@ -213,3 +155,25 @@ ax[1].set_title('Model 2')
 plt.show()
 
 print(pd.DataFrame({'M1': mse1, 'M2': mse2}).describe())
+
+mdl1 = sm.OLS(y, X[:,0:2]).fit()
+mdl2 = sm.OLS(y, X).fit()
+
+data_test = generate_sample(500, 999)
+
+pred1 = mdl1.predict(data_test.iloc[:,1:3].values)
+pred2 = mdl2.predict(data_test.iloc[:,1:].values)
+
+mse1 = ((data_test['y'] - pred1)**2).mean()
+mse2 = ((data_test['y'] - pred2)**2).mean()
+
+print(mse1)
+print(mse2)
+
+# zum erstellen von Excel-Dateien
+# indicators
+#import xlsxwriter
+#with xlsxwriter.Workbook('indicators.xlsx') as workbook:
+ #   worksheet = workbook.add_worksheet()
+  #  for row_num, data in enumerate(indicators):
+   #     worksheet.write_row(row_num, 0, data)
