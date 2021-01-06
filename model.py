@@ -60,7 +60,7 @@ traindata["total_result"].fillna(pl_vars_mean["total_result"])
 traindata["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"])
 traindata["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"])
 traindata["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"])
-traindata["total_equity"].fillna(special_vars_mean["total_equity"]) # another approach could be useful
+#traindata["total_equity"].fillna(special_vars_mean["total_equity"]) # another approach could be useful
 traindata["sales"].fillna(pl_vars_mean["sales"])
 traindata["current_assets"].fillna(bs_vars_mean["current_assets"])
 
@@ -75,8 +75,11 @@ for i in range(0, len(traindata.oth_interest_exp)):
     traindata.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
 #%%
 # Funktion für Equity einfügen
+total_equity = traindata.total_assets.copy() - (traindata.total_liabilities_st.copy() + traindata.total_liabilities_mt.copy() + traindata.total_liabilities_lt.copy())
 
-
+for i in range (0, len(traindata.total_equity)):
+    traindata['total_equity'].fillna(total_equity[i], inplace=True)
+#%%
 #############################
 # functions to analyse data #
 #############################

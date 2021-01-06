@@ -98,16 +98,18 @@ print(cf_vars_mean)
 # maybe not necessarytraindata.insert(4, "Übersektor", "x", allow_duplicates= True)
 #maybe delete second column in additionaldata
 traindata_adapt = pd.merge(traindata, additionaldata, on = 'sector', how = 'left')
-trainx = traindata_adapt.replace(np.nan, 'Unknown', regex=True)
+traindata_adapt['sector_string'] = traindata_adapt['sector_string'].fillna('Unknown')
 
-#traindata_adapt["sector_string"].fillna('Unknown')
-#traindata_adapt['sector_string'] = np.select(default='Unknown')
+#%%
+# Dealing with na: Total equity  - Notiz Fredi (habe statt traindata_m --> wieder traindata genommen --> siehe oben)
+total_liabilities = traindata.total_liabilities_st.copy() + traindata.total_liabilities_mt.copy() + traindata.total_liabilities_lt.copy()
+interest_exp_rate = traindata.oth_interest_exp.copy() / total_liabilities
+oth_interest_exp_filler = []
+for i in range(0, len(traindata.oth_interest_exp)):
+    oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
+    traindata.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
+#%%
+total_equity = traindata_adapt.total_assets.copy() - (traindata_adapt.total_liabilities_st.copy() + traindata_adapt.total_liabilities_mt.copy() + traindata_adapt.total_liabilities_lt.copy())
 
-#print(traindata_adapt.groupby("sector_string").fin_result.mean())
-
-
-#print(traindata.groupby("legal_form").fin_result.mean())
-#print(traindata.groupby("default").fin_result.mean())
-
-
-
+for i in range (0, len(traindata_adapt.total_equity)):
+    traindata_adapt['total_equity'].fillna(total_equity[i], inplace=True)
