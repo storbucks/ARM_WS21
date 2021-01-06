@@ -7,6 +7,7 @@ import sklearn as sk
 import seaborn as sns
 import math
 from sklearn import model_selection
+from sklearn import metrics
 
 from model import data_merging
 from model import data_modification
@@ -99,7 +100,22 @@ print('AIC:      {}           {}\n'.format(mdl1.aic, mdl2.aic))  # the lower the
 print('BIC:      {}             {}'.format(mdl1.bic, mdl2.bic))  # the lower the better
 
 
-# main idea of the cross-validation approach
+
+### GINI COEFF ###
+pd_pred = mdl1.predict(exog=indicators)
+# print(pd_pred.head())
+
+# AUC
+fpr, tpr, thresholds = metrics.roc_curve(indicators.Default_Dum, pd_pred)
+auc = metrics.auc(fpr, tpr)
+print("AUC: " + str(auc))
+
+# GINI
+gini = 2 * auc - 1
+print("Gini: " + str(gini))
+
+
+"""# main idea of the cross-validation approach
 # repeatedly draw a subset from your available sample
 # for each of these subsets, estimate your model
 # evaluate each estimated subset-model on the data not included in this subset - on the validation sample
@@ -177,4 +193,4 @@ print(mse2)
 #with xlsxwriter.Workbook('indicators.xlsx') as workbook:
  #   worksheet = workbook.add_worksheet()
   #  for row_num, data in enumerate(indicators):
-   #     worksheet.write_row(row_num, 0, data)
+   #     worksheet.write_row(row_num, 0, data)"""
