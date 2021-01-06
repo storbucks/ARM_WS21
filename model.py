@@ -74,6 +74,8 @@ for i in range(0, len(traindata.oth_interest_exp)):
     oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
     traindata.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
 #%%
+# Funktion für Equity einfügen
+
 
 #############################
 # functions to analyse data #
