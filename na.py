@@ -30,7 +30,7 @@ boolvar = [i for i in list(traindata.columns) if traindata[i].dtype == bool]  # 
 #%%
 additionaldata = pd.read_csv("sectors_overview_6.csv", sep=";",
                              dtype={'sector':'int64',
-                                    'sector_string':str})
+                                    'sector_string':'str'})
 #%%
 #Interest coverage ratio (Olli)
 
@@ -97,12 +97,17 @@ print(cf_vars_mean)
 
 # maybe not necessarytraindata.insert(4, "Übersektor", "x", allow_duplicates= True)
 #maybe delete second column in additionaldata
-left_join = pd.merge(traindata, additionaldata, on = 'sector', how = 'left')
+traindata_adapt = pd.merge(traindata, additionaldata, on = 'sector', how = 'left')
+trainx = traindata_adapt.replace(np.nan, 'Unknown', regex=True)
+
+#traindata_adapt["sector_string"].fillna('Unknown')
+#traindata_adapt['sector_string'] = np.select(default='Unknown')
+
+#print(traindata_adapt.groupby("sector_string").fin_result.mean())
+
 
 #print(traindata.groupby("legal_form").fin_result.mean())
 #print(traindata.groupby("default").fin_result.mean())
 
-# Callable grouping for default and non-default comparison
-#default_groups = traindata.groupby("default")
-#print(default_groups.sales.mean())  # example, call as default_groups.column.function
+
 

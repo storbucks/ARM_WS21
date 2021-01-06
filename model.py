@@ -5,6 +5,17 @@ import math
 # Loading data, just copy the Training_Dataset.csv file into the working directory of your python project:
 traindata_m = pd.read_csv("Training_Dataset.csv", sep=";")
 testdata = pd.read_csv("Test_Dataset.csv", sep=";")
+sector_data = pd.read_csv("sectors_overview_6.csv", sep=";",
+                             dtype={'sector':'int64',
+                                    'sector_string':'str'})
+#%%
+# Merging traindata_m & sector_data & filling sector_string NA's with unknown
+traindata = pd.merge(traindata_m, sector_data, on = 'sector', how = 'left')
+traindata['sector_string'] = traindata['sector_string'].fillna('Unknown')
+
+
+#%%
+
 
 # hier Funktionen zur Datenbereinigung einfügen
 # Dealing with na: ICR
