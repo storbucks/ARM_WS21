@@ -97,4 +97,16 @@ param3 = res2.params[3]
 # uses regression betas for estimation
 estimations = calculate_pds(indicators, indicators['debt_ratio'], indicators['current_ratio'], indicators['roa'], param0, param1, param2, param3)
 estimations['Default_Dum'] = traindata_t.default
+print(estimations['estimated_pd'])
+print(estimations['Default_Dum'])
+
+x = np.array(estimations['estimated_pd']).reshape((-1, 1))
+y = np.array(estimations['Default_Dum'])
+model = LinearRegression()
+model.fit(x, y)
+model = LinearRegression().fit(x, y)
+intercept = float(model.intercept_)
+slope = float(model.coef_[0])
+
+print(model.intercept_, model.coef_)
 
