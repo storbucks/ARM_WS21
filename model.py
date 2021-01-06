@@ -66,8 +66,8 @@ def data_modification(data):
     for i in range(0, len(data.oth_interest_exp)):
         oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
         data.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
-    total_equity = data.total_assets.copy() - (data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy())
-    for i in range (0, len(data.total_equity)):
+    total_equity = data.total_assets.copy() - total_liabilities
+    for i in range(0, len(data.total_equity)):
         data['total_equity'].fillna(total_equity[i], inplace=True)
     return data
 
