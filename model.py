@@ -55,7 +55,7 @@ def data_modification(data):
     data["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"])
     data["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"])
     data["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"])
-    data["total_equity"].fillna(special_vars_mean["total_equity"])  # another approach could be useful
+    # data["total_equity"].fillna(special_vars_mean["total_equity"])  # another approach could be useful
     data["sales"].fillna(pl_vars_mean["sales"])
     data["current_assets"].fillna(bs_vars_mean["current_assets"])
 
@@ -66,6 +66,9 @@ def data_modification(data):
     for i in range(0, len(data.oth_interest_exp)):
         oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
         data.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
+    total_equity = data.total_assets.copy() - (data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy())
+    for i in range (0, len(data.total_equity)):
+        data['total_equity'].fillna(total_equity[i], inplace=True)
     return data
 
 
