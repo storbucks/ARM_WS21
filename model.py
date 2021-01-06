@@ -10,24 +10,11 @@ def winsorize(df, cols, from_lower_end, from_higher_end):  # cols MUST be list
         sci.stats.mstats.winsorize(a=df[col], limits=(from_lower_end, from_higher_end), inplace=True)
 
 
-# Fill with mean function
-def fill_with_mean(df, cols, value_to_be_replaced):  # v_t_b_r either float, int or list, cols MUST be list
-    for col in cols:
-        col_mean = df[col].mean(skipna=True)
-        df[col].replace(to_replace=value_to_be_replaced, value=col_mean, inplace=True)
-
-
-# Loading data
-traindata_m = pd.read_csv("Training_Dataset.csv", sep=";")
-testdata = pd.read_csv("Test_Dataset.csv", sep=";")
-sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
-
-
 # Merging data & sector data & filling sector_string NA's with unknown
 def data_merging(data, sectors):
-    data = pd.merge(data, sectors, on='sector', how='left')
-    data['sector_string'] = data['sector_string'].fillna('Unknown')
-    return data
+    new_data = pd.merge(data, sectors, on='sector', how='left')
+    new_data['sector_string'] = new_data['sector_string'].fillna('Unknown')
+    return new_data
 
 
 def data_modification(data):
@@ -46,34 +33,35 @@ def data_modification(data):
     pl_na_overview = pd.DataFrame({'Valid': pl_vars.notnull().sum(),
                                    'NAs': pl_vars.isnull().sum(),
                                    'NAs of total': pl_vars.isnull().sum() / pl_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    print(pl_na_overview)
+    # print(pl_na_overview)
 
     bs_na_overview = pd.DataFrame({'Valid': bs_vars.notnull().sum(),
                                    'NAs': bs_vars.isnull().sum(),
                                    'NAs of total': bs_vars.isnull().sum() / bs_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    print(bs_na_overview)
+    # print(bs_na_overview)
 
     cf_na_overview = pd.DataFrame({'Valid': cf_vars.notnull().sum(),
                                    'NAs': cf_vars.isnull().sum(),
                                    'NAs of total': cf_vars.isnull().sum() / cf_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    print(cf_na_overview)
+    # print(cf_na_overview)
 
     # Storing sector specific Means of Numerical variables
     special_vars_mean = special_vars.groupby("sector_string").mean()
     pl_vars_mean = pl_vars.mean()
     bs_vars_mean = bs_vars.mean()
+    print(bs_vars_mean['total_assets'])
     cf_vars_mean = cf_vars.mean()  # not necessary regarding the chosen ratios
 
     # Manipulation - Substituing NA's
-    data["earn_from_op"].fillna(pl_vars_mean["earn_from_op"])
-    data["total_assets"].fillna(bs_vars_mean["total_assets"])
-    data["total_result"].fillna(pl_vars_mean["total_result"])
-    data["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"])
-    data["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"])
-    data["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"])
+    data["earn_from_op"].fillna(pl_vars_mean["earn_from_op"], inplace = True)
+    data["total_assets"].fillna(bs_vars_mean["total_assets"], inplace = True)
+    data["total_result"].fillna(pl_vars_mean["total_result"], inplace = True)
+    data["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"], inplace = True)
+    data["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"], inplace = True)
+    data["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"], inplace = True)
     # data["total_equity"].fillna(special_vars_mean["total_equity"])  # another approach could be useful
-    data["sales"].fillna(pl_vars_mean["sales"])
-    data["current_assets"].fillna(bs_vars_mean["current_assets"])
+    data["sales"].fillna(pl_vars_mean["sales"], inplace = True)
+    data["current_assets"].fillna(bs_vars_mean["current_assets"], inplace = True)
 
     # Dealing with na: ICR
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
@@ -88,6 +76,7 @@ def data_modification(data):
 
     # Wins year_inc
     winsorize(data, ['year_inc'], 0.01, 0.005)  # keeps values betwnn 1% and 99.5%
+    print(data.iloc[89,:].values)
     return data
 
 
@@ -152,8 +141,8 @@ def create_default_booleans(estimations):
 
 # function that runs all functions for a given dataset
 def pd_estimations(data):
-    data = data_merging(data, sector_data)  # add sector variable
-    data = data_modification(data)  # modify data regarding missing values
+    new_data = data_merging(data, sector_data)  # add sector variable
+    data = data_modification(new_data)  # modify data regarding missing values
     indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
     indicators = winsorize_indicators(indicators)
     estimations = calculate_pds(indicators)  # calculate values with logit regression betas
@@ -161,5 +150,9 @@ def pd_estimations(data):
     return default_booleans  # returns a matrix with the default booleans
 
 
+# Loading data
+traindata_m = pd.read_csv("Training_Dataset.csv", sep=";")
+testdata = pd.read_csv("Test_Dataset.csv", sep=";")
+sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
 estimations_traindata = pd_estimations(traindata_m)
 estimations_testdata = pd_estimations(testdata)
