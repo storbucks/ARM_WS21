@@ -1,5 +1,20 @@
 import pandas as pd
 import numpy as np
+import scipy as sci
+
+
+# Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
+def winsorize(df, cols, from_lower_end, from_higher_end):  # cols MUST be list
+    for col in cols:
+        sci.stats.mstats.winsorize(a=df[col], limits=(from_lower_end, from_higher_end), inplace=True)
+
+
+# Fill with mean function
+def fill_with_mean(df, cols, value_to_be_replaced):  # v_t_b_r either float, int or list, cols MUST be list
+    for col in cols:
+        col_mean = df[col].mean(skipna=True)
+        df[col].replace(to_replace=value_to_be_replaced, value=col_mean, inplace=True)
+
 
 # Loading data
 traindata_m = pd.read_csv("Training_Dataset.csv", sep=";")
@@ -69,6 +84,9 @@ def data_modification(data):
     total_equity = data.total_assets.copy() - total_liabilities
     for i in range(0, len(data.total_equity)):
         data['total_equity'].fillna(total_equity[i], inplace=True)
+
+    # Wins year_inc
+    winsorize(data, ['year_inc'], 0.01, 0.005)  # keeps values betwnn 1% and 99.5%
     return data
 
 
@@ -93,6 +111,18 @@ def create_indicator_frame(data):
              'debt_to_equity_ratio': debt_to_equity_ratio, 'equity_ratio': equity_ratio,
              'ebit_margin': ebit_margin, 'current_ratio': current_ratio, 'age': age}
     indicators = pd.DataFrame(frame)
+    return indicators
+
+
+def winsorize_indicators(indicators):
+    # Winsorize IC Ratio
+    winsorize(indicators, ['interest_coverage'], 0.01, 0.15)
+    # Winsoirze Current Ratio
+    winsorize(indicators, ['current_ratio'], 0, 0.05)  # only wins from top, 5% ??
+    # Winsorize Ebit Margin
+    winsorize(indicators, ["ebit_margin"], 0.01, 0.005)
+    # Winsorize Operating CFs
+    winsorize(indicators, ["cf_operating"], 0.01, 0.05)
     return indicators
 
 
@@ -126,6 +156,7 @@ def pd_estimations(data):
     data = data_merging(data, sector_data)  # add sector variable
     data = data_modification(data)  # modify data regarding missing values
     indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
+    indicators = winsorize_indicators(indicators)
     estimations = calculate_pds(indicators)  # calculate values with logit regression betas
     default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted
     return default_booleans  # returns a matrix with the default booleans
