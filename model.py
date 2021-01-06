@@ -46,8 +46,6 @@ cf_na_overview = pd.DataFrame({'Valid': cf_vars.notnull().sum(),
 print(cf_na_overview)
 
 #%%
-# Getting sector specific Means and replacing NA's
-#%%
 # Storing sector specific Means of Numerical variables
 special_vars_mean = special_vars.groupby("sector_string").mean()
 pl_vars_mean = pl_vars.mean()
