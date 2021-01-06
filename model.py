@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import scipy as sci
 
 # Loading data
 traindata_m = pd.read_csv("Training_Dataset.csv", sep=";")
@@ -119,6 +120,17 @@ def create_default_booleans(estimations):
         else:
             estimations['default_boolean'] = False
     return estimations
+
+# Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
+def winsorize(df, cols, from_lower_end, from_higher_end):  # cols MUST be list
+    for col in cols:
+        sci.stats.mstats.winsorize(a=df[col], limits=(from_lower_end, from_higher_end), inplace=True)
+
+# Fill with mean function
+def fill_with_mean(df, cols, value_to_be_replaced):  # v_t_b_r either float, int or list, cols MUST be list
+    for col in cols:
+        col_mean = df[col].mean(skipna=True)
+        df[col].replace(to_replace=value_to_be_replaced, value=col_mean, inplace=True)
 
 
 # function that runs all functions for a given dataset
