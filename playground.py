@@ -571,3 +571,14 @@ for i in range(0, len(history['id'])):
 # Sehr interessante übersicht
 sns.pairplot(indicators[2:], hue="default", palette="Set2")
 plt.show()
+
+#%%
+#%% Impute test
+# from sklearn.impute import SimpleImputer
+#
+# trst_med = traindata_m.trade_receivables_st.median()
+# trst_avg = traindata_m.trade_receivables_st.mean()
+#
+# imp = SimpleImputer(missing_values=np.nan, strategy='median', copy=False)
+# imp.fit(traindata_m.loc[:,'sales':])
+# new_df = imp.transform(traindata_m.loc[:,'sales':])

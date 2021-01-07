@@ -91,12 +91,14 @@ def create_indicator_frame(data):
     interest_coverage = data.earn_from_op.copy() / data.oth_interest_exp.copy()
     equity_ratio = data.total_equity.copy() / data.total_assets.copy()
     ebit_margin = data.earn_from_op.copy() / data.sales.copy()
+    cf_operating =data.cf_operating.copy()
     age = []
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
     # create data frame including all indicators
     frame = {'id': data.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_ratio': debt_ratio,
-             'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage, 'age': age}
+             'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage,
+             'age': age, 'cf_operating': cf_operating}
     indicators = pd.DataFrame(frame)
     return indicators
 
