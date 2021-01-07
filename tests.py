@@ -21,14 +21,19 @@ from model import pd_estimations
 
 
 #  functions that we have to adjust to get the best result
-def calculate_pds(indicators, indicator1, indicator2, indicator3, beta0, beta1, beta2, beta3):
+def calculate_pds(indicators, indicator1, indicator2, indicator3, indicator4, indicator5, indicator6, beta0, beta1, beta2, beta3, beta4, beta5, beta6):
     frame = {'id': indicators.id}
     estimations = pd.DataFrame(frame)
     estimations['estimated_pd'] = ""
     # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
     for i in range(0, len(indicators['id'])):
         # hier müssen wir mit tests noch geeignete allgemeingültige betas finden
-        x = beta0 + beta1 * indicator1[i] - beta2 * indicator2[i] - beta3 * indicator3[i]
+        x = -3.4815551452319524 +0.011375780101555972 * indicators['equity_ratio'][i] \
+            -0.5022287233993806 * indicators['bank_liab_lt'][i] \
+            -2.1414921033274483 * indicators['roa'][i] \
+            +0.6792943525752813 * indicators['debt_ratio'][i]\
+            -0.14129783215171077 * indicators['current_ratio'][i]\
+            +0.9032443271419771 * indicators['bank_liab_st'][i]
         pi = (np.exp(x)/(1 + np.exp(x)))
         estimations['estimated_pd'][i] = pi
     return estimations
@@ -81,10 +86,12 @@ traindata_t = pd.read_csv("Training_Dataset.csv", sep=";")
 testdata = pd.read_csv("Test_Dataset.csv", sep=";")
 sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
 
+#%%
 # shows coefficients that work out well (Hier könnt ihr herum experimentieren, welche Zusammensetzung gut ist; am besten kopieren und dies als Entwurf lassen)
 indicators = create_indicators_for_testing(traindata_t)
 indicators['Default_Dum'] = traindata_t.default
-res2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + interest_coverage + roa', data=indicators).fit(disp=False, maxiter=100)
+
+res2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa +  debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
 print("This is the result of the logit regression.")
 print(res2.summary2())
 
@@ -93,11 +100,14 @@ param0 = res2.params[0]
 param1 = res2.params[1]
 param2 = res2.params[2]
 param3 = res2.params[3]
-#param4 = res2.params[4]
-#param5 = res2.params[5]
+param4 = res2.params[4]
+param5 = res2.params[5]
+param6 = res2.params[6]
 
 # uses regression betas for estimation
-estimations = calculate_pds(indicators, indicators['debt_ratio'], indicators['current_ratio'], indicators['roa'], param0, param1, param2, param3)
+estimations = calculate_pds(indicators, indicators['equity_ratio'], indicators['bank_liab_lt'], indicators['roa'],
+                            indicators['debt_ratio'], indicators['current_ratio'], indicators['bank_liab_st'],
+                            param0, param1, param2, param3, param4, param5, param6)
 estimations['Default_Dum'] = traindata_t.default
 print(estimations['estimated_pd'])
 print(estimations['Default_Dum'])

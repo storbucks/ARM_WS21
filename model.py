@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import scipy as sci
 import scipy.stats
-import statistics as sta
 
 
 # Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
@@ -63,7 +62,8 @@ def data_modification(data):
     data["sales"].fillna(pl_vars_mean["sales"], inplace=True)
     data["current_assets"].fillna(bs_vars_mean["current_assets"], inplace=True)
     data["cf_operating"].fillna(cf_vars_mean["cf_operating"], inplace=True)
-
+    data["bank_liabilities_st"].fillna(0, inplace=True)
+    data["bank_liabilities_lt"].fillna(0, inplace=True)
 
     # Dealing with na: ICR and total equity
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
@@ -78,6 +78,14 @@ def data_modification(data):
 
     # Wins year_inc
     winsorize(data, ['year_inc'], 0.01, 0.005)  # keeps values betwnn 1% and 99.5%
+
+    for i in range(0, len(data.bank_liabilities_st)):
+        if data.bank_liabilities_st[i] > 0:
+            data.bank_liabilities_st[i] = 1
+
+    for i in range(0, len(data.bank_liabilities_lt)):
+        if data.bank_liabilities_lt[i] > 0:
+            data.bank_liabilities_lt[i] = 1
     return data
 
 
@@ -97,25 +105,18 @@ def create_indicator_frame(data):
     ebit_margin = data.earn_from_op.copy() / data.sales.copy()
     current_assets_ratio = data.monetary_current_assets.copy() / data.total_assets.copy()
     working_capital = data.current_assets.copy() / data.total_liabilities_st.copy()
+    bank_liab_lt = data.bank_liabilities_lt.copy()
+    bank_liab_st = data.bank_liabilities_st.copy()
     age = []
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
 
-    data["bank_liabilities_st"].fillna(0, inplace=True)
-    for i in range(0, len(data.bank_liabilities_st)):
-        if data.bank_liabilities_st[i] != 0:
-            data.bank_liabilities_st[i] = 1
-
-    data["bank_liabilities_lt"].fillna(0, inplace=True)
-    for i in range(0, len(data.bank_liabilities_lt)):
-        if data.bank_liabilities_lt[i] != 0:
-            data.bank_liabilities_lt[i] = 1
 
     # create data frame including all indicators
     frame = {'id': data.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_ratio': debt_ratio,
              'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage,
              'age': age, 'op_cash_flow': op_cash_flow, 'current_assets_ratio': current_assets_ratio,
-             'working_capital': working_capital}
+             'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st}
     indicators = pd.DataFrame(frame)
     return indicators
 
@@ -126,6 +127,8 @@ def winsorize_indicators(indicators):
     winsorize(indicators, ['current_ratio'], 0, 0.05)  # only wins from top, 5% ??
     # Winsorize Ebit Margin
     winsorize(indicators, ["ebit_margin"], 0.01, 0.005)
+
+
     return indicators
 
 
@@ -137,12 +140,12 @@ def calculate_pds(indicators):
     # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
     for i in range(0, len(indicators['id'])):
         # hier müssen wir mit tests noch geeignete allgemeingültige betas finden
-        x = -2.161776910273177 +0.01111285465402667 * indicators['equity_ratio'][i] \
-            -0.11696885865508849 * indicators['working_capital'][i] \
-            -1.3685561608041843 * indicators['roa'][i] \
-            -8.422520756815861e-09 * indicators['op_cash_flow'][i]\
-            -1.4275119359513586 * indicators['current_assets_ratio'][i]\
-            -0.20354793466535537 * indicators['ebit_margin'][i]
+        x = -3.4815551452319524 +0.011375780101555972 * indicators['equity_ratio'][i] \
+            -0.5022287233993806 * indicators['bank_liab_lt'][i] \
+            -2.1414921033274483 * indicators['roa'][i] \
+            +0.6792943525752813 * indicators['debt_ratio'][i]\
+            -0.14129783215171077 * indicators['current_ratio'][i]\
+            +0.9032443271419771 * indicators['bank_liab_st'][i]
         pi = (np.exp(x)/(1 + np.exp(x)))
         estimations['estimated_pd'][i] = pi
     return estimations
@@ -159,7 +162,7 @@ def create_default_booleans(estimations):
     return estimations
 
 
-# function that runs all functions for a given dataset
+function that runs all functions for a given dataset
 def pd_estimations(data):
     new_data = data_merging(data, sector_data)  # add sector variable
     data = data_modification(new_data)  # modify data regarding missing values
@@ -167,7 +170,7 @@ def pd_estimations(data):
     indicators = winsorize_indicators(indicators)
     estimations = calculate_pds(indicators)  # calculate values with logit regression betas
     default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted
-    return default_booleans  # returns a matrix with the default booleans
+    return default_booleans  # returns a matrix with the default booleans'
 
 
 # Loading data
@@ -176,3 +179,10 @@ testdata = pd.read_csv("Test_Dataset.csv", sep=";")
 sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
 estimations_traindata = pd_estimations(traindata_m)
 estimations_testdata = pd_estimations(testdata)
+
+# new_data = data_merging(traindata_m, sector_data)  # add sector variable
+# data = data_modification(new_data)  # modify data regarding missing values
+# indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
+# indicators = winsorize_indicators(indicators)
+# estimations = calculate_pds(indicators)  # calculate values with logit regression betas
+# default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted'
