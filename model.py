@@ -162,7 +162,7 @@ def create_default_booleans(estimations):
     return estimations
 
 
-function that runs all functions for a given dataset
+# function that runs all functions for a given dataset
 def pd_estimations(data):
     new_data = data_merging(data, sector_data)  # add sector variable
     data = data_modification(new_data)  # modify data regarding missing values

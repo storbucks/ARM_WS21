@@ -186,6 +186,13 @@ print(indicators.cf_operating.describe())
 winsorize(indicators, ["cf_operating"], 0.01, 0.05)
 print(indicators.cf_operating.describe())
 
+# #%% EQ Ratio
+#
+# print(indicators.working_capital.describe())
+# indicators.working_capital = np.log(indicators.working_capital)
+# print(indicators.working_capital.describe())
+
+
 #%%
 #############################################
 # 10: Data analysis for Indicators #
@@ -574,11 +581,11 @@ plt.show()
 
 #%%
 #%% Impute test
-# from sklearn.impute import SimpleImputer
-#
-# trst_med = traindata_m.trade_receivables_st.median()
-# trst_avg = traindata_m.trade_receivables_st.mean()
-#
-# imp = SimpleImputer(missing_values=np.nan, strategy='median', copy=False)
-# imp.fit(traindata_m.loc[:,'sales':])
-# new_df = imp.transform(traindata_m.loc[:,'sales':])
+from sklearn.impute import SimpleImputer
+
+trst_med = traindata_m.trade_receivables_st.median()
+trst_avg = traindata_m.trade_receivables_st.mean()
+
+imp = SimpleImputer(missing_values=np.nan, strategy='median', copy=False)
+imp.fit(traindata_m.loc[:,'sales':])
+new_df = imp.transform(traindata_m.loc[:,'sales':])
