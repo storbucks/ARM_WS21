@@ -101,10 +101,10 @@ print(mdl3.summary2())
 print(mdl4.summary2())
 print(mdl5.summary2())
 
-print('======================= Model 1 vs. Model 2 =================\n')
-print('Pseudo R2:       {}           {}\n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared, mdl5.prsquared))
-print('AIC:      {}           {}\n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic, mdl5.aic))  # the lower the better
-print('BIC:      {}             {}'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic, mdl5.bic))  # the lower the better
+print('================================= Model Comparison =================================\n')
+print('Pseudo R2:   {}    {}    {}    {}    {}\n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared, mdl5.prsquared))
+print('AIC:         {}    {}    {}    {}    {}\n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic, mdl5.aic))  # the lower the better
+print('BIC:         {}    {}    {}    {}    {}\n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic, mdl5.bic))  # the lower the better
 
 
 
