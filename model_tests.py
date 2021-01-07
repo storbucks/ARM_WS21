@@ -171,7 +171,6 @@ plt.title('Receiver operating characteristic example')
 plt.legend(loc="lower right")
 plt.show()
 
-#%%
 #### K Fold apporach ###
 
 # main idea of the cross-validation approach
@@ -206,7 +205,7 @@ plt.show()
 X = indicators.iloc[:, 1:len(indicators)-1].values # last col: Default_Dum not included, first col: id not included (8)
 y = indicators.Default_Dum.values
 
-kf = sk.model_selection.KFold(n_splits=13, random_state=0, shuffle=False)
+kf = sk.model_selection.KFold(n_splits=13, random_state=5, shuffle=True)
 kf.get_n_splits(X)
 # print(kf)
 
@@ -216,16 +215,12 @@ mse2 = []
 for train_index, test_index in kf.split(X):
     # Estimate Model 1
     mdl1 = sm.OLS(y[train_index], X[train_index, 0:4]).fit()  # muss mit oben übereinstimmen, warum auch immer (204)
-
     # Prediction Model 1
     pred1 = mdl1.predict(X[test_index, 0:4])  # muss übereinstimmen
-
     # Estimate Model 2
     mdl2 = sm.OLS(y[train_index], X[train_index, 0:5]).fit()  # muss mit oben übereinstimmen, warum auch immer (205)
-
     # Prediction Model 2
     pred2 = mdl2.predict(X[test_index, 0:5])  # muss übereinstimmen
-
     # Calculate MSEs
     mse1.append(np.mean((pred1 - y[test_index]) ** 2))
     mse2.append(np.mean((pred2 - y[test_index]) ** 2))
