@@ -115,7 +115,21 @@ print("AUC: " + str(auc))
 gini = 2 * auc - 1
 print("Gini: " + str(gini))
 
+fig, axes = plt.subplots(figsize=(15,5))
+lw = 2
+axes = plt.plot(fpr, tpr, color='darkred',
+         lw=lw, label='ROC curve (area = %0.2f)' % auc)
+axes = plt.plot([0, 1], [0, 1], color='lightblue', lw=lw, linestyle='--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver operating characteristic example')
+plt.legend(loc="lower right")
+plt.show()
 
+
+#%%
 # main idea of the cross-validation approach
 # repeatedly draw a subset from your available sample
 # for each of these subsets, estimate your model
@@ -130,7 +144,7 @@ print("Gini: " + str(gini))
 #Repeated K-Fold Approach
 #same as K-Fold approach, but repeated N times
 #different random numbers are used to create different folds of size K
-#%%
+
 def generate_sample(N, seed):  # self-written function by him used for illustration, not meaningful as is
     np.random.seed(seed)
     eps = np.random.normal(0,5,N)
@@ -148,31 +162,29 @@ def generate_sample(N, seed):  # self-written function by him used for illustrat
 X = indicators.iloc[:, 1:len(indicators)-1].values # last row: Default_Dum not included
 y = indicators.Default_Dum.values
 
-kf = sk.model_selection.KFold(n_splits=13, random_state=23, shuffle=True)
+kf = sk.model_selection.KFold(n_splits=13, random_state=0, shuffle=False)
 kf.get_n_splits(X)
-
-print(kf)
+# print(kf)
 
 mse1 = []
 mse2 = []
 
 for train_index, test_index in kf.split(X):
-
     # Estimate Model 1
-    mdl1 = sm.OLS(y[train_index], X[train_index, 0:2]).fit() # index 0-2: current, roa, debt; könnt andere ausprobieren
+    mdl1 = sm.OLS(y[train_index], X[train_index, 0:2]).fit()
 
     # Prediction Model 1
     pred1 = mdl1.predict(X[test_index, 0:2])
 
     # Estimate Model 2
-    mdl2 = sm.OLS(y[train_index], X[train_index, :]).fit()  # all indicators
+    mdl2 = sm.OLS(y[train_index], X[train_index, :]).fit()
 
     # Prediction Model 2
     pred2 = mdl2.predict(X[test_index, :])
 
     # Calculate MSEs
-    mse1.append(np.mean((pred1 - y[test_index])**2))
-    mse2.append(np.mean((pred2 - y[test_index])**2))
+    mse1.append(np.mean((pred1 - y[test_index]) ** 2))
+    mse2.append(np.mean((pred2 - y[test_index]) ** 2))
 
 mse1 = np.array(mse1)
 mse2 = np.array(mse2)
@@ -189,11 +201,10 @@ plt.show()
 
 print(pd.DataFrame({'M1': mse1, 'M2': mse2}).describe())
 
-mdl1 = sm.OLS(y, X[:,0:2]).fit()
+mmdl1 = sm.OLS(y, X[:,0:2]).fit()
 mdl2 = sm.OLS(y, X).fit()
 
-data_test = generate_sample(500, 999)  # self-written function by him used for illustration, not meaningful as is
-
+data_test = generate_sample(500, 999)
 
 pred1 = mdl1.predict(data_test.iloc[:,1:3].values)
 pred2 = mdl2.predict(data_test.iloc[:,1:].values)
