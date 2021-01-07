@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import scipy as sci
 import scipy.stats
+import statistics as sta
 
 
 # Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
@@ -33,23 +34,23 @@ def data_modification(data):
     pl_na_overview = pd.DataFrame({'Valid': pl_vars.notnull().sum(),
                                    'NAs': pl_vars.isnull().sum(),
                                    'NAs of total': pl_vars.isnull().sum() / pl_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    # print(pl_na_overview)
+    #print(pl_na_overview)
 
     bs_na_overview = pd.DataFrame({'Valid': bs_vars.notnull().sum(),
                                    'NAs': bs_vars.isnull().sum(),
                                    'NAs of total': bs_vars.isnull().sum() / bs_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    # print(bs_na_overview)
+    #print(bs_na_overview)
 
     cf_na_overview = pd.DataFrame({'Valid': cf_vars.notnull().sum(),
                                    'NAs': cf_vars.isnull().sum(),
                                    'NAs of total': cf_vars.isnull().sum() / cf_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    # print(cf_na_overview)
+    #print(cf_na_overview)
 
     # Storing sector specific Means of Numerical variables
     special_vars_mean = special_vars.groupby("sector_string").mean()
     pl_vars_mean = pl_vars.mean()
     bs_vars_mean = bs_vars.mean()
-    cf_vars_mean = cf_vars.mean()  # not necessary regarding the chosen ratios
+    cf_vars_mean = cf_vars.mean()
 
     # Manipulation - Substituing NA's
     data["earn_from_op"].fillna(pl_vars_mean["earn_from_op"], inplace=True)
@@ -61,8 +62,10 @@ def data_modification(data):
     # data["total_equity"].fillna(special_vars_mean["total_equity"])  # another approach could be useful
     data["sales"].fillna(pl_vars_mean["sales"], inplace=True)
     data["current_assets"].fillna(bs_vars_mean["current_assets"], inplace=True)
+    data["cf_operating"].fillna(cf_vars_mean["cf_operating"], inplace=True)
 
-    # Dealing with na: ICR
+
+    # Dealing with na: ICR and total equity
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
     interest_exp_rate = data.oth_interest_exp.copy() / total_liabilities
     oth_interest_exp_filler = []
@@ -86,22 +89,35 @@ def create_indicator_frame(data):
     current_ratio = data.current_assets.copy()/data.total_liabilities_st.copy()
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
     debt_ratio = total_liabilities.copy() / data.total_assets.copy()
-    debt_to_equity_ratio = total_liabilities.copy() / data.total_equity.copy()
+    #debt_to_equity_ratio = total_liabilities.copy() / data.total_equity.copy()
     roa = data.total_result.copy() / data.total_assets.copy()
+    op_cash_flow = data.cf_operating.copy()
     interest_coverage = data.earn_from_op.copy() / data.oth_interest_exp.copy()
     equity_ratio = data.total_equity.copy() / data.total_assets.copy()
     ebit_margin = data.earn_from_op.copy() / data.sales.copy()
-    cf_operating =data.cf_operating.copy()
+    current_assets_ratio = data.monetary_current_assets.copy() / data.total_assets.copy()
+    working_capital = data.current_assets.copy() / data.total_liabilities_st.copy()
     age = []
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
+
+    data["bank_liabilities_st"].fillna(0, inplace=True)
+    for i in range(0, len(data.bank_liabilities_st)):
+        if data.bank_liabilities_st[i] != 0:
+            data.bank_liabilities_st[i] = 1
+
+    data["bank_liabilities_lt"].fillna(0, inplace=True)
+    for i in range(0, len(data.bank_liabilities_lt)):
+        if data.bank_liabilities_lt[i] != 0:
+            data.bank_liabilities_lt[i] = 1
+
     # create data frame including all indicators
     frame = {'id': data.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_ratio': debt_ratio,
              'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage,
-             'age': age, 'cf_operating': cf_operating}
+             'age': age, 'op_cash_flow': op_cash_flow, 'current_assets_ratio': current_assets_ratio,
+             'working_capital': working_capital}
     indicators = pd.DataFrame(frame)
     return indicators
-
 
 def winsorize_indicators(indicators):
     # Winsorize IC Ratio
@@ -121,7 +137,12 @@ def calculate_pds(indicators):
     # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
     for i in range(0, len(indicators['id'])):
         # hier müssen wir mit tests noch geeignete allgemeingültige betas finden
-        x = -3.4163441714312563 + 0.9435381378963345 * indicators['debt_ratio'][i] - 1.0848159927024499 * indicators['current_ratio'][i] - (0.00010046357934681097/10000) * indicators['roa'][i]
+        x = -2.161776910273177 +0.01111285465402667 * indicators['equity_ratio'][i] \
+            -0.11696885865508849 * indicators['working_capital'][i] \
+            -1.3685561608041843 * indicators['roa'][i] \
+            -8.422520756815861e-09 * indicators['op_cash_flow'][i]\
+            -1.4275119359513586 * indicators['current_assets_ratio'][i]\
+            -0.20354793466535537 * indicators['ebit_margin'][i]
         pi = (np.exp(x)/(1 + np.exp(x)))
         estimations['estimated_pd'][i] = pi
     return estimations
