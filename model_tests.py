@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import scipy as sci
 
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
@@ -115,7 +116,7 @@ gini = 2 * auc - 1
 print("Gini: " + str(gini))
 
 
-"""# main idea of the cross-validation approach
+# main idea of the cross-validation approach
 # repeatedly draw a subset from your available sample
 # for each of these subsets, estimate your model
 # evaluate each estimated subset-model on the data not included in this subset - on the validation sample
@@ -129,6 +130,21 @@ print("Gini: " + str(gini))
 #Repeated K-Fold Approach
 #same as K-Fold approach, but repeated N times
 #different random numbers are used to create different folds of size K
+#%%
+def generate_sample(N, seed):  # self-written function by him used for illustration, not meaningful as is
+    np.random.seed(seed)
+    eps = np.random.normal(0,5,N)
+    x = np.random.normal(10,3,N)
+    z = np.random.normal(8,5,N)
+    y = 10 + 3*x - 1.5*z + eps
+    K = np.random.normal(0,10,size=(N,7))
+
+    temp1 = pd.DataFrame({'y':y, 'x':x, 'z':z})
+    temp2 = pd.DataFrame(K)
+    temp2.columns = ['k'+str(i) for i in range(1,8)]
+    return pd.concat([temp1, temp2], axis=1)
+
+
 X = indicators.iloc[:, 1:len(indicators)-1].values # last row: Default_Dum not included
 y = indicators.Default_Dum.values
 
@@ -161,7 +177,7 @@ for train_index, test_index in kf.split(X):
 mse1 = np.array(mse1)
 mse2 = np.array(mse2)
 
-f, ax = plt.subplots(1, 2, figsize=(15, 5), sharey=True)
+f, ax = plt.subplots(1, 2, figsize=(10, 5), sharey=True)
 
 ax[0].boxplot(mse1)
 ax[1].boxplot(mse2)
@@ -176,7 +192,8 @@ print(pd.DataFrame({'M1': mse1, 'M2': mse2}).describe())
 mdl1 = sm.OLS(y, X[:,0:2]).fit()
 mdl2 = sm.OLS(y, X).fit()
 
-data_test = generate_sample(500, 999)
+data_test = generate_sample(500, 999)  # self-written function by him used for illustration, not meaningful as is
+
 
 pred1 = mdl1.predict(data_test.iloc[:,1:3].values)
 pred2 = mdl2.predict(data_test.iloc[:,1:].values)
