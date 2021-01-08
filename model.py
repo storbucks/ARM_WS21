@@ -136,19 +136,21 @@ def create_indicator_frame(data):
 
 def winsorize_indicators(indicators):
     # Winsorize Current Ratio
-    winsorize(indicators, ['current_ratio'], 0, 0.025)  # only wins from top, 5% ??
-    # Winsorize IC Ratio
-    winsorize(indicators, ['interest_coverage'], 0.03, 0.15)
+    winsorize(indicators, ['current_ratio'], 0, 0.05)  # passt
+    # Winsorize Debt Ratio
+    winsorize(indicators, ["debt_ratio"], 0, 0.05)  # passt
     # Winsorize Ebit Margin
-    winsorize(indicators, ["ebit_margin"], 0.02, 0.005)
+    winsorize(indicators, ["ebit_margin"], 0.05, 0.05)
     # Winsorize Equity Ratio
-    # winsorize(indicators, ["equity_ratio"], 0, 0.05)
-    # Winsorize Recs Pays
-    # winsorize(indicators, ["receivables_payables"], 0, 0.57)
-    # Winsorize WC
-    winsorize(indicators, ["working_capital"], 0, 0.05)
+    winsorize(indicators, ["equity_ratio"], 0.05, 0)  # passt
+    # Winsorize IC Ratio
+    winsorize(indicators, ['interest_coverage'], 0.05, 0.2)  # passt
     # Winsorize Op CF
-    winsorize(indicators, ["op_cash_flow"], 0.01, 0.05)
+    winsorize(indicators, ["op_cash_flow"], 0.02, 0.05)  # passt
+    # Winsorize Op CF
+    winsorize(indicators, ["roa"], 0.05, 0.05)  # passt
+    # Winsorize WC
+    winsorize(indicators, ["working_capital"], 0, 0.1)  # passt
     # indicators.to_excel("indicator.xlsx")
     return indicators
 
