@@ -60,8 +60,6 @@ def create_indicators(data):
     indicators = winsorize_indicators(new_indicators)
     return indicators
 
-
-
 ####################
 # Model valuation  #
 ####################
@@ -81,6 +79,7 @@ def create_indicators(data):
 
 indicators = create_indicators(traindata_t)
 indicators['Default'] = traindata_t.default
+
 # heatmap
 f, ax = plt.subplots(figsize=(20,5))
 sns.heatmap(indicators[2:].corr(method='pearson'),
@@ -94,7 +93,7 @@ indicators['Default_Dum'] = traindata_t.default
 # hier könnt ihr herumspielen und euch die pseudo r squared anschauen
 mdl1 = sm.Logit.from_formula('Default_Dum ~ interest_coverage + roa + debt_ratio + equity_ratio + ebit_margin + current_ratio + age', data=indicators).fit(disp=False, maxiter=100)
 mdl2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
-mdl3 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
+mdl3 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st + ratio_receivables_payables', data=indicators).fit(disp=False, maxiter=100)
 mdl4 = sm.Logit.from_formula('Default_Dum ~ ebit_margin + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
 mdl5 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + ebit_margin', data=indicators).fit(disp=False, maxiter=100)
 print(mdl1.summary2())
@@ -269,4 +268,3 @@ print("MSE_m2:", mse2)
  #   worksheet = workbook.add_worksheet()
   #  for row_num, data in enumerate(indicators):
    #     worksheet.write_row(row_num, 0, data)
-
