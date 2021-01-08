@@ -191,25 +191,10 @@ plt.show()
 #     temp2.columns = ['k'+str(i) for i in range(1,8)]
 #     return pd.concat([temp1, temp2], axis=1)
 
-"""Indicators Reihenfolge für Kfold regressions
-0: 'current_ratio'
-1: 'roa'
-2: 'debt_ratio'
-3: 'equity_ratio'
-4: 'ebit_margin'
-5: 'interest_coverage'
-6: 'age'
-7: 'op_cash_flow'
-8: 'current_assets_ratio'
-9: 'working_capital'
-10: 'bank_liab_lt'
-11: 'bank_liab_st'
-12: 'liquidity_ratio_2'
-
-Used: debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + roa"""
+"""Regression: debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + roa"""
 
 ratios = ['roa', 'debt_ratio', 'interest_coverage', 'op_cash_flow', 'current_assets_ratio', 'bank_liab_st']
-#X = indicators.iloc[:, 1:len(indicators.columns)-1].values
+
 X = indicators.loc[:, ratios].values
 y = indicators.Default_Dum.values
 
