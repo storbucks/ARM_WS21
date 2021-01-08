@@ -204,12 +204,15 @@ plt.show()
 9: 'working_capital'
 10: 'bank_liab_lt'
 11: 'bank_liab_st'
-12: 'liquidity_ratio_2'"""
+12: 'liquidity_ratio_2'
 
-X = indicators.iloc[:, 1:len(indicators.columns)-1].values
+Used: debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + roa"""
+
+#X = indicators.iloc[:, 1:len(indicators.columns)-1].values
+X = indicators.loc[:, ['roa', 'debt_ratio', 'interest_coverage', 'op_cash_flow', 'current_assets_ratio', 'bank_liab_st']].values
 y = indicators.Default_Dum.values
 
-kf = sk.model_selection.KFold(n_splits=13, random_state=0, shuffle=False)
+kf = sk.model_selection.KFold(n_splits=13, random_state=23, shuffle=True)
 kf.get_n_splits(X)
 # print(kf)
 
@@ -218,49 +221,49 @@ mse2 = []
 
 for train_index, test_index in kf.split(X):
     # Estimate Model 1
-    mdl1 = sm.OLS(y[train_index], X[train_index, 0:4]).fit()  # muss mit oben übereinstimmen
+    mdl1 = sm.OLS(y[train_index], X[train_index]).fit()  # muss mit oben übereinstimmen
 
     # Prediction Model 1
-    pred1 = mdl1.predict(X[test_index, 0:4])  # muss übereinstimmen
+    pred1 = mdl1.predict(X[test_index])  # muss übereinstimmen
 
-    # Estimate Model 2
-    mdl2 = sm.OLS(y[train_index], X[train_index, 0:5]).fit()  # muss mit oben übereinstimmen
-
-    # Prediction Model 2
-    pred2 = mdl2.predict(X[test_index, 0:5])  # muss übereinstimmen
+    # # Estimate Model 2
+    # mdl2 = sm.OLS(y[train_index], X[train_index, 0:5]).fit()  # muss mit oben übereinstimmen
+    #
+    # # Prediction Model 2
+    # pred2 = mdl2.predict(X[test_index, 0:5])  # muss übereinstimmen
 
     # Calculate MSEs
     mse1.append(np.mean((pred1 - y[test_index]) ** 2))
-    mse2.append(np.mean((pred2 - y[test_index]) ** 2))
+    # mse2.append(np.mean((pred2 - y[test_index]) ** 2))
 
 mse1 = np.array(mse1)
-mse2 = np.array(mse2)
+# mse2 = np.array(mse2)
 
 f, ax = plt.subplots(1, 2, figsize=(10, 5), sharey=True)
 
 ax[0].boxplot(mse1)
-ax[1].boxplot(mse2)
+# ax[1].boxplot(mse2)
 
 ax[0].set_title('Model 1')
-ax[1].set_title('Model 2')
+# ax[1].set_title('Model 2')
 
 plt.show()
 
-print(pd.DataFrame({'M1': mse1, 'M2': mse2}).describe())
+# print(pd.DataFrame({'M1': mse1, 'M2': mse2}).describe())
 
-mdl1 = sm.OLS(y, X[:,0:4]).fit()  # muss mit oben übereinstimmen, warum auch immer (174)
-mdl2 = sm.OLS(y, X[:, 0:5]).fit()  # muss mir oben übereinstimmen, warum auch immer (180)
+mdl1 = sm.OLS(y, X).fit()  # muss mit oben übereinstimmen, warum auch immer (174)
+# mdl2 = sm.OLS(y, X[:, 0:5]).fit()  # muss mir oben übereinstimmen, warum auch immer (180)
 
 # data_test = generate_sample(500, 999)
 data_test = indicators
-pred1 = mdl1.predict(data_test.iloc[:,1:5].values)  # muss mit oben übereinstimmen, warum auch immer (shape)
-pred2 = mdl2.predict(data_test.iloc[:,1:6].values) # muss mir oben übereinstimmen, warum auch immer (shape)
+pred1 = mdl1.predict(data_test.loc[:,['roa', 'debt_ratio', 'interest_coverage', 'op_cash_flow', 'current_assets_ratio', 'bank_liab_st']])  # muss mit oben übereinstimmen, warum auch immer (shape)
+# pred2 = mdl2.predict(data_test.iloc[:,1:6].values) # muss mir oben übereinstimmen, warum auch immer (shape)
 
 mse1 = ((data_test['Default_Dum'] - pred1)**2).mean()  # nicht 100 sicher ob default_dum hier passt, müsste aber
-mse2 = ((data_test['Default_Dum'] - pred2)**2).mean()
+# mse2 = ((data_test['Default_Dum'] - pred2)**2).mean()
 
 print("MSE_m1:", mse1)
-print("MSE_m2:", mse2)
+# print("MSE_m2:", mse2)
 
 
 # zum erstellen von Excel-Dateien
