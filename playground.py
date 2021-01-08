@@ -169,7 +169,7 @@ current_assets_ratio = traindata.monetary_current_assets.copy() / traindata.tota
 working_capital = traindata.current_assets.copy() / traindata.total_liabilities_st.copy()
 bank_liab_lt = traindata.bank_liabilities_lt.copy()
 bank_liab_st = traindata.bank_liabilities_st.copy()
-receivables_payables = traindata.trade_receivables_st.copy() / traindata.trade_payables_st.copy()
+liquidity_ratio_2 = (traindata.trade_receivables_st.copy() + traindata.cash.copy()) / traindata.trade_payables_st.copy()
 age = []
 for i in range(0, len(traindata.year_inc)):
     age.append(2021 - traindata.year_inc[i].copy())
@@ -179,7 +179,7 @@ frame = {'id': traindata.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_r
          'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage,
          'age': age, 'op_cash_flow': op_cash_flow, 'current_assets_ratio': current_assets_ratio,
          'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st,
-         'receivables_payables': receivables_payables}
+         'liquidity_ratio_2': liquidity_ratio_2}
 indicators = pd.DataFrame(frame)
 #%%
 #############################################
@@ -197,19 +197,19 @@ for var in newinds.columns[0:]:
     row += 1
 plt.show()
 # Winsorize Current Ratio
-winsorize(indicators, ['current_ratio'], 0, 0.025)  # only wins from top, 5% ??
-# Winsorize IC Ratio
-winsorize(indicators, ['interest_coverage'], 0.03, 0.15)
-# Winsorize Ebit Margin
-winsorize(indicators, ["ebit_margin"], 0.02, 0.005)
-# Winsorize Equity Ratio
-# winsorize(indicators, ["equity_ratio"], 0, 0.05)
-# Winsorize Recs Pays
-winsorize(indicators, ["receivables_payables"], 0, 0.57)
-# Winsorize WC
-winsorize(indicators, ["working_capital"], 0, 0.05)
-# Winsorize Op CF
-winsorize(indicators, ["op_cash_flow"], 0.01, 0.05)
+# winsorize(indicators, ['current_ratio'], 0, 0.025)  # only wins from top, 5% ??
+# # Winsorize IC Ratio
+# winsorize(indicators, ['interest_coverage'], 0.03, 0.15)
+# # Winsorize Ebit Margin
+# winsorize(indicators, ["ebit_margin"], 0.02, 0.005)
+# # Winsorize Equity Ratio
+# # winsorize(indicators, ["equity_ratio"], 0, 0.05)
+# # Winsorize Recs Pays
+# winsorize(indicators, ["receivables_payables"], 0, 0.57)
+# # Winsorize WC
+# winsorize(indicators, ["working_capital"], 0, 0.05)
+# # Winsorize Op CF
+# winsorize(indicators, ["op_cash_flow"], 0.01, 0.05)
 
 
 #%%
