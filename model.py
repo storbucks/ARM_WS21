@@ -116,6 +116,8 @@ def create_indicator_frame(data):
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
 
+    history = [data.id, current_ratio, roa, debt_ratio, equity_ratio, ebit_margin, interest_coverage,
+             age, op_cash_flow, current_assets_ratio, working_capital, bank_liab_lt, bank_liab_st, liquidity_ratio_2]
 
     # create data frame including all indicators
     frame = {'id': data.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_ratio': debt_ratio,
@@ -124,6 +126,7 @@ def create_indicator_frame(data):
              'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st,
              'liquidity_ratio_2': liquidity_ratio_2}
     indicators = pd.DataFrame(frame)
+    # activate if you want to create a excel  indicators['Default'] = data.default
     return indicators
 
 def winsorize_indicators(indicators):
@@ -141,7 +144,7 @@ def winsorize_indicators(indicators):
     winsorize(indicators, ["working_capital"], 0, 0.05)
     # Winsorize Op CF
     winsorize(indicators, ["op_cash_flow"], 0.01, 0.05)
-
+    # indicators.to_excel("indicator.xlsx")
     return indicators
 
 
