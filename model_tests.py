@@ -209,7 +209,7 @@ plt.show()
 X = indicators.iloc[:, 1:len(indicators.columns)-1].values
 y = indicators.Default_Dum.values
 
-kf = sk.model_selection.KFold(n_splits=13, random_state=0, shuffle=False)
+kf = sk.model_selection.KFold(n_splits=13, random_state=10, shuffle=True)
 kf.get_n_splits(X)
 # print(kf)
 
