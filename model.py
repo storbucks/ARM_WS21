@@ -135,7 +135,7 @@ def winsorize_indicators(indicators):
     # Winsorize Equity Ratio
     # winsorize(indicators, ["equity_ratio"], 0, 0.05)
     # Winsorize Recs Pays
-    winsorize(indicators, ["receivables_payables"], 0, 0.57)
+    # winsorize(indicators, ["receivables_payables"], 0, 0.57)
     # Winsorize WC
     winsorize(indicators, ["working_capital"], 0, 0.05)
     # Winsorize Op CF
