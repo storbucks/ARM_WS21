@@ -135,7 +135,7 @@ def create_indicator_frame(data):
              'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st,
              'liquidity_ratio_2': liquidity_ratio_2, 'fd':fd, 'stcc': stcc, 'cca': cca}
     indicators = pd.DataFrame(frame)
-    #indicators['Default'] = data.default
+    # indicators['Default'] = data.default
     return indicators
 
 def winsorize_indicators(indicators):
@@ -229,7 +229,7 @@ indicators = create_indicator_frame(data)  # calculation of indicators that may 
 indicators = winsorize_indicators(indicators)
 estimations = calculate_pds(indicators)  # calculate values with logit regression betas
 default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted'
-
+# estimations.to_excel("estimation.xlsx")
 
 # plot dist und boxplot
 #
