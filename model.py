@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import scipy as sci
 import scipy.stats
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 # Winsorizing function (!!! winsorizes all columns with same percentiles, if more than 1 col is used !!!)
@@ -51,6 +53,9 @@ def data_modification(data):
     pl_vars_mean = pl_vars.mean()
     bs_vars_mean = bs_vars.mean()
     cf_vars_mean = cf_vars.mean()
+    pl_vars_median = pl_vars.median()
+    bs_vars_median = bs_vars.median()
+    cf_vars_median = cf_vars.median()
 
     # Manipulation - Substituing NA's
     data["earn_from_op"].fillna(pl_vars_mean["earn_from_op"], inplace=True)
@@ -65,7 +70,7 @@ def data_modification(data):
     data["cf_operating"].fillna(cf_vars_mean["cf_operating"], inplace=True)
     data["bank_liabilities_st"].fillna(0, inplace=True)
     data["bank_liabilities_lt"].fillna(0, inplace=True)
-    data["trade_payables_st"].fillna(0, inplace=True)
+    data["trade_payables_st"].fillna(bs_vars_median["trade_payables_st"], inplace=True)
     data["trade_receivables_st"].fillna(0, inplace=True)
     data["cash"].fillna(bs_vars_mean["total_liabilities_lt"], inplace=True)
 
@@ -202,3 +207,17 @@ indicators = create_indicator_frame(data)  # calculation of indicators that may 
 indicators = winsorize_indicators(indicators)
 estimations = calculate_pds(indicators)  # calculate values with logit regression betas
 default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted'
+
+
+# plot dist und boxplot
+newinds = indicators[indicators.columns.difference(["id"])]
+indics = newinds.columns.tolist()
+
+fig, axes = plt.subplots(len(indics), 2, figsize=(10, 30))
+fig.suptitle("Indicators")
+row = 0
+for var in newinds.columns[0:]:
+    sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=indicators[var], ax=axes[row, 0])
+    row += 1
+plt.show()
