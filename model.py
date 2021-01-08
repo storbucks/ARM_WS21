@@ -183,6 +183,20 @@ def create_default_booleans(estimations):
     return estimations
 
 
+def plot_indicators(indicators):
+    newinds = indicators[indicators.columns.difference(["id"])]
+    indics = newinds.columns.tolist()
+
+    fig, axes = plt.subplots(len(indics), 2, figsize=(10, len(indics) * 3))
+    fig.suptitle("Indicators")
+    row = 0
+    for var in newinds.columns[0:]:
+        sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
+        sns.boxplot(y=indicators[var], ax=axes[row, 0])
+        row += 1
+    plt.show()
+
+
 # function that runs all functions for a given dataset
 def pd_estimations(data):
     new_data = data_merging(data, sector_data)  # add sector variable
@@ -191,7 +205,9 @@ def pd_estimations(data):
     indicators = winsorize_indicators(indicators)
     estimations = calculate_pds(indicators)  # calculate values with logit regression betas
     default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted
+    plot_indicators(indicators)  # gibt iwi zwei plots aus, dann den ersten verwenden
     return default_booleans  # returns a matrix with the default booleans'
+
 
 
 # Loading data
@@ -210,14 +226,15 @@ default_booleans = create_default_booleans(estimations)  # declare companies tha
 
 
 # plot dist und boxplot
-newinds = indicators[indicators.columns.difference(["id"])]
-indics = newinds.columns.tolist()
-
-fig, axes = plt.subplots(len(indics), 2, figsize=(10, 30))
-fig.suptitle("Indicators")
-row = 0
-for var in newinds.columns[0:]:
-    sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
-    sns.boxplot(y=indicators[var], ax=axes[row, 0])
-    row += 1
-plt.show()
+#
+# newinds = indicators[indicators.columns.difference(["id"])]
+# indics = newinds.columns.tolist()
+#
+# fig, axes = plt.subplots(len(indics), 2, figsize=(10, len(indics)*3))
+# fig.suptitle("Indicators")
+# row = 0
+# for var in newinds.columns[0:]:
+#     sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
+#     sns.boxplot(y=indicators[var], ax=axes[row, 0])
+#     row += 1
+# plt.show()
