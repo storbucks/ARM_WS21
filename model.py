@@ -64,8 +64,8 @@ def data_modification(data):
     data["cf_operating"].fillna(cf_vars_mean["cf_operating"], inplace=True)
     data["bank_liabilities_st"].fillna(0, inplace=True)
     data["bank_liabilities_lt"].fillna(0, inplace=True)
-    data["trade_payables_st"].fillna(special_vars_mean["trade_payables_st"]) # zu viele NA's ?
-    data["trade_receivables_st"].fillna(special_vars_mean["trade_receivables_st"]) # zu viele NA's ?
+    data["trade_payables_st"].fillna(special_vars_mean["trade_payables_st"], inplace=True) # zu viele NA's ?
+    data["trade_receivables_st"].fillna(special_vars_mean["trade_receivables_st"], inplace=True) # zu viele NA's ?
 
     # Dealing with na: ICR and total equity
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
@@ -184,9 +184,9 @@ sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'i
 estimations_traindata = pd_estimations(traindata_m)
 estimations_testdata = pd_estimations(testdata)
 
-# new_data = data_merging(traindata_m, sector_data)  # add sector variable
-# data = data_modification(new_data)  # modify data regarding missing values
-# indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
-# indicators = winsorize_indicators(indicators)
-# estimations = calculate_pds(indicators)  # calculate values with logit regression betas
-# default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted'
+new_data = data_merging(traindata_m, sector_data)  # add sector variable
+data = data_modification(new_data)  # modify data regarding missing values
+indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
+indicators = winsorize_indicators(indicators)
+estimations = calculate_pds(indicators)  # calculate values with logit regression betas
+default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted'
