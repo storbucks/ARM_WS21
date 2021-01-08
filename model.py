@@ -213,8 +213,8 @@ testdata = pd.read_csv("Test_Dataset.csv", sep=";")
 sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
 estimations_traindata = pd_estimations(traindata_m)
 estimations_testdata = pd_estimations(testdata)
-estimations_traindata.to_excel("traindata_estimation.xlsx")
-estimations_traindata.to_excel("testdata_estimation.xlsx")
+# estimations_traindata.to_excel("traindata_estimation.xlsx")
+# estimations_traindata.to_excel("testdata_estimation.xlsx")
 
 
 # only for test purposes
