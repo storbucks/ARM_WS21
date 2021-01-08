@@ -97,7 +97,6 @@ def data_modification(data):
             data.bank_liabilities_lt[i] = 1
     return data
 
-
 #############################
 # functions to analyse data #
 #############################
