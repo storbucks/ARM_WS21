@@ -116,19 +116,19 @@ pd_pred5 = mdl5.predict(exog=indicators)
 # print(pd_pred.head())
 
 # AUC Model 1
-fpr1, tpr1, thresholds1 = metrics.roc_curve(indicators.Default_Dum, pd_pred1)
+fpr1, tpr1, thresholds1 = metrics.roc_curve(indicators.Default, pd_pred1)
 auc1 = metrics.auc(fpr1, tpr1)
 # AUC Model 2
-fpr2, tpr2, thresholds2 = metrics.roc_curve(indicators.Default_Dum, pd_pred2)
+fpr2, tpr2, thresholds2 = metrics.roc_curve(indicators.Default, pd_pred2)
 auc2 = metrics.auc(fpr2, tpr2)
 # AUC Model 3
-fpr3, tpr3, thresholds3 = metrics.roc_curve(indicators.Default_Dum, pd_pred3)
+fpr3, tpr3, thresholds3 = metrics.roc_curve(indicators.Default, pd_pred3)
 auc3 = metrics.auc(fpr3, tpr3)
 # AUC Model 4
-fpr4, tpr4, thresholds4 = metrics.roc_curve(indicators.Default_Dum, pd_pred4)
+fpr4, tpr4, thresholds4 = metrics.roc_curve(indicators.Default, pd_pred4)
 auc4 = metrics.auc(fpr4, tpr4)
 # AUC Model 5
-fpr5, tpr5, thresholds5 = metrics.roc_curve(indicators.Default_Dum, pd_pred5)
+fpr5, tpr5, thresholds5 = metrics.roc_curve(indicators.Default, pd_pred5)
 auc5 = metrics.auc(fpr5, tpr5)
 
 # print("AUC_1: " + str(auc1))
@@ -217,7 +217,7 @@ plt.show()
 12: 'liquidity_ratio_2'"""
 
 X = indicators.iloc[:, 1:len(indicators)-1].values # last col: Default_Dum not included, first col: id not included (8)
-y = indicators.Default_Dum.values
+y = indicators.Default.values
 
 kf = sk.model_selection.KFold(n_splits=13, random_state=10, shuffle=True)
 kf.get_n_splits(X)
@@ -266,8 +266,8 @@ data_test = indicators
 pred1 = mdl1.predict(data_test.iloc[:,1:5].values)  # muss mit oben übereinstimmen, warum auch immer (shape)
 pred2 = mdl2.predict(data_test.iloc[:,1:6].values) # muss mir oben übereinstimmen, warum auch immer (shape)
 
-mse1 = ((data_test['Default_Dum'] - pred1)**2).mean()  # nicht 100 sicher ob default_dum hier passt, müsste aber
-mse2 = ((data_test['Default_Dum'] - pred2)**2).mean()
+mse1 = ((data_test['Default'] - pred1)**2).mean()  # nicht 100 sicher ob default_dum hier passt, müsste aber
+mse2 = ((data_test['Default'] - pred2)**2).mean()
 
 print("MSE_m1:", mse1)
 print("MSE_m2:", mse2)
