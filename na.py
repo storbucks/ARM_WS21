@@ -70,11 +70,16 @@ print(cf_na_overview)
 pl_vars_mean = pl_vars.mean()
 print(pl_vars_mean)
 
+bs_vars_median = bs_vars.median()
+print(bs_vars_median)
+
 bs_vars_mean = bs_vars.mean()
 print(bs_vars_mean)
 
 cf_vars_mean = cf_vars.mean()
 print(cf_vars_mean)
+
+
 
 #%%
 # Manipulation Backup for Ratios - also look at Excel --> NA's
@@ -99,6 +104,8 @@ print(cf_vars_mean)
 #maybe delete second column in additionaldata
 traindata_adapt = pd.merge(traindata, additionaldata, on = 'sector', how = 'left')
 traindata_adapt['sector_string'] = traindata_adapt['sector_string'].fillna('Unknown')
+
+traindata_adaptdata["trade_payables_st"].fillna(bs_vars_mean["total_equity"])
 
 #%%
 # Dealing with na: Total equity  - Notiz Fredi (habe statt traindata_m --> wieder traindata genommen --> siehe oben)

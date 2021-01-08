@@ -117,6 +117,10 @@ def create_indicator_frame(data):
     bank_liab_lt = data.bank_liabilities_lt.copy()
     bank_liab_st = data.bank_liabilities_st.copy()
     liquidity_ratio_2 =(data.trade_receivables_st.copy() + data.cash.copy())/ data.trade_payables_st.copy()
+    fd = data.current_assets.copy() / total_liabilities.copy()
+    stcc = data.total_liabilities_st.copy() / data.sales.copy()
+    cca = (data.current_assets.copy() + data.total_liabilities_st.copy()) / data.total_assets.copy()
+
     age = []
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
@@ -129,7 +133,7 @@ def create_indicator_frame(data):
              'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage,
              'age': age, 'op_cash_flow': op_cash_flow, 'current_assets_ratio': current_assets_ratio,
              'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st,
-             'liquidity_ratio_2': liquidity_ratio_2}
+             'liquidity_ratio_2': liquidity_ratio_2, 'fd':fd, 'stcc': stcc, 'cca': cca}
     indicators = pd.DataFrame(frame)
     #indicators['Default'] = data.default
     return indicators

@@ -78,8 +78,7 @@ def create_indicators(data):
 # count how often the values for y and p differ in this table, and then divide this count by the number of rows in the table
 
 indicators = create_indicators(traindata_t)
-indicators['Default_Dum'] = traindata_t.default
-
+indicators['Default'] = traindata_t.default
 # heatmap
 f, ax = plt.subplots(figsize=(20,5))
 sns.heatmap(indicators[2:].corr(method='pearson'),
@@ -88,20 +87,24 @@ sns.heatmap(indicators[2:].corr(method='pearson'),
 
 plt.show()
 
+indicators['Default_Dum'] = traindata_t.default
+
 # hier könnt ihr herumspielen und euch die pseudo r squared anschauen
 mdl1 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + working_capital + roa + op_cash_flow + age + bank_liab_st + current_ratio', data=indicators).fit(disp=False, maxiter=100)
 mdl2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
-mdl3 = sm.Logit.from_formula('Default_Dum ~ ebit_margin + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
-mdl4 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + ebit_margin', data=indicators).fit(disp=False, maxiter=100)
+mdl3 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + fd + roa + cca + stcc + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
+mdl4 = sm.Logit.from_formula('Default_Dum ~ ebit_margin + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
+mdl5 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + ebit_margin', data=indicators).fit(disp=False, maxiter=100)
 print(mdl1.summary2())
 print(mdl2.summary2())
 print(mdl3.summary2())
 print(mdl4.summary2())
+print(mdl5.summary2())
 
 print('================================= Model Comparison =================================\n')
-print('Pseudo R2:   {}    {}    {}    {} \n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared))
-print('AIC:         {}    {}    {}    {} \n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic))  # the lower the better
-print('BIC:         {}    {}    {}    {} \n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic))  # the lower the better
+print('Pseudo R2:   {}    {}    {}    {}    {}\n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared, mdl5.prsquared))
+print('AIC:         {}    {}    {}    {}    {}\n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic, mdl5.aic))  # the lower the better
+print('BIC:         {}    {}    {}    {}    {}\n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic, mdl5.bic))  # the lower the better
 
 
 
@@ -110,6 +113,7 @@ pd_pred1 = mdl1.predict(exog=indicators)
 pd_pred2 = mdl2.predict(exog=indicators)
 pd_pred3 = mdl3.predict(exog=indicators)
 pd_pred4 = mdl4.predict(exog=indicators)
+pd_pred5 = mdl5.predict(exog=indicators)
 # print(pd_pred.head())
 
 # AUC Model 1
@@ -124,6 +128,9 @@ auc3 = metrics.auc(fpr3, tpr3)
 # AUC Model 4
 fpr4, tpr4, thresholds4 = metrics.roc_curve(indicators.Default_Dum, pd_pred4)
 auc4 = metrics.auc(fpr4, tpr4)
+# AUC Model 5
+fpr5, tpr5, thresholds5 = metrics.roc_curve(indicators.Default_Dum, pd_pred5)
+auc5 = metrics.auc(fpr5, tpr5)
 
 # print("AUC_1: " + str(auc1))
 # print("AUC_2: " + str(auc2))
@@ -136,10 +143,12 @@ gini1 = 2 * auc1 - 1
 gini2 = 2 * auc2 - 1
 gini3 = 2 * auc3 - 1
 gini4 = 2 * auc4 - 1
+gini5 = 2 * auc5 - 1
 print("Gini_1: ", gini1)
 print("Gini_2: ", gini2)
 print("Gini_3: ", gini3)
 print("Gini_4: ", gini4)
+print("Gini_5: ", gini5)
 
 fig, axes = plt.subplots(figsize=(15,5))
 lw = 2
@@ -151,6 +160,8 @@ axes = plt.plot(fpr3, tpr3, color='blue',
          lw=lw, label='ROC curve (area = %0.2f)' % auc3)
 axes = plt.plot(fpr4, tpr4, color='purple',
          lw=lw, label='ROC curve (area = %0.2f)' % auc4)
+axes = plt.plot(fpr5, tpr5, color='orange',
+         lw=lw, label='ROC curve (area = %0.2f)' % auc5)
 axes = plt.plot([0, 1], [0, 1], color='lightblue', lw=lw, linestyle='--')
 plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
@@ -191,22 +202,8 @@ plt.show()
 #     temp2.columns = ['k'+str(i) for i in range(1,8)]
 #     return pd.concat([temp1, temp2], axis=1)
 
-"""Indicators Reihenfolge für Kfold regressions
-0: 'current_ratio'
-1: 'roa'
-2: 'debt_ratio'
-3: 'equity_ratio'
-4: 'ebit_margin'
-5: 'interest_coverage'
-6: 'age'
-7: 'op_cash_flow'
-8: 'current_assets_ratio'
-9: 'working_capital'
-10: 'bank_liab_lt'
-11: 'bank_liab_st'
-12: 'liquidity_ratio_2'"""
 
-X = indicators.iloc[:, 1:len(indicators.columns)-1].values
+X = indicators.iloc[:, 1:len(indicators)-1].values # last col: Default_Dum not included, first col: id not included (8)
 y = indicators.Default_Dum.values
 
 kf = sk.model_selection.KFold(n_splits=13, random_state=10, shuffle=True)
@@ -218,13 +215,13 @@ mse2 = []
 
 for train_index, test_index in kf.split(X):
     # Estimate Model 1
-    mdl1 = sm.OLS(y[train_index], X[train_index, 0:4]).fit()  # muss mit oben übereinstimmen
+    mdl1 = sm.OLS(y[train_index], X[train_index, 0:4]).fit()  # muss mit oben übereinstimmen, warum auch immer (204)
 
     # Prediction Model 1
     pred1 = mdl1.predict(X[test_index, 0:4])  # muss übereinstimmen
 
     # Estimate Model 2
-    mdl2 = sm.OLS(y[train_index], X[train_index, 0:5]).fit()  # muss mit oben übereinstimmen
+    mdl2 = sm.OLS(y[train_index], X[train_index, 0:5]).fit()  # muss mit oben übereinstimmen, warum auch immer (205)
 
     # Prediction Model 2
     pred2 = mdl2.predict(X[test_index, 0:5])  # muss übereinstimmen
