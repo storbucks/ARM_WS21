@@ -19,46 +19,15 @@ traindata_t = pd.read_csv("Training_Dataset.csv", sep=";")
 testdata = pd.read_csv("Test_Dataset.csv", sep=";")
 sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
 
+
 #  calculate the values to classify companies in default and non-default
-def calculate_pds(indicators):
-    frame = {'id': indicators.id}
-    estimations = pd.DataFrame(frame)
-    estimations['estimated_pd'] = ""
-    # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
-    for i in range(0, len(indicators['id'])):
-        # hier müssen wir mit tests noch geeignete allgemeingültige betas finden und gute Indikatoren
-        x = -3 + 0.7 * indicators['debt_ratio'][i] - 0.19 * indicators['current_ratio'][i] - 1 * indicators['roa'][i]
-        pi = (np.exp(x)/(1 + np.exp(x)))
-        estimations['estimated_pd'][i] = pi
-    return estimations
-
-
-def create_default_booleans(estimations):
-    estimations['default_boolean'] = ""
-    default_threshold = 0.06162628810257741  # geeigneten threshold finden
-    for i in range(0, len(estimations)):
-        if estimations['estimated_pd'][i] >= default_threshold:
-            estimations['default_boolean'] = True
-        else:
-            estimations['default_boolean'] = False
-    return estimations
-
-
-def pd_estimations(data):
-    new_data = data_merging(data, sector_data)  # add sector variable
-    data = data_modification(new_data)  # modify data regarding missing values
-    new_indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
-    indicators = winsorize_indicators(new_indicators)
-    estimations = calculate_pds(indicators)  # calculate values with logit regression betas
-    default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted
-    return default_booleans
-
 def create_indicators(data):
     new_data = data_merging(data, sector_data)  # add sector variable
     data = data_modification(new_data)  # modify data regarding missing values
     new_indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
     indicators = winsorize_indicators(new_indicators)
     return indicators
+
 
 ####################
 # Model valuation  #
@@ -67,14 +36,14 @@ indicators = create_indicators(traindata_t)
 indicators['Default_Dum'] = traindata_t.default
 
 # heatmap
-f, ax = plt.subplots(figsize=(20,5))
+f, ax = plt.subplots(figsize=(20, 5))
 sns.heatmap(indicators[2:].corr(method='pearson'),
-            annot=True,cmap="coolwarm",
-            vmin=-1, vmax=1, ax=ax);
+            annot=True, cmap="coolwarm",
+            vmin=-1, vmax=1, ax=ax)
 
 plt.show()
 
-# hier könnt ihr herumspielen und euch die pseudo r squared anschauen
+# a place to discover good combinations
 mdl1 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + bank_liab_st + interest_coverage + current_assets_ratio', data=indicators).fit(disp=False, maxiter=100)
 mdl2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + ebit_margin', data=indicators).fit(disp=False, maxiter=100)
 mdl3 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
@@ -88,7 +57,6 @@ print('================================= Model Comparison ======================
 print('Pseudo R2:   {}    {}    {}    {} \n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared))
 print('AIC:         {}    {}    {}    {} \n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic))  # the lower the better
 print('BIC:         {}    {}    {}    {} \n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic))  # the lower the better
-
 
 
 ### GINI COEFF ###
@@ -127,16 +95,16 @@ print("Gini_2: ", gini2)
 print("Gini_3: ", gini3)
 print("Gini_4: ", gini4)
 
-fig, axes = plt.subplots(figsize=(15,5))
+fig, axes = plt.subplots(figsize=(15, 5))
 lw = 2
 axes = plt.plot(fpr1, tpr1, color='green',
-         lw=lw, label='ROC curve (area = %0.2f)' % auc1)
+                lw=lw, label='ROC curve (area = %0.2f)' % auc1)
 axes = plt.plot(fpr2, tpr2, color='darkred',
-         lw=lw, label='ROC curve (area = %0.2f)' % auc2)
+                lw=lw, label='ROC curve (area = %0.2f)' % auc2)
 axes = plt.plot(fpr3, tpr3, color='blue',
-         lw=lw, label='ROC curve (area = %0.2f)' % auc3)
+                lw=lw, label='ROC curve (area = %0.2f)' % auc3)
 axes = plt.plot(fpr4, tpr4, color='purple',
-         lw=lw, label='ROC curve (area = %0.2f)' % auc4)
+                lw=lw, label='ROC curve (area = %0.2f)' % auc4)
 axes = plt.plot([0, 1], [0, 1], color='lightblue', lw=lw, linestyle='--')
 plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
@@ -146,8 +114,7 @@ plt.title('Receiver operating characteristic example')
 plt.legend(loc="lower right")
 plt.show()
 
-#%%
-#### K Fold apporach ###
+# K Fold apporach
 """Regression: debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + roa"""
 
 ratios = ['roa', 'debt_ratio', 'interest_coverage', 'op_cash_flow', 'current_assets_ratio', 'bank_liab_st']
@@ -208,8 +175,8 @@ print("MSE_m1:", mse1)
 
 # zum erstellen von Excel-Dateien
 # indicators
-#import xlsxwriter
-#with xlsxwriter.Workbook('indicators.xlsx') as workbook:
+# import xlsxwriter
+# with xlsxwriter.Workbook('indicators.xlsx') as workbook:
  #   worksheet = workbook.add_worksheet()
   #  for row_num, data in enumerate(indicators):
    #     worksheet.write_row(row_num, 0, data)
