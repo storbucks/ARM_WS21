@@ -78,7 +78,7 @@ def create_indicators(data):
 # count how often the values for y and p differ in this table, and then divide this count by the number of rows in the table
 
 indicators = create_indicators(traindata_t)
-indicators['Default'] = traindata_t.default
+indicators['Default_Dum'] = traindata_t.default
 
 # heatmap
 f, ax = plt.subplots(figsize=(20,5))
@@ -99,9 +99,9 @@ print(mdl3.summary2())
 print(mdl4.summary2())
 
 print('================================= Model Comparison =================================\n')
-print('Pseudo R2:   {}    {}    {}    {}    {}\n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared))
-print('AIC:         {}    {}    {}    {}    {}\n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic))  # the lower the better
-print('BIC:         {}    {}    {}    {}    {}\n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic))  # the lower the better
+print('Pseudo R2:   {}    {}    {}    {} \n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared))
+print('AIC:         {}    {}    {}    {} \n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic))  # the lower the better
+print('BIC:         {}    {}    {}    {} \n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic))  # the lower the better
 
 
 
