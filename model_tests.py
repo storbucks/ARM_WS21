@@ -92,7 +92,7 @@ indicators['Default_Dum'] = traindata_t.default
 # hier könnt ihr herumspielen und euch die pseudo r squared anschauen
 mdl1 = sm.Logit.from_formula('Default_Dum ~ interest_coverage + roa + debt_ratio + equity_ratio + ebit_margin + current_ratio + age', data=indicators).fit(disp=False, maxiter=100)
 mdl2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
-mdl3 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st + ratio_receivables_payables', data=indicators).fit(disp=False, maxiter=100)
+mdl3 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st + receivables_payables', data=indicators).fit(disp=False, maxiter=100)
 mdl4 = sm.Logit.from_formula('Default_Dum ~ ebit_margin + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
 mdl5 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + ebit_margin', data=indicators).fit(disp=False, maxiter=100)
 print(mdl1.summary2())
@@ -267,3 +267,22 @@ print("MSE_m2:", mse2)
  #   worksheet = workbook.add_worksheet()
   #  for row_num, data in enumerate(indicators):
    #     worksheet.write_row(row_num, 0, data)
+
+#%%
+#############################################
+# 10: Data analysis for Indicators #
+#############################################
+newinds = indicators[indicators.columns.difference(["id", "Default", "Default_Dum", "debt_to_equity_ratio"])]
+indics = newinds.columns.tolist()
+
+fig, axes = plt.subplots(len(indics), 2, figsize=(10, 30))
+fig.suptitle("Indicators")
+row = 0
+for var in newinds.columns[0:]:
+    sns.distplot(indicators[var], kde=True, ax=axes[row, 1])
+    sns.boxplot(y=indicators[var], ax=axes[row, 0])
+    row += 1
+plt.show()
+
+for var in indics:
+    print(indicators[var].describe())

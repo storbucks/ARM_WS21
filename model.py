@@ -1,3 +1,4 @@
+#%%
 import pandas as pd
 import numpy as np
 import scipy as sci
@@ -125,13 +126,20 @@ def create_indicator_frame(data):
     return indicators
 
 def winsorize_indicators(indicators):
-    # Winsorize IC Ratio
-    winsorize(indicators, ['interest_coverage'], 0.01, 0.15)
     # Winsorize Current Ratio
-    winsorize(indicators, ['current_ratio'], 0, 0.05)  # only wins from top, 5% ??
+    winsorize(indicators, ['current_ratio'], 0, 0.025)  # only wins from top, 5% ??
+    # Winsorize IC Ratio
+    winsorize(indicators, ['interest_coverage'], 0.03, 0.15)
     # Winsorize Ebit Margin
-    winsorize(indicators, ["ebit_margin"], 0.01, 0.005)
-
+    winsorize(indicators, ["ebit_margin"], 0.02, 0.005)
+    # Winsorize Equity Ratio
+    # winsorize(indicators, ["equity_ratio"], 0, 0.05)
+    # Winsorize Recs Pays
+    winsorize(indicators, ["receivables_payables"], 0, 0.57)
+    # Winsorize WC
+    winsorize(indicators, ["working_capital"], 0, 0.05)
+    # Winsorize Op CF
+    winsorize(indicators, ["op_cash_flow"], 0.01, 0.05)
 
     return indicators
 
