@@ -31,14 +31,14 @@ pd.DataFrame({'Valid': traindata.notnull().sum(),
             ).sort_values('NAs of total', ascending=False)
 
 #%%
-tbl = traindata.assign(IsMissing = lambda x: x.oth_interest_inc.isnull()).groupby('IsMissing').default.describe()
+tbl = traindata.assign(IsMissing = lambda x: x.total_equity.isnull()).groupby('IsMissing').default.describe()
 tbl['Def'] = tbl['count'] - tbl['freq']
 tbl['Avg'] = tbl['Def'] / tbl['count']
 tbl
 
 #%%
 mdl = sm.Logit.from_formula('defn ~ IsMissing + 1',
-                            data=traindata.assign(IsMissing = lambda x: x.oth_interest_inc.isnull())
+                            data=traindata.assign(IsMissing = lambda x: x.total_equity.isnull())
                            ).fit(disp=False, maxiter=100)
 print(mdl.summary2())
 
@@ -48,24 +48,24 @@ print(mdl.get_margeff(dummy=True).summary())
 #### all negative sign.
 
 #%%
-traindata['oth_interest_inc_grouped'] = np.select(
-    [traindata['oth_interest_inc'].between(0, 2.447041e+04, inclusive=True),
-     traindata['oth_interest_inc'].between(2.447041e+04, 3.305790e+03, inclusive=True),
-     traindata['oth_interest_inc'].between(3.305790e+03, 4.354600e+02, inclusive=True),
-     traindata['oth_interest_inc'].between(4.354600e+02, np.inf, inclusive=True)],
+traindata['total_equity_grouped'] = np.select(
+    [traindata['oth_interest_exp'].between(0, 20000, inclusive=True),
+     traindata['oth_interest_exp'].between(20001, 120000, inclusive=True),
+     traindata['oth_interest_exp'].between(120001, 250000, inclusive=True),
+     traindata['oth_interest_exp'].between(250001, np.inf, inclusive=True)],
     ['small', 'medium', 'large', 'extra large'], default='Unknown')
 
-traindata[['oth_interest_inc', 'oth_interest_inc_grouped']]
+traindata[['oth_interest_exp', 'oth_interest_exp_grouped']]
 
 #%%
-traindata['oth_interest_inc_grouped'].value_counts()
+traindata['oth_interest_exp_grouped'].value_counts()
 #%%
-traindata.groupby('oth_interest_inc_grouped').defn.mean()
+traindata.groupby('oth_interest_exp_grouped').defn.mean()
 #%%
 traindata.defn.mean()
 
 #%%
-mdl = sm.Logit.from_formula('defn ~ oth_interest_inc_grouped + 1', data=traindata).fit(disp=False, maxiter=100)
+mdl = sm.Logit.from_formula('defn ~ oth_interest_exp_grouped + 1', data=traindata).fit(disp=False, maxiter=100)
 print(mdl.summary2())
 
 #%%
@@ -161,3 +161,9 @@ left_join = pd.merge(traindata, additionaldata, on = 'sector', how = 'left')
 #default_groups = traindata.groupby("default")
 #print(default_groups.sales.mean())  # example, call as default_groups.column.function
 
+traindata["bank_liabilities_st"].fillna(0, inplace=True)
+    for i in range(0, len(traindata.bank_liabilities_st)):
+        if traindata.bank_liabilities_st[i] > 0:
+            traindata.bank_liabilities_st[i].replace(i, 1)
+
+traindata.bank_liabilities_st.head()

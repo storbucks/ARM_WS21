@@ -28,12 +28,12 @@ def calculate_pds(indicators, indicator1, indicator2, indicator3, indicator4, in
     # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
     for i in range(0, len(indicators['id'])):
         # hier müssen wir mit tests noch geeignete allgemeingültige betas finden
-        x = -3.4815551452319524 +0.011375780101555972 * indicators['equity_ratio'][i] \
-            -0.5022287233993806 * indicators['bank_liab_lt'][i] \
-            -2.1414921033274483 * indicators['roa'][i] \
-            +0.6792943525752813 * indicators['debt_ratio'][i]\
-            -0.14129783215171077 * indicators['current_ratio'][i]\
-            +0.9032443271419771 * indicators['bank_liab_st'][i]
+        x = -4.463667005952214 +2.479823085172314 * indicators['debt_ratio'][i] \
+            +0.6992015484896459 * indicators['bank_liab_st'][i] \
+            -0.03990375086542579 * indicators['interest_coverage'][i] \
+            -1.174442644528434e-07 * indicators['op_cash_flow'][i]\
+            -1.3068239997316737 * indicators['current_assets_ratio'][i]\
+            +1.2320164066599855 * indicators['roa'][i]
         pi = (np.exp(x)/(1 + np.exp(x)))
         estimations['estimated_pd'][i] = pi
     return estimations
@@ -91,7 +91,7 @@ sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'i
 indicators = create_indicators_for_testing(traindata_t)
 indicators['Default_Dum'] = traindata_t.default
 
-res2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa +  debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
+res2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
 print("This is the result of the logit regression.")
 print(res2.summary2())
 
@@ -105,8 +105,8 @@ param5 = res2.params[5]
 param6 = res2.params[6]
 
 # uses regression betas for estimation
-estimations = calculate_pds(indicators, indicators['equity_ratio'], indicators['bank_liab_lt'], indicators['roa'],
-                            indicators['debt_ratio'], indicators['current_ratio'], indicators['bank_liab_st'],
+estimations = calculate_pds(indicators, indicators['debt_ratio'], indicators['bank_liab_st'], indicators['interest_coverage'],
+                            indicators['op_cash_flow'], indicators['current_assets_ratio'], indicators['roa'],
                             param0, param1, param2, param3, param4, param5, param6)
 estimations['Default_Dum'] = traindata_t.default
 print(estimations['estimated_pd'])

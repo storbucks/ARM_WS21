@@ -58,21 +58,21 @@ def data_modification(data):
     cf_vars_median = cf_vars.median()
 
     # Manipulation - Substituing NA's
-    data["earn_from_op"].fillna(pl_vars_mean["earn_from_op"], inplace=True)
-    data["total_assets"].fillna(bs_vars_mean["total_assets"], inplace=True)
-    data["total_result"].fillna(pl_vars_mean["total_result"], inplace=True)
-    data["total_liabilities_st"].fillna(bs_vars_mean["total_liabilities_st"], inplace=True)
-    data["total_liabilities_mt"].fillna(bs_vars_mean["total_liabilities_mt"], inplace=True)
-    data["total_liabilities_lt"].fillna(bs_vars_mean["total_liabilities_lt"], inplace=True)
+    data["earn_from_op"].fillna(pl_vars_median["earn_from_op"], inplace=True)
+    data["total_assets"].fillna(bs_vars_median["total_assets"], inplace=True)
+    data["total_result"].fillna(pl_vars_median["total_result"], inplace=True)
+    data["total_liabilities_st"].fillna(bs_vars_median["total_liabilities_st"], inplace=True)
+    data["total_liabilities_mt"].fillna(bs_vars_median["total_liabilities_mt"], inplace=True)
+    data["total_liabilities_lt"].fillna(bs_vars_median["total_liabilities_lt"], inplace=True)
     # data["total_equity"].fillna(special_vars_mean["total_equity"])  # another approach could be useful
-    data["sales"].fillna(pl_vars_mean["sales"], inplace=True)
-    data["current_assets"].fillna(bs_vars_mean["current_assets"], inplace=True)
-    data["cf_operating"].fillna(cf_vars_mean["cf_operating"], inplace=True)
+    data["sales"].fillna(pl_vars_median["sales"], inplace=True)
+    data["current_assets"].fillna(bs_vars_median["current_assets"], inplace=True)
+    data["cf_operating"].fillna(cf_vars_median["cf_operating"], inplace=True)
     data["bank_liabilities_st"].fillna(0, inplace=True)
     data["bank_liabilities_lt"].fillna(0, inplace=True)
     data["trade_payables_st"].fillna(bs_vars_median["trade_payables_st"], inplace=True)
     data["trade_receivables_st"].fillna(0, inplace=True)
-    data["cash"].fillna(bs_vars_mean["total_liabilities_lt"], inplace=True)
+    data["cash"].fillna(bs_vars_median["total_liabilities_lt"], inplace=True)
 
     # Dealing with na: ICR and total equity
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
@@ -81,9 +81,9 @@ def data_modification(data):
     for i in range(0, len(data.oth_interest_exp)):
         oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
         data.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
-    total_equity = data.total_assets.copy() - total_liabilities
-    for i in range(0, len(data.total_equity)):
-        data['total_equity'].fillna(total_equity[i], inplace=True)
+    # total_equity = data.total_assets.copy() - total_liabilities
+    # for i in range(0, len(data.total_equity)):
+    #     data['total_equity'].fillna(total_equity[i], inplace=True)
 
     # Wins year_inc
     winsorize(data, ['year_inc'], 0.01, 0.005)  # keeps values betwnn 1% and 99.5%
@@ -167,12 +167,12 @@ def calculate_pds(indicators):
     # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
     for i in range(0, len(indicators['id'])):
         # hier müssen wir mit tests noch geeignete allgemeingültige betas finden
-        x = -3.4815551452319524 +0.011375780101555972 * indicators['equity_ratio'][i] \
-            -0.5022287233993806 * indicators['bank_liab_lt'][i] \
-            -2.1414921033274483 * indicators['roa'][i] \
-            +0.6792943525752813 * indicators['debt_ratio'][i]\
-            -0.14129783215171077 * indicators['current_ratio'][i]\
-            +0.9032443271419771 * indicators['bank_liab_st'][i]
+        x = -4.463667005952214 +2.479823085172314 * indicators['debt_ratio'][i] \
+            +0.6992015484896459 * indicators['bank_liab_st'][i] \
+            -0.03990375086542579 * indicators['interest_coverage'][i] \
+            -1.174442644528434e-07 * indicators['op_cash_flow'][i]\
+            -1.3068239997316737 * indicators['current_assets_ratio'][i]\
+            +1.2320164066599855 * indicators['roa'][i]
         pi = (np.exp(x)/(1 + np.exp(x)))
         estimations['estimated_pd'][i] = pi
     return estimations
