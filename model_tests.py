@@ -89,7 +89,7 @@ sns.heatmap(indicators[2:].corr(method='pearson'),
 plt.show()
 
 # hier könnt ihr herumspielen und euch die pseudo r squared anschauen
-mdl1 = sm.Logit.from_formula('Default_Dum ~ interest_coverage + roa + debt_ratio + equity_ratio + ebit_margin + current_ratio + age', data=indicators).fit(disp=False, maxiter=100)
+mdl1 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + working_capital + roa + op_cash_flow + age + bank_liab_st + current_ratio', data=indicators).fit(disp=False, maxiter=100)
 mdl2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa + debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
 mdl3 = sm.Logit.from_formula('Default_Dum ~ ebit_margin + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
 mdl4 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + ebit_margin', data=indicators).fit(disp=False, maxiter=100)
