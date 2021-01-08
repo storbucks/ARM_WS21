@@ -64,6 +64,8 @@ def data_modification(data):
     data["cf_operating"].fillna(cf_vars_mean["cf_operating"], inplace=True)
     data["bank_liabilities_st"].fillna(0, inplace=True)
     data["bank_liabilities_lt"].fillna(0, inplace=True)
+    data["trade_payables_st"].fillna(special_vars_mean["trade_payables_st"]) # zu viele NA's ?
+    data["trade_receivables_st"].fillna(special_vars_mean["trade_receivables_st"]) # zu viele NA's ?
 
     # Dealing with na: ICR and total equity
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
@@ -107,6 +109,7 @@ def create_indicator_frame(data):
     working_capital = data.current_assets.copy() / data.total_liabilities_st.copy()
     bank_liab_lt = data.bank_liabilities_lt.copy()
     bank_liab_st = data.bank_liabilities_st.copy()
+    ratio_receivables_payables = data.trade_receivables_st.copy() / data.trade_payables_st.copy()
     age = []
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
@@ -116,7 +119,8 @@ def create_indicator_frame(data):
     frame = {'id': data.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_ratio': debt_ratio,
              'equity_ratio': equity_ratio, 'ebit_margin': ebit_margin, 'interest_coverage': interest_coverage,
              'age': age, 'op_cash_flow': op_cash_flow, 'current_assets_ratio': current_assets_ratio,
-             'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st}
+             'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st,
+             'ratio_receivables_payables': ratio_receivables_payables}
     indicators = pd.DataFrame(frame)
     return indicators
 

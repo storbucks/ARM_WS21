@@ -1,4 +1,3 @@
-#%%
 import pandas as pd
 import numpy as np
 import scipy as sci
@@ -28,12 +27,7 @@ def calculate_pds(indicators):
     # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
     for i in range(0, len(indicators['id'])):
         # hier müssen wir mit tests noch geeignete allgemeingültige betas finden und gute Indikatoren
-        x = -3.4815551452319524 +0.011375780101555972 * indicators['equity_ratio'][i] \
-            -0.5022287233993806 * indicators['bank_liab_lt'][i] \
-            -2.1414921033274483 * indicators['roa'][i] \
-            +0.6792943525752813 * indicators['debt_ratio'][i]\
-            -0.14129783215171077 * indicators['current_ratio'][i]\
-            +0.9032443271419771 * indicators['bank_liab_st'][i]
+        x = -3 + 0.7 * indicators['debt_ratio'][i] - 0.19 * indicators['current_ratio'][i] - 1 * indicators['roa'][i]
         pi = (np.exp(x)/(1 + np.exp(x)))
         estimations['estimated_pd'][i] = pi
     return estimations
@@ -63,7 +57,6 @@ def create_indicators(data):
     new_data = data_merging(data, sector_data)  # add sector variable
     data = data_modification(new_data)  # modify data regarding missing values
     new_indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
-    #indicators = create_indicator_frame(data)
     indicators = winsorize_indicators(new_indicators)
     return indicators
 
@@ -97,19 +90,21 @@ plt.show()
 indicators['Default_Dum'] = traindata_t.default
 
 # hier könnt ihr herumspielen und euch die pseudo r squared anschauen
-mdl1 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa +  op_cash_flow + current_assets_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
-mdl2 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa +  op_cash_flow + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
-mdl3 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa +  ebit_margin + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
-mdl4 = sm.Logit.from_formula('Default_Dum ~ equity_ratio + bank_liab_lt + roa +  debt_ratio + current_ratio + bank_liab_st', data=indicators).fit(disp=False, maxiter=100)
+mdl1 = sm.Logit.from_formula('Default_Dum ~ interest_coverage + roa + debt_ratio + equity_ratio + ebit_margin + current_ratio + age', data=indicators).fit(disp=False, maxiter=100)
+mdl2 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
+mdl3 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + ebit_margin + roa', data=indicators).fit(disp=False, maxiter=100)
+mdl4 = sm.Logit.from_formula('Default_Dum ~ ebit_margin + current_ratio + roa', data=indicators).fit(disp=False, maxiter=100)
+mdl5 = sm.Logit.from_formula('Default_Dum ~ debt_ratio + current_ratio + ebit_margin', data=indicators).fit(disp=False, maxiter=100)
 print(mdl1.summary2())
 print(mdl2.summary2())
 print(mdl3.summary2())
 print(mdl4.summary2())
+print(mdl5.summary2())
 
 print('================================= Model Comparison =================================\n')
-print('Pseudo R2:   {}    {}    {}    {}\n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared))
-print('AIC:         {}    {}    {}    {}\n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic))  # the lower the better
-print('BIC:         {}    {}    {}    {}\n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic))  # the lower the better
+print('Pseudo R2:   {}    {}    {}    {}    {}\n'.format(mdl1.prsquared, mdl2.prsquared, mdl3.prsquared, mdl4.prsquared, mdl5.prsquared))
+print('AIC:         {}    {}    {}    {}    {}\n'.format(mdl1.aic, mdl2.aic, mdl3.aic, mdl4.aic, mdl5.aic))  # the lower the better
+print('BIC:         {}    {}    {}    {}    {}\n'.format(mdl1.bic, mdl2.bic, mdl3.bic, mdl4.bic, mdl5.bic))  # the lower the better
 
 
 
@@ -118,6 +113,7 @@ pd_pred1 = mdl1.predict(exog=indicators)
 pd_pred2 = mdl2.predict(exog=indicators)
 pd_pred3 = mdl3.predict(exog=indicators)
 pd_pred4 = mdl4.predict(exog=indicators)
+pd_pred5 = mdl5.predict(exog=indicators)
 # print(pd_pred.head())
 
 # AUC Model 1
@@ -132,21 +128,27 @@ auc3 = metrics.auc(fpr3, tpr3)
 # AUC Model 4
 fpr4, tpr4, thresholds4 = metrics.roc_curve(indicators.Default_Dum, pd_pred4)
 auc4 = metrics.auc(fpr4, tpr4)
+# AUC Model 5
+fpr5, tpr5, thresholds5 = metrics.roc_curve(indicators.Default_Dum, pd_pred5)
+auc5 = metrics.auc(fpr5, tpr5)
 
 # print("AUC_1: " + str(auc1))
 # print("AUC_2: " + str(auc2))
 # print("AUC_3: " + str(auc3))
 # print("AUC_4: " + str(auc4))
+# print("AUC_5: " + str(auc5))
 
 # GINI
 gini1 = 2 * auc1 - 1
 gini2 = 2 * auc2 - 1
 gini3 = 2 * auc3 - 1
 gini4 = 2 * auc4 - 1
+gini5 = 2 * auc5 - 1
 print("Gini_1: ", gini1)
 print("Gini_2: ", gini2)
 print("Gini_3: ", gini3)
 print("Gini_4: ", gini4)
+print("Gini_5: ", gini5)
 
 fig, axes = plt.subplots(figsize=(15,5))
 lw = 2
@@ -158,6 +160,8 @@ axes = plt.plot(fpr3, tpr3, color='blue',
          lw=lw, label='ROC curve (area = %0.2f)' % auc3)
 axes = plt.plot(fpr4, tpr4, color='purple',
          lw=lw, label='ROC curve (area = %0.2f)' % auc4)
+axes = plt.plot(fpr5, tpr5, color='orange',
+         lw=lw, label='ROC curve (area = %0.2f)' % auc5)
 axes = plt.plot([0, 1], [0, 1], color='lightblue', lw=lw, linestyle='--')
 plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
@@ -166,6 +170,7 @@ plt.ylabel('True Positive Rate')
 plt.title('Receiver operating characteristic example')
 plt.legend(loc="lower right")
 plt.show()
+
 #%%
 #### K Fold apporach ###
 
@@ -201,7 +206,7 @@ plt.show()
 X = indicators.iloc[:, 1:len(indicators)-1].values # last col: Default_Dum not included, first col: id not included (8)
 y = indicators.Default_Dum.values
 
-kf = sk.model_selection.KFold(n_splits=13, random_state=5, shuffle=True)
+kf = sk.model_selection.KFold(n_splits=13, random_state=0, shuffle=False)
 kf.get_n_splits(X)
 # print(kf)
 
@@ -211,12 +216,16 @@ mse2 = []
 for train_index, test_index in kf.split(X):
     # Estimate Model 1
     mdl1 = sm.OLS(y[train_index], X[train_index, 0:4]).fit()  # muss mit oben übereinstimmen, warum auch immer (204)
+
     # Prediction Model 1
     pred1 = mdl1.predict(X[test_index, 0:4])  # muss übereinstimmen
+
     # Estimate Model 2
     mdl2 = sm.OLS(y[train_index], X[train_index, 0:5]).fit()  # muss mit oben übereinstimmen, warum auch immer (205)
+
     # Prediction Model 2
     pred2 = mdl2.predict(X[test_index, 0:5])  # muss übereinstimmen
+
     # Calculate MSEs
     mse1.append(np.mean((pred1 - y[test_index]) ** 2))
     mse2.append(np.mean((pred2 - y[test_index]) ** 2))
