@@ -1,4 +1,3 @@
-#%%
 import pandas as pd
 import numpy as np
 import scipy as sci
@@ -28,31 +27,31 @@ def data_modification(data):
     special_vars = data.loc[:, "sales":"sector_string"]
 
     # Build some groups to use as indices when accessing traindata
-    catvar = [i for i in list(data.columns) if data[i].dtype == 'O']  # category variables
-    numvar = [i for i in list(data.columns) if data[i].dtype in ['float64', 'int64']]  # numerical variables
-    boolvar = [i for i in list(data.columns) if data[i].dtype == bool]  # boolean variables
+    # catvar = [i for i in list(data.columns) if data[i].dtype == 'O']  # category variables
+    # numvar = [i for i in list(data.columns) if data[i].dtype in ['float64', 'int64']]  # numerical variables
+    # boolvar = [i for i in list(data.columns) if data[i].dtype == bool]  # boolean variables
 
     # Overview over NA's
     pl_na_overview = pd.DataFrame({'Valid': pl_vars.notnull().sum(),
                                    'NAs': pl_vars.isnull().sum(),
                                    'NAs of total': pl_vars.isnull().sum() / pl_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    #print(pl_na_overview)
+    # print(pl_na_overview)
 
     bs_na_overview = pd.DataFrame({'Valid': bs_vars.notnull().sum(),
                                    'NAs': bs_vars.isnull().sum(),
                                    'NAs of total': bs_vars.isnull().sum() / bs_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    #print(bs_na_overview)
+    # print(bs_na_overview)
 
     cf_na_overview = pd.DataFrame({'Valid': cf_vars.notnull().sum(),
                                    'NAs': cf_vars.isnull().sum(),
                                    'NAs of total': cf_vars.isnull().sum() / cf_vars.shape[0]}).sort_values('NAs of total', ascending=True)
-    #print(cf_na_overview)
+    # print(cf_na_overview)
 
     # Storing sector specific Means of Numerical variables
-    special_vars_mean = special_vars.groupby("sector_string").mean()
-    pl_vars_mean = pl_vars.mean()
-    bs_vars_mean = bs_vars.mean()
-    cf_vars_mean = cf_vars.mean()
+    # special_vars_mean = special_vars.groupby("sector_string").mean()
+    # pl_vars_mean = pl_vars.mean()
+    # bs_vars_mean = bs_vars.mean()
+    # cf_vars_mean = cf_vars.mean()
     pl_vars_median = pl_vars.median()
     bs_vars_median = bs_vars.median()
     cf_vars_median = cf_vars.median()
@@ -81,6 +80,7 @@ def data_modification(data):
     for i in range(0, len(data.oth_interest_exp)):
         oth_interest_exp_filler.append(interest_exp_rate.mean() * total_liabilities[i])
         data.oth_interest_exp.fillna(oth_interest_exp_filler[i], inplace=True)
+    # did not adjust equity, since we define equity ratio = 1 - debt ratio
     # total_equity = data.total_assets.copy() - total_liabilities
     # for i in range(0, len(data.total_equity)):
     #     data['total_equity'].fillna(total_equity[i], inplace=True)
@@ -97,6 +97,7 @@ def data_modification(data):
             data.bank_liabilities_lt[i] = 1
     return data
 
+
 #############################
 # functions to analyse data #
 #############################
@@ -105,7 +106,6 @@ def create_indicator_frame(data):
     current_ratio = data.current_assets.copy()/data.total_liabilities_st.copy()
     total_liabilities = data.total_liabilities_st.copy() + data.total_liabilities_mt.copy() + data.total_liabilities_lt.copy()
     debt_ratio = total_liabilities.copy() / data.total_assets.copy()
-    #debt_to_equity_ratio = total_liabilities.copy() / data.total_equity.copy()
     roa = data.total_result.copy() / data.total_assets.copy()
     op_cash_flow = data.cf_operating.copy()
     interest_coverage = data.earn_from_op.copy() / data.oth_interest_exp.copy()
@@ -115,14 +115,11 @@ def create_indicator_frame(data):
     working_capital = data.current_assets.copy() / data.total_liabilities_st.copy()
     bank_liab_lt = data.bank_liabilities_lt.copy()
     bank_liab_st = data.bank_liabilities_st.copy()
-    liquidity_ratio_2 =(data.trade_receivables_st.copy() + data.cash.copy())/ data.trade_payables_st.copy()
+    liquidity_ratio_2 = (data.trade_receivables_st.copy() + data.cash.copy()) / data.trade_payables_st.copy()
 
     age = []
     for i in range(0, len(data.year_inc)):
         age.append(2021 - data.year_inc[i].copy())
-
-    history = [data.id, current_ratio, roa, debt_ratio, equity_ratio, ebit_margin, interest_coverage,
-             age, op_cash_flow, current_assets_ratio, working_capital, bank_liab_lt, bank_liab_st, liquidity_ratio_2]
 
     # create data frame including all indicators
     frame = {'id': data.id, 'current_ratio': current_ratio, 'roa': roa, 'debt_ratio': debt_ratio,
@@ -131,8 +128,9 @@ def create_indicator_frame(data):
              'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st,
              'liquidity_ratio_2': liquidity_ratio_2}
     indicators = pd.DataFrame(frame)
-    #indicators['Default'] = data.default
+    # only necessary, if we want to create a excel, where this data is also stored: indicators['Default'] = data.default
     return indicators
+
 
 def winsorize_indicators(indicators):
     # Winsorize Current Ratio
@@ -151,7 +149,7 @@ def winsorize_indicators(indicators):
     winsorize(indicators, ["roa"], 0.05, 0.05)  # passt
     # Winsorize WC
     winsorize(indicators, ["working_capital"], 0, 0.1)  # passt
-    #indicators.to_excel("indicators.xlsx")
+    # indicators.to_excel("indicators.xlsx")
     return indicators
 
 
@@ -160,29 +158,28 @@ def calculate_pds(indicators):
     frame = {'id': indicators.id}
     estimations = pd.DataFrame(frame)
     estimations['estimated_pd'] = ""
-    # classification depends on one liquidity ratio (current assets/current liabs), one leverage ratio (debt ratio) and one profitability ratio (roa)
+    # pd estimation with betas that we found to be appropriate
     for i in range(0, len(indicators['id'])):
-        # hier müssen wir mit tests noch geeignete allgemeingültige betas finden
-        x = -4.463667005952214 +2.479823085172314 * indicators['debt_ratio'][i] \
-            +0.6992015484896459 * indicators['bank_liab_st'][i] \
-            -0.03990375086542579 * indicators['interest_coverage'][i] \
-            -1.174442644528434e-07 * indicators['op_cash_flow'][i]\
-            -1.3068239997316737 * indicators['current_assets_ratio'][i]\
-            +1.2320164066599855 * indicators['roa'][i]
+        x = -4.463667005952214 + 2.479823085172314 * indicators['debt_ratio'][i] \
+            + 0.6992015484896459 * indicators['bank_liab_st'][i] \
+            - 0.03990375086542579 * indicators['interest_coverage'][i] \
+            - 1.174442644528434e-07 * indicators['op_cash_flow'][i]\
+            - 1.3068239997316737 * indicators['current_assets_ratio'][i]\
+            + 1.2320164066599855 * indicators['roa'][i]
         pi = (np.exp(x)/(1 + np.exp(x)))
         estimations['estimated_pd'][i] = pi
     return estimations
 
 
-def create_default_booleans(estimations):
-    estimations['default_boolean'] = ""
-    default_threshold = 0.06162628810257741  # geeigneten threshold finden
-    for i in range(0, len(estimations)):
-        if estimations['estimated_pd'][i] >= default_threshold:
-            estimations['default_boolean'] = True
-        else:
-            estimations['default_boolean'] = False
-    return estimations
+#def create_default_booleans(estimations):
+ #   estimations['default_boolean'] = ""
+ #   default_threshold = 0.1  # geeigneten threshold finden
+ #   for i in range(0, len(estimations)):
+ #       if estimations['estimated_pd'][i] > default_threshold:
+ #           estimations['default_boolean'] = True
+ #       else:
+ #           estimations['default_boolean'] = False
+ #   return estimations
 
 
 def plot_indicators(indicators):
@@ -206,10 +203,8 @@ def pd_estimations(data):
     indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
     indicators = winsorize_indicators(indicators)
     estimations = calculate_pds(indicators)  # calculate values with logit regression betas
-    default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted
-    plot_indicators(indicators)  # gibt iwi zwei plots aus, dann den ersten verwenden
-    return default_booleans  # returns a matrix with the default booleans'
-
+    plot_indicators(indicators)  # first plot: traindata, second plot: testdata
+    return estimations  # returns a matrix with the default booleans'
 
 
 # Loading data
@@ -218,14 +213,16 @@ testdata = pd.read_csv("Test_Dataset.csv", sep=";")
 sector_data = pd.read_csv("sectors_overview_6.csv", sep=";", dtype={'sector': 'int64', 'sector_string': 'str'})
 estimations_traindata = pd_estimations(traindata_m)
 estimations_testdata = pd_estimations(testdata)
+estimations_traindata.to_excel("traindata_estimation.xlsx")
+estimations_traindata.to_excel("testdata_estimation.xlsx")
 
+
+# only for test purposes
 new_data = data_merging(traindata_m, sector_data)  # add sector variable
 data = data_modification(new_data)  # modify data regarding missing values
 indicators = create_indicator_frame(data)  # calculation of indicators that may be used in the model
 indicators = winsorize_indicators(indicators)
 estimations = calculate_pds(indicators)  # calculate values with logit regression betas
-default_booleans = create_default_booleans(estimations)  # declare companies that stride a fixed threshold as defaulted'
-#estimations.to_excel("estimation.xlsx")
 
 # plot dist und boxplot
 #
