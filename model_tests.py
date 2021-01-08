@@ -208,8 +208,9 @@ plt.show()
 
 Used: debt_ratio + bank_liab_st + interest_coverage + op_cash_flow + current_assets_ratio + roa"""
 
+ratios = ['roa', 'debt_ratio', 'interest_coverage', 'op_cash_flow', 'current_assets_ratio', 'bank_liab_st']
 #X = indicators.iloc[:, 1:len(indicators.columns)-1].values
-X = indicators.loc[:, ['roa', 'debt_ratio', 'interest_coverage', 'op_cash_flow', 'current_assets_ratio', 'bank_liab_st']].values
+X = indicators.loc[:, ratios].values
 y = indicators.Default_Dum.values
 
 kf = sk.model_selection.KFold(n_splits=13, random_state=23, shuffle=True)
@@ -256,7 +257,7 @@ mdl1 = sm.OLS(y, X).fit()  # muss mit oben übereinstimmen, warum auch immer (17
 
 # data_test = generate_sample(500, 999)
 data_test = indicators
-pred1 = mdl1.predict(data_test.loc[:,['roa', 'debt_ratio', 'interest_coverage', 'op_cash_flow', 'current_assets_ratio', 'bank_liab_st']])  # muss mit oben übereinstimmen, warum auch immer (shape)
+pred1 = mdl1.predict(data_test.loc[:, ratios])  # muss mit oben übereinstimmen, warum auch immer (shape)
 # pred2 = mdl2.predict(data_test.iloc[:,1:6].values) # muss mir oben übereinstimmen, warum auch immer (shape)
 
 mse1 = ((data_test['Default_Dum'] - pred1)**2).mean()  # nicht 100 sicher ob default_dum hier passt, müsste aber
