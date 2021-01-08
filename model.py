@@ -105,7 +105,7 @@ def create_indicator_frame(data):
     roa = data.total_result.copy() / data.total_assets.copy()
     op_cash_flow = data.cf_operating.copy()
     interest_coverage = data.earn_from_op.copy() / data.oth_interest_exp.copy()
-    equity_ratio = data.total_equity.copy() / data.total_assets.copy()
+    equity_ratio = 1 - debt_ratio
     ebit_margin = data.earn_from_op.copy() / data.sales.copy()
     current_assets_ratio = data.monetary_current_assets.copy() / data.total_assets.copy()
     working_capital = data.current_assets.copy() / data.total_liabilities_st.copy()
@@ -126,7 +126,7 @@ def create_indicator_frame(data):
              'working_capital': working_capital, 'bank_liab_lt': bank_liab_lt, 'bank_liab_st': bank_liab_st,
              'liquidity_ratio_2': liquidity_ratio_2}
     indicators = pd.DataFrame(frame)
-    # activate if you want to create a excel  indicators['Default'] = data.default
+    #indicators['Default'] = data.default
     return indicators
 
 def winsorize_indicators(indicators):
